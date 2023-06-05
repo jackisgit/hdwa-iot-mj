@@ -31,3 +31,4 @@ epc:
   gatewayId: MJ
   gcId: 4419001220
   subsystem: mj/
+  threadNum: 1
