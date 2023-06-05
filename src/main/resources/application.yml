@@ -1,0 +1,25 @@
+mqtt:
+  #hostUrl: tcp://10.199.209.131:1883
+  hostUrl: tcp://10.51.10.15:1883
+  username: admin
+  password: wanda@1234
+  client-id: IOT-EPC-Pj330621001010-MJ
+  cleanSession: true
+  reconnect: true
+  keepAlive: 100
+  isOpen: true
+  qos: 1
+  sendtopic: project/gcId/report
+  setdownTopic: cloud/gcid/setdown
+
+spring:
+  profiles:
+    active: mj
+    #redis配置
+  redis:
+    host: 10.51.10.15
+    port: 16379
+    password:
+
+
+beanName: hikVisionDoorDevice

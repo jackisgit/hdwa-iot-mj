@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.wanda.epc</groupId>
+        <artifactId>iot_epc</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>iot_epc_mj</artifactId>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>com.wanda.epc</groupId>
+            <artifactId>iot_epc_common</artifactId>
+            <version>${iot_epc_common.version}</version>
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>net.java.jna</groupId>-->
+<!--            <artifactId>jna</artifactId>-->
+<!--            <version>1.0.0</version>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>5.5.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.java.examples</groupId>
+            <artifactId>examples</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.java.json</groupId>
+            <artifactId>json</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+    </dependencies>
+
+
+    <build>
+        <finalName>IEPC_KQ_MJ</finalName>
+    </build>
+
+</project>

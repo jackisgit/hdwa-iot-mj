@@ -1,0 +1,8 @@
+server:
+  port: 9700
+#广场ID及GatewayId
+epc:
+  gatewayId: MJ
+  gcId: 3306210010
+  subsystem: mjxt/
+  threadNum: 10
