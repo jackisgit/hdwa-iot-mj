@@ -1,0 +1,16 @@
+server:
+  port: 9400
+#广场ID及GatewayId
+epc:
+  gatewayId: MJ
+  gcId: 4501091000
+  subsystem: mj/
+  threadNum: 1
+  cron: 0 0/1 * * * ?
+# 配置数据源信息
+# mybatis 配置
+
+beanName: daHuaDoorDevice
+m_nPort: 37777
+m_strUser: admin
+m_strPassword: 123456
