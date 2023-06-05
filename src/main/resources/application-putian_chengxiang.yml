@@ -1,5 +1,4 @@
 mqtt:
-  #  hostUrl: tcp://10.199.209.131:1883
   hostUrl: tcp://127.0.0.1:1883
   username: admin
   password: wanda@1234
@@ -9,18 +8,12 @@ mqtt:
   keepAlive: 100
   isOpen: true
   qos: 1
-  sendtopic: project/gcId/report
-  setdownTopic: cloud/gcid/setdown
 
 spring:
-  profiles:
-    active: sp
-    #redis配置
   redis:
     host: 127.0.0.1
     port: 16379
     password:
-
 
 server:
   port: 18800
