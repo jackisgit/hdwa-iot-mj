@@ -1,0 +1,34 @@
+mqtt:
+  hostUrl: tcp://127.0.0.1:1883
+  username: admin
+  password: wanda@1234
+  client-id: IOT-EPC-MJ
+  cleanSession: true
+  reconnect: true
+  keepAlive: 100
+  isOpen: true
+  qos: 1
+
+spring:
+  #redis配置
+  redis:
+    host: 127.0.0.1
+    port: 16379
+    password:
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://10.71.16.131:1433;DatabaseName=carsafe
+    username: sa
+    password: feiyang2A@
+    validationQuery: SELECT 1
+    max-active: 100
+    min-idle: 10
+    max-wait: 10000
+
+beanName: akeParkDevice
+
+epc:
+  gatewayId: MJ
+  gcId: 3506811020
+  subsystem: mj/
+  threadNum: 1
