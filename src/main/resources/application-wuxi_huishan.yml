@@ -20,7 +20,7 @@ server:
 #广场ID及GatewayId
 epc:
   gatewayId: MJ
-  gcId: 3503020030
+  gcId: 3202060020
   subsystem: mj/
   threadNum: 5
 
