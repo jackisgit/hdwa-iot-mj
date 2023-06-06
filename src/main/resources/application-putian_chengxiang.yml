@@ -1,29 +1,6 @@
-mqtt:
-  hostUrl: tcp://127.0.0.1:1883
-  username: admin
-  password: wanda@1234
-  client-id: IOT-EPC-MJ
-  cleanSession: true
-  reconnect: true
-  keepAlive: 100
-  isOpen: true
-  qos: 1
-
-spring:
-  redis:
-    host: 127.0.0.1
-    port: 16379
-    password:
-
-server:
-  port: 18800
 #广场ID及GatewayId
 epc:
   gatewayId: MJ
   gcId: 3503020030
   subsystem: mj/
   threadNum: 5
-
-
-beanName: doorStatusDevice
-
