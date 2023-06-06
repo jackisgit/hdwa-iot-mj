@@ -111,7 +111,7 @@ public class DaHuaDoorDevice extends BaseDevice {
     @Override
     public void dispatchCommand(String meter, Integer funcid, String value, String message) throws Exception {
         DeviceMessage deviceMessage = controlParamMap.get(meter + "-" + funcid);
-        log.info("接收到南宁万达茂门禁指令下发：{},状态：{}",JSON.toJSONString(deviceMessage),value);
+        log.info("接收到门禁指令下发：{},状态：{}",JSON.toJSONString(deviceMessage),value);
         if (deviceMessage != null) {
             String outParamId = deviceMessage.getOutParamId();
             String[] param = outParamId.split("_");
