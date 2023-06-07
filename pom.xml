@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>iot_epc_mj</artifactId>
-
+    <version>1.0.0-R20230606</version>
 
     <dependencies>
         <dependency>
@@ -45,7 +45,7 @@
 
 
     <build>
-        <finalName>IEPC_KQ_MJ_hikvision_4200</finalName>
+        <finalName>IOT_EPC_MJ_hikvision_4200</finalName>
     </build>
 
 </project>
