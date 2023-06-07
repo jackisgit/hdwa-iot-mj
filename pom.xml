@@ -45,7 +45,7 @@
 
 
     <build>
-        <finalName>IEPC_KQ_MJ</finalName>
+        <finalName>IEPC_KQ_MJ_hikvision_4200</finalName>
     </build>
 
 </project>
