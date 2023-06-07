@@ -1,5 +1,3 @@
-server:
-  port: 8604
 #广场ID及GatewayId
 epc:
   gatewayId: MJ
