@@ -9,6 +9,7 @@
     </parent>
 
     <artifactId>iot_epc_mj</artifactId>
+    <version>1.0.0-R20230606</version>
 
     <dependencies>
         <dependency>
@@ -32,7 +33,7 @@
 
 
     <build>
-        <finalName>IEPC_CX_MJ</finalName>
+        <finalName>iot_epc_mj_ping</finalName>
     </build>
 
 </project>
