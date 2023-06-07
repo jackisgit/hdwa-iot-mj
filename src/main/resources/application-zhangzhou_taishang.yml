@@ -11,5 +11,5 @@ spring:
 epc:
   gatewayId: MJ
   gcId: 3506811020
-  subsystem: mj/
+  subsystem: mjgl/
   threadNum: 1
