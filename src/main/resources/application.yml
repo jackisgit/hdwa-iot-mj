@@ -1,0 +1,29 @@
+server:
+  port: 9700
+#广场ID及GatewayId
+epc:
+  gatewayId: MJ
+  gcId: 3306210010
+  subsystem: mjxt/
+  threadNum: 10
+mqtt:
+  hostUrl: tcp://127.0.0.1:1883
+  username: admin
+  password: wanda@1234
+  client-id: IOT-EPC-Pj330621001010-MJ
+  cleanSession: true
+  reconnect: true
+  keepAlive: 100
+  isOpen: true
+  qos: 1
+
+spring:
+  profiles:
+    active: shaoxing_keqiao
+  redis:
+    host: 127.0.0.1
+    port: 16379
+    password:
+
+
+beanName: hikVisionDoorDevice
