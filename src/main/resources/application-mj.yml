@@ -1,0 +1,8 @@
+server:
+  port: 8604
+#广场ID及GatewayId
+epc:
+  gatewayId: MJ
+  gcId: 3505030030
+  subsystem: mjgl/
+  threadNum: 5

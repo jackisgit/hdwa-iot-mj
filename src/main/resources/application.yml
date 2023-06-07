@@ -1,0 +1,25 @@
+mqtt:
+  #hostUrl: tcp://10.199.209.131:1883
+  hostUrl: tcp://10.60.7.50:1883
+  username: admin
+  password: public
+  client-id: IOT-EPC-Pj3505030030-${spring.profiles.active}
+  cleanSession: true
+  reconnect: true
+  keepAlive: 100
+  isOpen: true
+  qos: 1
+  sendtopic: project/gcId/report
+  setdownTopic: cloud/gcid/setdown
+
+spring:
+  profiles:
+    active: mj
+    #redis配置
+  redis:
+    host: 10.60.7.50
+    port: 16379
+    password:
+
+
+beanName: zhongkongMJ
