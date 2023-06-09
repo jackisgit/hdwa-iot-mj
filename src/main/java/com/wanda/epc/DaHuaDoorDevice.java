@@ -8,13 +8,14 @@ import com.netsdk.module.LoginModule;
 import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
-import com.wanda.epc.common.RedisUtil;
 import com.wanda.epc.device.BaseDevice;
 import com.wanda.epc.device.CommonDevice;
 import com.wanda.epc.param.DeviceMessage;
 import com.wanda.epc.util.ConvertUtil;
 import com.wanda.epc.util.PingUtil;
-import com.wanda.epc.vto.*;
+import com.wanda.epc.vto.AlarmAccessDataCB;
+import com.wanda.epc.vto.DefaultDisConnect;
+import com.wanda.epc.vto.DefaultHaveReconnect;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,7 +112,7 @@ public class DaHuaDoorDevice extends BaseDevice {
     @Override
     public void dispatchCommand(String meter, Integer funcid, String value, String message) throws Exception {
         DeviceMessage deviceMessage = controlParamMap.get(meter + "-" + funcid);
-        log.info("接收到门禁指令下发：{},状态：{}",JSON.toJSONString(deviceMessage),value);
+        log.info("接收到门禁指令下发：{},状态：{}", JSON.toJSONString(deviceMessage), value);
         if (deviceMessage != null) {
             String outParamId = deviceMessage.getOutParamId();
             String[] param = outParamId.split("_");
@@ -119,10 +120,10 @@ public class DaHuaDoorDevice extends BaseDevice {
             String doorNum = param[1];
             NetSDKLib.LLong userId = userMap.get(ip);
             //开
-            if (value.equals("2.0")) {
+            if (value.equals("1.0")) {
                 openDoor(userId, Integer.valueOf(doorNum));
                 //关门
-            } else if (value.equals("1.0")) {
+            } else {
                 closeDoor(userId, Integer.valueOf(doorNum));
             }
 
@@ -134,7 +135,12 @@ public class DaHuaDoorDevice extends BaseDevice {
         return false;
     }
 
-    public boolean startListen(NetSDKLib.LLong loginHandler) {
+    /**
+     * 开始监听
+     * @param loginHandler
+     * @return
+     */
+    private boolean startListen(NetSDKLib.LLong loginHandler) {
 
         LoginModule.netsdk.CLIENT_SetDVRMessCallBack(AlarmAccessDataCB.getInstance(), null);
 
@@ -148,7 +154,12 @@ public class DaHuaDoorDevice extends BaseDevice {
         return true;
     }
 
-    public boolean stopListen(NetSDKLib.LLong loginHandler) {
+    /**
+     * 停止监听
+     * @param loginHandler
+     * @return
+     */
+    private boolean stopListen(NetSDKLib.LLong loginHandler) {
         if (!LoginModule.netsdk.CLIENT_StopListen(loginHandler)) {
             JOptionPane.showMessageDialog(null, Res.string().getStopListenFailed() + "," + ToolKits.getErrorCodeShow(),
                     Res.string().getErrorMessage(), JOptionPane.ERROR_MESSAGE);
@@ -162,7 +173,7 @@ public class DaHuaDoorDevice extends BaseDevice {
     /**
      * 开门
      */
-    public void openDoor(NetSDKLib.LLong m_hLoginHandle, int channelId) {
+    private void openDoor(NetSDKLib.LLong m_hLoginHandle, int channelId) {
         NetSDKLib.NET_CTRL_ACCESS_OPEN openInfo = new NetSDKLib.NET_CTRL_ACCESS_OPEN();
         openInfo.nChannelID = channelId;
         openInfo.emOpenDoorType = NetSDKLib.EM_OPEN_DOOR_TYPE.EM_OPEN_DOOR_TYPE_REMOTE;
@@ -179,7 +190,7 @@ public class DaHuaDoorDevice extends BaseDevice {
     /**
      * 关门
      */
-    public void closeDoor(NetSDKLib.LLong m_hLoginHandle, int channelId) {
+    private void closeDoor(NetSDKLib.LLong m_hLoginHandle, int channelId) {
         final NetSDKLib.NET_CTRL_ACCESS_CLOSE close = new NetSDKLib.NET_CTRL_ACCESS_CLOSE();
         close.nChannelID = channelId; // 对应的门编号 - 如何开全部的门
         close.write();
@@ -195,7 +206,7 @@ public class DaHuaDoorDevice extends BaseDevice {
     /**
      * 门禁状态
      */
-    public void doorStatus() {
+    private void doorStatus() {
         int cmd = NetSDKLib.NET_DEVSTATE_DOOR_STATE;
         NetSDKLib.NET_DOOR_STATUS_INFO doorStatus = new NetSDKLib.NET_DOOR_STATUS_INFO();
         IntByReference reference = new IntByReference(0);
@@ -239,7 +250,7 @@ public class DaHuaDoorDevice extends BaseDevice {
     /**
      * 设备登录
      */
-    public void devicesLogin(Set<String> devices) {
+    private void devicesLogin(Set<String> devices) {
         log.info("登录信息：{}", devices.size());
         for (String ip : devices) {
             try {
@@ -265,7 +276,7 @@ public class DaHuaDoorDevice extends BaseDevice {
     /**
      * 设备退出
      */
-    public void devicesLogOut() {
+    private void devicesLogOut() {
         LoginHandleList.forEach(handle -> {
             try {
                 LoginModule.logout(handle);
@@ -278,6 +289,9 @@ public class DaHuaDoorDevice extends BaseDevice {
     }
 
 
+    /**
+     * 销毁
+     */
     @PreDestroy
     public void destroy() {
         log.info("SDK实例销毁!");
@@ -287,6 +301,10 @@ public class DaHuaDoorDevice extends BaseDevice {
     }
 
 
+    /**
+     * ping
+     * @param allIp
+     */
     private void ping(Queue<String> allIp) {
         log.info("门禁设备开始采集在线离线状态,ip数量{}", allIp.size());
         PingUtil pingUtil = new PingUtil(allIp);
@@ -324,7 +342,11 @@ public class DaHuaDoorDevice extends BaseDevice {
         }
     }
 
-    public void reload(Queue<String> allIp) {
+    /**
+     * 重试
+     * @param allIp
+     */
+    private void reload(Queue<String> allIp) {
         log.info("开始进行设备ip ping重试=============》");
         PingUtil pingUtil = new PingUtil(allIp);
         pingUtil.setIpsOK("");
