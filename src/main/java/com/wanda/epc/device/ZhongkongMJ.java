@@ -161,7 +161,8 @@ public class ZhongkongMJ extends BaseDevice {
     @Override
     public void dispatchCommand(String meter, Integer funcid, String value, String message) throws Exception {
         DeviceMessage deviceMessage = controlParamMap.get(meter + "-" + funcid);
-        if (deviceMessage!=null && value.equals("2.0")) {
+        //1.0为开门
+        if (deviceMessage!=null && value.equals("1.0")) {
             String outParamId = deviceMessage.getOutParamId();
             String[] split = outParamId.split("_");
             String connectType = split[1];
@@ -189,9 +190,7 @@ public class ZhongkongMJ extends BaseDevice {
                     log.error("设备连接失败，连接信息[{}], 返回信息[{}]", connectMessage, sdkResult);
                 }
             }else if("HTTP".equals(connectType)){
-
-
-
+                log.error("暂未开发HTTP协议");
             }
         }
         commonDevice.feedback(message);
