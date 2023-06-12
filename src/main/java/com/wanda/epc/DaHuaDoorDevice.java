@@ -84,9 +84,6 @@ public class DaHuaDoorDevice extends BaseDevice {
 
     @Override
     public void sendMessage(DeviceMessage dm) {
-
-        //如果数据变化则，发送emqx
-
         if (dm != null) {
             commonDevice.sendMessage(dm);
         }
@@ -126,8 +123,8 @@ public class DaHuaDoorDevice extends BaseDevice {
             } else {
                 closeDoor(userId, Integer.valueOf(doorNum));
             }
-
         }
+        commonDevice.feedback(message);
     }
 
     @Override
