@@ -1,0 +1,15 @@
+#广场ID及GatewayId（甩项）
+epc:
+  gatewayId: MJ
+  gcId: 4401830001
+  subsystem: mjgl/
+  threadNum: 1
+mj:
+  serverIP: 127.0.0.1
+
+spring:
+  datasource:
+    url: jdbc:sqlserver://127.0.0.1:1433;databaseName=netking
+    username: sa
+    password: sa
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
