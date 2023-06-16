@@ -13,6 +13,8 @@ mqtt:
 
 beanName: mJEpcDevice
 spring:
+  profiles:
+    active: hushi_saihan
   #redis配置
   redis:
     host: 127.0.0.1
