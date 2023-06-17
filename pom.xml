@@ -9,6 +9,7 @@
     </parent>
 
     <artifactId>iot_epc_mj</artifactId>
+    <version>1.0.0-R20230606</version>
 
     <dependencies>
         <dependency>
