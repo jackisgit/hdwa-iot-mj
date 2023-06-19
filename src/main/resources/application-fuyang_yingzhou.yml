@@ -1,0 +1,12 @@
+#广场ID及GatewayId
+epc:
+  gatewayId: MJ
+  gcId: 3412020020
+  subsystem: mjxt/
+  threadNum: 10
+
+  deviceList:
+    - ip: 192.168.4.231
+      port: 8000
+      user: admin
+      pwd: 123456

@@ -2,20 +2,18 @@ package com.wanda.epc.device;
 
 import com.alibaba.fastjson.JSON;
 import com.sun.jna.Native;
-import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 import com.wanda.epc.device.NetSDKDemo.HCNetSDK;
 import com.wanda.epc.param.DeviceMessage;
 import com.wanda.epc.util.ConvertUtil;
-import com.wanda.epc.util.PingUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.annotation.Resource;
 import java.util.*;
 
 
@@ -38,6 +36,8 @@ public class HikVisionDoorDevice extends BaseDevice {
     static int lUserID = -1;//用户句柄 实现对设备登录
 
 
+    @Resource
+    DeviceConfig deviceConfig;
 
     public static HCNetSDK.FMSGCallBack_V31 fMSFCallBack_V31;
 
@@ -59,24 +59,31 @@ public class HikVisionDoorDevice extends BaseDevice {
         hCNetSDK.NET_DVR_Init();
         //开启SDK日志打印
         hCNetSDK.NET_DVR_SetLogToFile(3, "./sdklog", false);
-        login_V40("192.168.3.160", 8000, "admin", "hkws12345");
-        login_V40("192.168.3.162", 8000, "admin", "hkws12345");
-        login_V40("192.168.3.151", 8000, "admin", "hkws12345");
-        login_V40("192.168.3.161", 8000, "admin", "hkws12345");
-        login_V40("192.168.3.150", 8000, "admin", "hkws12345");
-        login_V40("192.168.3.153", 8000, "admin", "hkws12345");
-        login_V40("192.168.3.164", 8000, "admin", "hkws12345");
-        login_V40("192.168.3.152", 8000, "admin", "hkws12345");
-        login_V40("192.168.3.163", 8000, "admin", "hkws12345");
-        login_V40("192.168.3.166", 8000, "admin", "hkws12345");
-        login_V40("192.168.3.155", 8000, "admin", "hkws12345");
-        login_V40("192.168.3.154", 8000, "admin", "hkws12345");
-        login_V40("192.168.3.165", 8000, "admin", "hkws12345");
-        login_V40("192.168.3.157", 8000, "admin", "hkws12345");
-        login_V40("192.168.3.156", 8000, "admin", "hkws12345");
-        login_V40("192.168.3.167", 8000, "admin", "hkws12345");
-        login_V40("192.168.3.159", 8000, "admin", "hkws12345");
-        login_V40("192.168.3.158", 8000, "admin", "hkws12345");
+
+//        login_V40("192.168.3.160", 8000, "admin", "hkws12345");
+//        login_V40("192.168.3.162", 8000, "admin", "hkws12345");
+//        login_V40("192.168.3.151", 8000, "admin", "hkws12345");
+//        login_V40("192.168.3.161", 8000, "admin", "hkws12345");
+//        login_V40("192.168.3.150", 8000, "admin", "hkws12345");
+//        login_V40("192.168.3.153", 8000, "admin", "hkws12345");
+//        login_V40("192.168.3.164", 8000, "admin", "hkws12345");
+//        login_V40("192.168.3.152", 8000, "admin", "hkws12345");
+//        login_V40("192.168.3.163", 8000, "admin", "hkws12345");
+//        login_V40("192.168.3.166", 8000, "admin", "hkws12345");
+//        login_V40("192.168.3.155", 8000, "admin", "hkws12345");
+//        login_V40("192.168.3.154", 8000, "admin", "hkws12345");
+//        login_V40("192.168.3.165", 8000, "admin", "hkws12345");
+//        login_V40("192.168.3.157", 8000, "admin", "hkws12345");
+//        login_V40("192.168.3.156", 8000, "admin", "hkws12345");
+//        login_V40("192.168.3.167", 8000, "admin", "hkws12345");
+//        login_V40("192.168.3.159", 8000, "admin", "hkws12345");
+//        login_V40("192.168.3.158", 8000, "admin", "hkws12345");
+
+        List<DeviceInfo> deviceList = deviceConfig.getDeviceList();
+        for (int i = 0; i < deviceList.size(); i++) {
+            DeviceInfo deviceInfo = deviceList.get(i);
+            login_V40(deviceInfo.getIp(), deviceInfo.getPort(), deviceInfo.getUser(), deviceInfo.getPwd());
+        }
     }
 
     /**
@@ -156,7 +163,7 @@ public class HikVisionDoorDevice extends BaseDevice {
      * @date 2023/4/3
      */
     public static void controlGateway(Integer userId, int lGatewayIndex, int dwStaic) {
-        log.info("接受到控门指令：userId：{},lGatewayIndex:{},dwStaic:{}",userId,lGatewayIndex,dwStaic);
+        log.info("接受到控门指令：userId：{},lGatewayIndex:{},dwStaic:{}", userId, lGatewayIndex, dwStaic);
         if (userId >= 0) {
             boolean result = hCNetSDK.NET_DVR_ControlGateway(userId, lGatewayIndex, dwStaic);
             if (result) {
@@ -197,7 +204,7 @@ public class HikVisionDoorDevice extends BaseDevice {
     @Override
     public void sendMessage(DeviceMessage dm) {
         if (dm != null) {
-            log.info("发送门禁数据：{}",JSON.toJSONString(dm));
+            log.info("发送门禁数据：{}", JSON.toJSONString(dm));
             commonDevice.sendMessage(dm);
         }
     }
@@ -283,10 +290,10 @@ public class HikVisionDoorDevice extends BaseDevice {
      *@date 2023/4/18
      */
 
-    public void  llegalOpenAlarm() {
+    public void llegalOpenAlarm() {
         deviceParamMap.entrySet().forEach(key -> {
             if (key.getKey().endsWith("_wD_IllegalOpenAlarm")) {
-                log.info("非法开门报警：{}",key.getKey());
+                log.info("非法开门报警：{}", key.getKey());
                 DeviceMessage deviceMessage = deviceParamMap.get(key.getKey());
                 if (Objects.nonNull(deviceMessage)) {
                     deviceMessage.setValue("0");
@@ -303,11 +310,12 @@ public class HikVisionDoorDevice extends BaseDevice {
      *@author LianYanFei
      *@date 2023/4/18
      */
-    public void openDoorOverTimeAlarm(){
+    public void openDoorOverTimeAlarm() {
         deviceParamMap.entrySet().forEach(key -> {
             if (key.getKey().endsWith("_wD_openDoorOverTimeAlarm")) {
-                log.info("长时间未关门报警：{}",key.getKey());
-                DeviceMessage deviceMessage = deviceParamMap.get(key.getKey());if (Objects.nonNull(deviceMessage)) {
+                log.info("长时间未关门报警：{}", key.getKey());
+                DeviceMessage deviceMessage = deviceParamMap.get(key.getKey());
+                if (Objects.nonNull(deviceMessage)) {
                     deviceMessage.setValue("0");
                     deviceMessage.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
                     log.info("发送门禁设备长时间未关门报警数据==={}", deviceMessage.getOutParamId(), JSON.toJSONString(deviceMessage));
@@ -316,7 +324,6 @@ public class HikVisionDoorDevice extends BaseDevice {
             }
         });
     }
-
 
 
     /**
@@ -392,7 +399,12 @@ public class HikVisionDoorDevice extends BaseDevice {
         //注册设备
         lUserID = hCNetSDK.NET_DVR_Login_V40(m_strLoginInfo, m_strDeviceInfo);
         if (lUserID < 0) {
-            log.info("注册失败,设备IP:" + sDeviceIP + " 端口：" + iPort + "错误码：" + hCNetSDK.NET_DVR_GetLastError());
+            int errCode = hCNetSDK.NET_DVR_GetLastError();
+            log.info("注册失败,设备IP:" + sDeviceIP + " 端口：" + iPort + "错误码：" + errCode);
+            IntByReference intByReference = new IntByReference();
+            intByReference.setValue(errCode);
+            String errMsg = hCNetSDK.NET_DVR_GetErrorMsg(intByReference);
+            log.info("错误信息：" + errMsg);
         } else {
             log.info("注册成功,设备IP:" + sDeviceIP + " 端口：" + iPort + "用户ID" + lUserID);
             ipMap.put(lUserID, sDeviceIP);
