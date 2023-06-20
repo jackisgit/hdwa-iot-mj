@@ -80,9 +80,15 @@ public class HikVisionDoorDevice extends BaseDevice {
 //        login_V40("192.168.3.158", 8000, "admin", "hkws12345");
 
         List<DeviceInfo> deviceList = deviceConfig.getDeviceList();
+        String defaultUser = deviceList.get(0).getUser();
+        String defaultPwd = deviceList.get(0).getPwd();
+        Integer defaultPort = deviceList.get(0).getPort();
         for (int i = 0; i < deviceList.size(); i++) {
             DeviceInfo deviceInfo = deviceList.get(i);
-            login_V40(deviceInfo.getIp(), deviceInfo.getPort(), deviceInfo.getUser(), deviceInfo.getPwd());
+            login_V40(deviceInfo.getIp(),
+                    deviceInfo.getPort() != null ? deviceInfo.getPort() : defaultPort,
+                    deviceInfo.getUser() != null ? deviceInfo.getUser() : defaultUser,
+                    deviceInfo.getPwd() != null ? deviceInfo.getPwd() : defaultPwd);
         }
     }
 
