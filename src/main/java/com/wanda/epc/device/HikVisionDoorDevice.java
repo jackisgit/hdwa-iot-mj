@@ -173,9 +173,9 @@ public class HikVisionDoorDevice extends BaseDevice {
         if (userId >= 0) {
             boolean result = hCNetSDK.NET_DVR_ControlGateway(userId, lGatewayIndex, dwStaic);
             if (result) {
-                log.info("绍兴柯桥远程控门成功");
+                log.info("远程控门成功");
             } else {
-                log.info("绍兴柯桥远程控门失败");
+                log.info("远程控门失败");
             }
         }
     }
@@ -236,7 +236,7 @@ public class HikVisionDoorDevice extends BaseDevice {
                         if (Objects.nonNull(deviceMessage)) {
                             deviceMessage.setValue("0");
                             deviceMessage.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
-                            log.info("发送门禁设备在离线数据==={}", deviceMessage.getOutParamId(), JSON.toJSONString(deviceMessage));
+                            log.info("发送门禁设备离线数据==={}", deviceMessage.getOutParamId(), JSON.toJSONString(deviceMessage));
                             sendMessage(deviceMessage);
                         }
                     }
@@ -263,30 +263,33 @@ public class HikVisionDoorDevice extends BaseDevice {
             return;
         }
         acsWorkStatus.read();
-        for (int i = 0; i < acsWorkStatus.byDoorStatus.length; i++) {
-            byte b = acsWorkStatus.byDoorStatus[i];
-            if (b > 0) {
-                log.info("用户ID：{},序号：{},门禁状态：{}", lUserID, i, b);
-                String ip = ipMap.get(lUserID);
-                String paramId = ip.concat("_").concat(String.valueOf(i)).concat("_").concat("openStatus");
-                List<DeviceMessage> deviceMessageList = deviceParamListMap.get(paramId);
-                log.info("paramId:{},数据长度：{}", paramId, JSON.toJSONString(deviceMessageList));
-                if (!CollectionUtils.isEmpty(deviceMessageList)) {
-                    deviceMessageList.forEach(deviceMessage -> {
-                        if (Objects.nonNull(deviceMessage)) {
-                            if (b == 4) {
-                                deviceMessage.setValue("0");
-                            }
-                            if (b == 2) {
-                                deviceMessage.setValue("1");
-                            }
-                            deviceMessage.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
-                            log.info("发送门禁设备开关状态数据==={}", deviceMessage.getOutParamId(), JSON.toJSONString(deviceMessage));
-                            sendMessage(deviceMessage);
-                        }
-                    });
-                }
+        for (int i = 0; i < acsWorkStatus.byDoorLockStatus.length; i++) {
+            //开关门状态，开 关等   门锁状态(继电器开合状态)，0-正常关，1-正常开，2-短路报警，3-断路报警，4-异常报警
+            byte lockStatus = acsWorkStatus.byDoorLockStatus[i];
+            //门的控制模式，常开 常闭等   门状态(楼层状态)，1-休眠，2-常开状态(自由)，3-常闭状态(禁用)，4-普通状态(受控)
+            byte doorStatus = acsWorkStatus.byDoorStatus[i];
+            //门的磁吸状态，开 闭等   门磁状态，0-正常关，1-正常开，2-短路报警，3-断路报警，4-异常报警
+            byte doorMagneticStatus = acsWorkStatus.byMagneticStatus[i];
+            String ip = ipMap.get(lUserID);
+            String paramId = ip.concat("_").concat(String.valueOf(i)).concat("_").concat("openStatus");
+            List<DeviceMessage> deviceMessageList = deviceParamListMap.get(paramId);
+            if (CollectionUtils.isEmpty(deviceMessageList)) {
+                continue;
             }
+            log.info("用户ID：{},序号：{},门状态：{},门开关状态：{},门的磁吸状态:{}", lUserID, i, doorStatus, lockStatus, doorMagneticStatus);
+            log.info("paramId:{},数据长度：{}", paramId, deviceMessageList.size());
+            deviceMessageList.forEach(deviceMessage -> {
+                if (Objects.nonNull(deviceMessage)) {
+                    if (doorStatus == 2 || lockStatus == 1 || doorMagneticStatus == 1) {
+                        deviceMessage.setValue("1");
+                    } else {
+                        deviceMessage.setValue("0");
+                    }
+                    deviceMessage.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
+                    log.info("发送门禁设备开关状态数据==={}", deviceMessage.getOutParamId(), JSON.toJSONString(deviceMessage));
+                    sendMessage(deviceMessage);
+                }
+            });
         }
     }
 
@@ -317,6 +320,7 @@ public class HikVisionDoorDevice extends BaseDevice {
      *@date 2023/4/18
      */
     public void openDoorOverTimeAlarm() {
+        log.info("_wD_openDoorOverTimeAlarm");
         deviceParamMap.entrySet().forEach(key -> {
             if (key.getKey().endsWith("_wD_openDoorOverTimeAlarm")) {
                 log.info("长时间未关门报警：{}", key.getKey());
@@ -352,7 +356,7 @@ public class HikVisionDoorDevice extends BaseDevice {
         Map<Integer, Boolean> onlineMap = new HashMap<>();
         userIdList.forEach(userId -> {
             boolean isOnLine1 = hCNetSDK.NET_DVR_RemoteControl(0, 20005, null, 0);
-            log.info("isOnLine1=={}", isOnLine1);
+            log.info("userId=={},isOnLine=={}", userId, isOnLine1);
             onlineMap.put(userId, isOnLine1);
         });
         return onlineMap;
@@ -361,7 +365,7 @@ public class HikVisionDoorDevice extends BaseDevice {
     @Override
     public void dispatchCommand(String meter, Integer funcid, String value, String message) throws Exception {
         DeviceMessage deviceMessage = controlParamMap.get(meter + "-" + funcid);
-        log.info("接收绍兴柯桥门禁指令下发：deviceMessage {},状态：{}", JSON.toJSONString(deviceMessage), value);
+        log.info("接收门禁指令下发：deviceMessage {},状态：{}", JSON.toJSONString(deviceMessage), value);
         if (deviceMessage != null) {
             String outParamId = deviceMessage.getOutParamId();
             String[] param = outParamId.split("_");
