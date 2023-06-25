@@ -294,9 +294,9 @@ public class HikVisionDoorDevice extends BaseDevice {
     }
 
     /**
-     *@description 非法开门报警
-     *@author LianYanFei
-     *@date 2023/4/18
+     * @description 非法开门报警
+     * @author LianYanFei
+     * @date 2023/4/18
      */
 
     public void llegalOpenAlarm() {
@@ -315,9 +315,9 @@ public class HikVisionDoorDevice extends BaseDevice {
     }
 
     /**
-     *@description 长时间未关门报警
-     *@author LianYanFei
-     *@date 2023/4/18
+     * @description 长时间未关门报警
+     * @author LianYanFei
+     * @date 2023/4/18
      */
     public void openDoorOverTimeAlarm() {
         log.info("_wD_openDoorOverTimeAlarm");
@@ -372,11 +372,9 @@ public class HikVisionDoorDevice extends BaseDevice {
             Integer userID = userMap.get(param[0]);
             Integer doorNum = Integer.valueOf(param[1]);
             //0- 关闭（对于梯控，表示受控），1- 打开（对于梯控，表示开门）
-            //开
-            if (value.equals("2.0")) {
+            if (value.equals("1.0")) {
                 controlGateway(userID, doorNum, 1);
-                //关
-            } else if (value.equals("1.0")) {
+            } else {
                 controlGateway(userID, doorNum, 0);
             }
             //反馈到iot-project
