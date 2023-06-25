@@ -31,13 +31,13 @@
         </dependency>
 
         <dependency>
-            <groupId>net.java</groupId>
+            <groupId>net.java.examples</groupId>
             <artifactId>examples</artifactId>
             <version>1.0.0</version>
         </dependency>
 
         <dependency>
-            <groupId>net.java</groupId>
+            <groupId>net.java.json</groupId>
             <artifactId>json</artifactId>
             <version>1.0.0</version>
         </dependency>
