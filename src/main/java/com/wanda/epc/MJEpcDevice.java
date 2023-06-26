@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -43,10 +44,15 @@ public class MJEpcDevice extends BaseDevice {
     }
 
     @Override
+    @PostConstruct
     public boolean processData() throws Exception {
         //查询车位的状态信息
         String sql = "select * from dbo.Acss_DoorStatus";
         List<Map<String, Object>> maps = sqlServerJdbcTemple.queryForList(sql);
+
+//        log.info("设备参数列表：{}", JSON.toJSONString(deviceParamMap));
+//        log.info("设备数据：{}", JSON.toJSONString(maps));
+        
         if (!CollectionUtils.isEmpty(maps)) {
             for (Map<String, Object> map : maps) {
                 //控制器编号
@@ -60,8 +66,7 @@ public class MJEpcDevice extends BaseDevice {
                 //非法开门
                 String broken = ObjectUtils.isEmpty(map.get("Broken")) ? null : map.get("Broken").toString();
                 //门状态
-                String opened =  ObjectUtils.isEmpty(map.get("Opened")) ? null : map.get("Opened").toString();
-
+                String opened = ObjectUtils.isEmpty(map.get("Opened")) ? null : map.get("Opened").toString();
                 //点位编号
                 String pointNumber = controllerNo.concat("_").concat(doorNo);
                 //1.连接状态 - 在离线  1在线0离线
@@ -70,12 +75,12 @@ public class MJEpcDevice extends BaseDevice {
                     if (connected.equals("1")) {
                         connectStatus.setValue("1");
                         connectStatus.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
-                        log.info("门禁采集发送探头故障状态离线数据：{}", JSON.toJSONString(connectStatus));
+                        log.info("门禁采集器发送设备在线数据：{}", JSON.toJSONString(connectStatus));
                         sendMessage(connectStatus);
                     } else {
                         connectStatus.setValue("0");
                         connectStatus.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
-                        log.info("门禁采集发送探头故障状态在线数据：{}", JSON.toJSONString(connectStatus));
+                        log.info("门禁采集器发送设备离线数据：{}", JSON.toJSONString(connectStatus));
                         sendMessage(connectStatus);
                     }
                 }
@@ -86,12 +91,12 @@ public class MJEpcDevice extends BaseDevice {
                     if (openedTimeout.equals("1")) {
                         openDoorOverTimeAlarm.setValue("1");
                         openDoorOverTimeAlarm.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
-                        log.info("门禁采集发送探头超时状态数据：{}", JSON.toJSONString(openDoorOverTimeAlarm));
+                        log.info("门禁采集器发送探头超时状态数据：{}", JSON.toJSONString(openDoorOverTimeAlarm));
                         sendMessage(openDoorOverTimeAlarm);
                     } else {
                         openDoorOverTimeAlarm.setValue("0");
                         openDoorOverTimeAlarm.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
-                        log.info("门禁采集发送探头超时状态数据：{}", JSON.toJSONString(openDoorOverTimeAlarm));
+                        log.info("门禁采集器发送探头超时状态数据：{}", JSON.toJSONString(openDoorOverTimeAlarm));
                         sendMessage(openDoorOverTimeAlarm);
                     }
                 }
@@ -102,12 +107,12 @@ public class MJEpcDevice extends BaseDevice {
                     if (broken.equals("1")) {
                         illegalOpenAlarm.setValue("1");
                         illegalOpenAlarm.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
-                        log.info("门禁采集发送非法开门状态数据：{}", JSON.toJSONString(illegalOpenAlarm));
+                        log.info("门禁采集器发送非法开门状态数据：{}", JSON.toJSONString(illegalOpenAlarm));
                         sendMessage(illegalOpenAlarm);
                     } else {
                         illegalOpenAlarm.setValue("0");
                         illegalOpenAlarm.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
-                        log.info("门禁采集发送非法开门状态数据：{}", JSON.toJSONString(illegalOpenAlarm));
+                        log.info("门禁采集器发送非法开门状态数据：{}", JSON.toJSONString(illegalOpenAlarm));
                         sendMessage(illegalOpenAlarm);
                     }
                 }
@@ -115,15 +120,15 @@ public class MJEpcDevice extends BaseDevice {
                 //4.开关状态 1报警0正常
                 DeviceMessage openStatus = deviceParamMap.get(pointNumber.concat("_openStatus"));
                 if (Objects.nonNull(openStatus) && StringUtils.isNotEmpty(opened)) {
-                    if (!opened.equals("2")  && opened.equals("12")) {
+                    if (!opened.equals("2") && opened.equals("12")) {
                         openStatus.setValue("1");
                         openStatus.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
-                        log.info("门禁采集发送开关状态数据：{}", JSON.toJSONString(openStatus));
+                        log.info("门禁采集器发送开关状态数据：{}", JSON.toJSONString(openStatus));
                         sendMessage(openStatus);
                     } else {
                         openStatus.setValue("0");
                         openStatus.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
-                        log.info("门禁采集发送开关状态数据：{}", JSON.toJSONString(openStatus));
+                        log.info("门禁采集器发送开关状态数据：{}", JSON.toJSONString(openStatus));
                         sendMessage(openStatus);
                     }
                 }
