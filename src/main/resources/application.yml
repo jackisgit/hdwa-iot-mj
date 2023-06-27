@@ -1,9 +1,9 @@
 server:
-  port: 8604
+  port: 18200
 mqtt:
-  hostUrl: tcp://127.0.0.1:1883
+  hostUrl: tcp://10.1.106.166:1883
   username: admin
-  password: public
+  password: wanda@1234
   client-id: IOT-EPC-MJ
   cleanSession: true
   reconnect: true
@@ -13,12 +13,12 @@ mqtt:
 
 spring:
   profiles:
-    active: quanzhou_puxi
+    active: beijing_cbd
     #redis配置
   redis:
-    host: 127.0.0.1
+    host: 10.1.106.166
     port: 16379
     password:
 
 
-beanName: zhongkongMJ
+beanName: accessControlDevice

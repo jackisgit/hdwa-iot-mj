@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>iot_epc_mj</artifactId>
-    <version>1.0.0-R20230606</version>
+    <version>1.0.0-R20230627</version>
 
     <dependencies>
         <dependency>
@@ -24,11 +24,17 @@
             <version>4.5.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>27.0-jre</version>
+        </dependency>
+
     </dependencies>
 
 
     <build>
-        <finalName>IOT_EPC_MJ_ZKTeco_SDK_2.2.1.9</finalName>
+        <finalName>IOT_EPC_MJ_hikvision_API_${version}</finalName>
     </build>
 
 </project>
