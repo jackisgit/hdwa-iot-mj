@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://192.168.13.100:1433;DatabaseName=ykt
+    username: sa
+    password: HZadmin12345
+    validationQuery: SELECT 1
+    max-active: 100
+    min-idle: 10
+    max-wait: 10000
+epc:
+  gatewayId: MJ
+  gcId: 3305021010
+  subsystem: mjgl/
+  threadNum: 1
