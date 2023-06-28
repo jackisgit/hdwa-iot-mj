@@ -47,7 +47,7 @@ public class MJEpcDevice extends BaseDevice {
     @PostConstruct
     public boolean processData() throws Exception {
         //查询车位的状态信息
-        String sql = "select * from dbo.Acss_DoorStatus";
+        String sql = "select * from dbo.F_DoorStateAndAlarm";
         List<Map<String, Object>> maps = sqlServerJdbcTemple.queryForList(sql);
 
 //        log.info("设备参数列表：{}", JSON.toJSONString(deviceParamMap));
@@ -56,17 +56,17 @@ public class MJEpcDevice extends BaseDevice {
         if (!CollectionUtils.isEmpty(maps)) {
             for (Map<String, Object> map : maps) {
                 //控制器编号
-                String controllerNo = map.get("ControllerNo").toString();
+                String controllerNo = map.get("dev_addr").toString();
                 //门禁编号
-                String doorNo = map.get("DoorNo").toString();
+                String doorNo = map.get("Door_ID").toString();
                 //连接
-                String connected = ObjectUtils.isEmpty(map.get("Connected")) ? null : map.get("Connected").toString();
+                String connected = ObjectUtils.isEmpty(map.get("DoorState")) ? null : map.get("DoorState").toString();
                 //门开超时
-                String openedTimeout = ObjectUtils.isEmpty(map.get("OpenedTimeout")) ? null : map.get("OpenedTimeout").toString();
+                String openedTimeout = ObjectUtils.isEmpty(map.get("TimeOutAlarm")) ? null : map.get("TimeOutAlarm").toString();
                 //非法开门
-                String broken = ObjectUtils.isEmpty(map.get("Broken")) ? null : map.get("Broken").toString();
+                String broken = ObjectUtils.isEmpty(map.get("IntrudeAlarm")) ? null : map.get("IntrudeAlarm").toString();
                 //门状态
-                String opened = ObjectUtils.isEmpty(map.get("Opened")) ? null : map.get("Opened").toString();
+                String opened = ObjectUtils.isEmpty(map.get("OpenDoor")) ? null : map.get("OpenDoor").toString();
                 //点位编号
                 String pointNumber = controllerNo.concat("_").concat(doorNo);
                 //1.连接状态 - 在离线  1在线0离线
