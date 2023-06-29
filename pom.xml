@@ -7,7 +7,6 @@
         <artifactId>iot_epc_dependencies</artifactId>
         <version>1.0.0</version>
     </parent>
-
     <artifactId>iot_epc_mj</artifactId>
 
     <dependencies>
@@ -17,12 +16,24 @@
             <version>${iot_epc_common.version}</version>
         </dependency>
 
-
         <dependency>
-            <groupId>com.microsoft.sqlserver</groupId>
+            <groupId>com.microsoft</groupId>
             <artifactId>sqljdbc4</artifactId>
-            <version>4.0</version>
+            <version>3.0</version>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>com.microsoft</groupId>-->
+<!--            <artifactId>sqljdbc4</artifactId>-->
+<!--            <version>4.0</version>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>net.sourceforge.jtds</groupId>-->
+<!--            <artifactId>jtds</artifactId>-->
+<!--            <version>1.2.4</version>-->
+<!--        </dependency>-->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>

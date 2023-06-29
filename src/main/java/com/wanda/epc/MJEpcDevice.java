@@ -56,7 +56,7 @@ public class MJEpcDevice extends BaseDevice {
         if (!CollectionUtils.isEmpty(maps)) {
             for (Map<String, Object> map : maps) {
                 //控制器编号
-                String controllerNo = map.get("dev_addr").toString();
+                String controllerNo = map.get("dev_no").toString();
                 //门禁编号
                 String doorNo = map.get("Door_ID").toString();
                 //连接
