@@ -49,10 +49,6 @@ public class MJEpcDevice extends BaseDevice {
         //查询车位的状态信息
         String sql = "select * from dbo.Acss_DoorStatus";
         List<Map<String, Object>> maps = sqlServerJdbcTemple.queryForList(sql);
-
-//        log.info("设备参数列表：{}", JSON.toJSONString(deviceParamMap));
-//        log.info("设备数据：{}", JSON.toJSONString(maps));
-        
         if (!CollectionUtils.isEmpty(maps)) {
             for (Map<String, Object> map : maps) {
                 //控制器编号
