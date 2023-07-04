@@ -20,3 +20,6 @@ spring:
     host: 127.0.0.1
     port: 16379
     password:
+
+jobs:
+  cron: 0/60 * * * * ?
