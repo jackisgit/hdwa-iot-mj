@@ -1,15 +1,15 @@
 spring:
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver://10.26.58.188:1433;DatabaseName=carsafe
+    url: jdbc:sqlserver://10.8.14.113:1433;DatabaseName=menjin
     username: sa
-    password: 231584
+    password: 123
     validationQuery: SELECT 1
     max-active: 100
     min-idle: 10
     max-wait: 10000
 epc:
   gatewayId: MJ
-  gcId: 4419001220
+  gcId: 3701030060
   subsystem: mjgl/
   threadNum: 1

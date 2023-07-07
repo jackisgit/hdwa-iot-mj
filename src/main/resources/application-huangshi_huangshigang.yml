@@ -1,7 +1,6 @@
 spring:
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-#    driver-class-name: net.sourceforge.jtds.jdbc.Driver
     url: jdbc:sqlserver://192.168.10.149:1433;DatabaseName=ykt
     username: sa
     password: 123

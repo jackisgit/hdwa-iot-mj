@@ -14,7 +14,7 @@ mqtt:
 beanName: mJEpcDevice
 spring:
   profiles:
-    active: huangshi_huangshigang
+    active: jinan_weijiazhuang
   #redis配置
   redis:
     host: 127.0.0.1
