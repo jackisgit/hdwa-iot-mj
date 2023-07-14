@@ -8,7 +8,7 @@
         <version>1.0.0</version>
     </parent>
     <artifactId>iot_epc_mj</artifactId>
-
+    <version>1.0.0-R20230606</version>
     <dependencies>
         <dependency>
             <groupId>com.wanda.epc</groupId>
@@ -22,18 +22,6 @@
             <version>3.0</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.microsoft</groupId>-->
-<!--            <artifactId>sqljdbc4</artifactId>-->
-<!--            <version>4.0</version>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>net.sourceforge.jtds</groupId>-->
-<!--            <artifactId>jtds</artifactId>-->
-<!--            <version>1.2.4</version>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
@@ -42,7 +30,7 @@
 
 
     <build>
-        <finalName>IOT_EPC_MJ_fushi_odbc</finalName>
+        <finalName>IOT_EPC_MJ_fushi_odbc_${version}</finalName>
     </build>
 
 </project>

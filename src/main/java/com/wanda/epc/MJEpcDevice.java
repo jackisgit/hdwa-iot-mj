@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.wanda.epc.device.BaseDevice;
 import com.wanda.epc.device.CommonDevice;
 import com.wanda.epc.param.DeviceMessage;
-import com.wanda.epc.util.ConvertUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -46,92 +45,85 @@ public class MJEpcDevice extends BaseDevice {
     @Override
     @PostConstruct
     public boolean processData() throws Exception {
+        log.info("开始执行");
         //查询车位的状态信息
         String sql = "select * from dbo.F_DoorStateAndAlarm";
         List<Map<String, Object>> maps = sqlServerJdbcTemple.queryForList(sql);
-
-//        log.info("设备参数列表：{}", JSON.toJSONString(deviceParamMap));
-//        log.info("设备数据：{}", JSON.toJSONString(maps));
-        
-        if (!CollectionUtils.isEmpty(maps)) {
-            for (Map<String, Object> map : maps) {
-                //控制器编号
-                String controllerNo = map.get("dev_no").toString();
-                //门禁编号
-                String doorNo = map.get("Door_ID").toString();
-                //连接
-                String connected = ObjectUtils.isEmpty(map.get("DoorState")) ? null : map.get("DoorState").toString();
-                //门开超时
-                String openedTimeout = ObjectUtils.isEmpty(map.get("TimeOutAlarm")) ? null : map.get("TimeOutAlarm").toString();
-                //非法开门
-                String broken = ObjectUtils.isEmpty(map.get("IntrudeAlarm")) ? null : map.get("IntrudeAlarm").toString();
-                //门状态
-                String opened = ObjectUtils.isEmpty(map.get("OpenDoor")) ? null : map.get("OpenDoor").toString();
-                //点位编号
-                String pointNumber = controllerNo.concat("_").concat(doorNo);
-                //1.连接状态 - 在离线  1在线0离线
-                DeviceMessage connectStatus = deviceParamMap.get(pointNumber.concat("_onlineStatus"));
-                if (Objects.nonNull(connectStatus) && StringUtils.isNotEmpty(connected)) {
-                    if (connected.equals("1")) {
-                        connectStatus.setValue("1");
-                        connectStatus.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
-                        log.info("门禁采集器发送设备在线数据：{}", JSON.toJSONString(connectStatus));
-                        sendMessage(connectStatus);
-                    } else {
-                        connectStatus.setValue("0");
-                        connectStatus.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
-                        log.info("门禁采集器发送设备离线数据：{}", JSON.toJSONString(connectStatus));
-                        sendMessage(connectStatus);
-                    }
+        log.info("执行结果,{}", maps.size());
+        if (CollectionUtils.isEmpty(maps)) {
+            return false;
+        }
+        for (Map<String, Object> map : maps) {
+            //控制器编号
+            String controllerNo = map.get("dev_no").toString();
+            //门禁编号
+            String doorNo = map.get("Door_ID").toString();
+            //连接
+            String connected = ObjectUtils.isEmpty(map.get("DoorState")) ? null : map.get("DoorState").toString();
+            //门开超时
+            String openedTimeout = ObjectUtils.isEmpty(map.get("TimeOutAlarm")) ? null : map.get("TimeOutAlarm").toString();
+            //防拆报警
+            String antipryAlarm = ObjectUtils.isEmpty(map.get("AntipryAlarm")) ? null : map.get("AntipryAlarm").toString();
+            //非法开门
+            String broken = ObjectUtils.isEmpty(map.get("IllegalCardAlarm")) ? null : map.get("IllegalCardAlarm").toString();
+            //门状态
+            String opened = ObjectUtils.isEmpty(map.get("OpenDoor")) ? null : map.get("OpenDoor").toString();
+            //点位编号
+            String pointNumber = controllerNo.concat("_").concat(doorNo);
+            //1.连接状态 - 在离线  1在线0离线
+            DeviceMessage connectStatus = deviceParamMap.get(pointNumber.concat("_onlineStatus"));
+            if (Objects.nonNull(connectStatus) && StringUtils.isNotEmpty(connected)) {
+                if ("1".equals(connected)) {
+                    connectStatus.setValue("1");
+                } else {
+                    connectStatus.setValue("0");
                 }
-
-                //2.门超时报警 1报警0正常
-                DeviceMessage openDoorOverTimeAlarm = deviceParamMap.get(pointNumber.concat("_wD_openDoorOverTimeAlarm"));
-                if (Objects.nonNull(openDoorOverTimeAlarm) && StringUtils.isNotEmpty(openedTimeout)) {
-                    if (openedTimeout.equals("1")) {
-                        openDoorOverTimeAlarm.setValue("1");
-                        openDoorOverTimeAlarm.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
-                        log.info("门禁采集器发送探头超时状态数据：{}", JSON.toJSONString(openDoorOverTimeAlarm));
-                        sendMessage(openDoorOverTimeAlarm);
-                    } else {
-                        openDoorOverTimeAlarm.setValue("0");
-                        openDoorOverTimeAlarm.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
-                        log.info("门禁采集器发送探头超时状态数据：{}", JSON.toJSONString(openDoorOverTimeAlarm));
-                        sendMessage(openDoorOverTimeAlarm);
-                    }
+                log.info("门禁采集器发送设备在离线数据：{}", JSON.toJSONString(connectStatus));
+                sendMessage(connectStatus);
+            }
+            //2.门超时报警 1报警0正常
+            DeviceMessage openDoorOverTimeAlarm = deviceParamMap.get(pointNumber.concat("_wD_openDoorOverTimeAlarm"));
+            if (Objects.nonNull(openDoorOverTimeAlarm) && StringUtils.isNotEmpty(openedTimeout)) {
+                if ("1".equals(openedTimeout)) {
+                    openDoorOverTimeAlarm.setValue("1");
+                } else {
+                    openDoorOverTimeAlarm.setValue("0");
                 }
-
-                //3.非法开门 1报警0正常
-                DeviceMessage illegalOpenAlarm = deviceParamMap.get(pointNumber.concat("_wD_IllegalOpenAlarm"));
-                if (Objects.nonNull(illegalOpenAlarm) && StringUtils.isNotEmpty(broken)) {
-                    if (broken.equals("1")) {
-                        illegalOpenAlarm.setValue("1");
-                        illegalOpenAlarm.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
-                        log.info("门禁采集器发送非法开门状态数据：{}", JSON.toJSONString(illegalOpenAlarm));
-                        sendMessage(illegalOpenAlarm);
-                    } else {
-                        illegalOpenAlarm.setValue("0");
-                        illegalOpenAlarm.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
-                        log.info("门禁采集器发送非法开门状态数据：{}", JSON.toJSONString(illegalOpenAlarm));
-                        sendMessage(illegalOpenAlarm);
-                    }
+                log.info("门禁采集器发送探头门超时报警数据：{}", JSON.toJSONString(openDoorOverTimeAlarm));
+                sendMessage(openDoorOverTimeAlarm);
+            }
+            //3.非法开门 1报警0正常
+            DeviceMessage illegalOpenAlarm = deviceParamMap.get(pointNumber.concat("_wD_IllegalOpenAlarm"));
+            if (Objects.nonNull(illegalOpenAlarm) && StringUtils.isNotEmpty(broken)) {
+                if ("1".equals(broken)) {
+                    illegalOpenAlarm.setValue("1");
+                } else {
+                    illegalOpenAlarm.setValue("0");
                 }
-
-                //4.开关状态 1报警0正常
-                DeviceMessage openStatus = deviceParamMap.get(pointNumber.concat("_openStatus"));
-                if (Objects.nonNull(openStatus) && StringUtils.isNotEmpty(opened)) {
-                    if (!opened.equals("2") && opened.equals("12")) {
-                        openStatus.setValue("1");
-                        openStatus.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
-                        log.info("门禁采集器发送开关状态数据：{}", JSON.toJSONString(openStatus));
-                        sendMessage(openStatus);
-                    } else {
-                        openStatus.setValue("0");
-                        openStatus.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
-                        log.info("门禁采集器发送开关状态数据：{}", JSON.toJSONString(openStatus));
-                        sendMessage(openStatus);
-                    }
+                log.info("门禁采集器发送非法开门报警数据：{}", JSON.toJSONString(illegalOpenAlarm));
+                sendMessage(illegalOpenAlarm);
+            }
+            //4.开关状态 1报警0正常
+            DeviceMessage openStatus = deviceParamMap.get(pointNumber.concat("_openStatus"));
+            if (Objects.nonNull(openStatus) && StringUtils.isNotEmpty(opened)) {
+                if ("1".equals(opened)) {
+                    openStatus.setValue("1");
+                } else {
+                    openStatus.setValue("0");
                 }
+                log.info("门禁采集器发送开关状态数据：{}", JSON.toJSONString(openStatus));
+                sendMessage(openStatus);
+            }
+            //5.防拆报警 1防拆报警0正常
+            DeviceMessage tamperAlarm = deviceParamMap.get(pointNumber.concat("_tamperAlarm"));
+            if (Objects.nonNull(tamperAlarm) && StringUtils.isNotEmpty(antipryAlarm)) {
+                if ("1".equals(antipryAlarm)) {
+                    tamperAlarm.setValue("1");
+                } else {
+                    tamperAlarm.setValue("0");
+                }
+                log.info("门禁采集器发送防拆报警数据：{}", JSON.toJSONString(tamperAlarm));
+                sendMessage(tamperAlarm);
             }
         }
         return true;
