@@ -45,11 +45,9 @@ public class MJEpcDevice extends BaseDevice {
     @Override
     @PostConstruct
     public boolean processData() throws Exception {
-        log.info("开始执行");
         //查询车位的状态信息
         String sql = "select * from dbo.F_DoorStateAndAlarm";
         List<Map<String, Object>> maps = sqlServerJdbcTemple.queryForList(sql);
-        log.info("执行结果,{}", maps.size());
         if (CollectionUtils.isEmpty(maps)) {
             return false;
         }
