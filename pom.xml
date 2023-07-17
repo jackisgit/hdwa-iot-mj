@@ -32,7 +32,7 @@
 
 
     <build>
-        <finalName>IOT_EPC_MJ_chean_odbc</finalName>
+        <finalName>IOT_EPC_MJ_chean_odbc_${version}</finalName>
     </build>
 
 </project>
