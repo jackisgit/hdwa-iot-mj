@@ -46,7 +46,7 @@
 
 
     <build>
-        <finalName>IOT_EPC_MJ_hikvision_4200</finalName>
+        <finalName>IOT_EPC_MJ_hikvision_4200_${version}</finalName>
     </build>
 
 </project>

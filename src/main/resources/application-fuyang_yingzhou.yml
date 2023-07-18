@@ -2,7 +2,7 @@
 epc:
   gatewayId: MJ
   gcId: 3412020020
-  subsystem: mjxt/
+  subsystem: mjgl/
   threadNum: 10
   #端口、用户名、密码  不填写，默认使用第一个
   deviceList:

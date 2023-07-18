@@ -1,11 +1,5 @@
 server:
   port: 9700
-#广场ID及GatewayId
-epc:
-  gatewayId: MJ
-  gcId: 3306210010
-  subsystem: mjxt/
-  threadNum: 10
 mqtt:
   hostUrl: tcp://127.0.0.1:1883
   username: admin
