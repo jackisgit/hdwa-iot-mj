@@ -23,7 +23,7 @@ import java.util.*;
  */
 @Slf4j
 @Service
-public class DoorStatusDevice extends BaseDevice {
+public class StatusDevice extends BaseDevice {
 
 
 

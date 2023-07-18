@@ -2,5 +2,5 @@
 epc:
   gatewayId: MJ
   gcId: 3503020030
-  subsystem: mj/
+  subsystem: mjgl/
   threadNum: 5

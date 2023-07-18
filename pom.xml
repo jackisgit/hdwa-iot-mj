@@ -33,7 +33,7 @@
 
 
     <build>
-        <finalName>iot_epc_mj_ping</finalName>
+        <finalName>iot_epc_mj_ping_${version}</finalName>
     </build>
 
 </project>

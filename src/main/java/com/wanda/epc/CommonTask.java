@@ -17,11 +17,11 @@ public class CommonTask {
 
 
     @Autowired
-    private DoorStatusDevice doorStatusDevice;
+    private StatusDevice statusDevice;
 
     @Scheduled(cron = "0 */2 * * * ?")
     public boolean processData() throws Exception {
-        return doorStatusDevice.processData();
+        return statusDevice.processData();
     }
 
 }
