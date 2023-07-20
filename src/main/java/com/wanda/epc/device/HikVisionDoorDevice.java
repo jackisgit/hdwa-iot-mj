@@ -209,10 +209,7 @@ public class HikVisionDoorDevice extends BaseDevice {
 
     @Override
     public void sendMessage(DeviceMessage dm) {
-        if (dm != null) {
-            log.info("发送门禁数据：{}", JSON.toJSONString(dm));
-            commonDevice.sendMessage(dm);
-        }
+        commonDevice.sendMessage(dm);
     }
 
     @Override
