@@ -224,7 +224,6 @@ public class DaHuaDoorDevice extends BaseDevice {
                     if ("门打开".equals(stateType[doorStatus.emStateType])) {
                         if (Objects.nonNull(deviceMessage)) {
                             deviceMessage.setValue("1");
-                            deviceMessage.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
                             log.info("门禁设备采集发送门打开状态数据：{}", JSON.toJSONString(deviceMessage));
                             sendMessage(deviceMessage);
                         }
@@ -232,7 +231,6 @@ public class DaHuaDoorDevice extends BaseDevice {
                     if ("门关闭".equals(stateType[doorStatus.emStateType])) {
                         if (Objects.nonNull(deviceMessage)) {
                             deviceMessage.setValue("0");
-                            deviceMessage.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
                             log.info("门禁设备采集发送门开状态数据：{}", JSON.toJSONString(deviceMessage));
                             sendMessage(deviceMessage);
                         }
@@ -319,7 +317,6 @@ public class DaHuaDoorDevice extends BaseDevice {
                     deviceMessageList.forEach(deviceMessage -> {
                         if (deviceMessage != null) {
                             deviceMessage.setValue("1");
-                            deviceMessage.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
                             log.info("门禁设备采集发送在线状态数据：{}", JSON.toJSONString(deviceMessage));
                             sendMessage(deviceMessage);
                             log.info("门禁设备在线状态为在线" + "ip为" + ip);
@@ -361,7 +358,6 @@ public class DaHuaDoorDevice extends BaseDevice {
                     deviceMessageList.forEach(deviceMessage -> {
                         if (deviceMessage != null) {
                             deviceMessage.setValue("1");
-                            deviceMessage.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
                             log.info("重试设备采集发送在线状态数据：{}", JSON.toJSONString(deviceMessage));
                             sendMessage(deviceMessage);
                         }
@@ -379,7 +375,6 @@ public class DaHuaDoorDevice extends BaseDevice {
                     deviceMessageList.forEach(deviceMessage -> {
                         if (deviceMessage != null) {
                             deviceMessage.setValue("0");
-                            deviceMessage.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
                             log.info("重试设备采集发送离线状态数据：{}", JSON.toJSONString(deviceMessage));
                             sendMessage(deviceMessage);
                         }
