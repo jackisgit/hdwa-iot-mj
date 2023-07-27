@@ -1,7 +1,7 @@
 server:
   port: 18200
 mqtt:
-  hostUrl: tcp://10.1.106.166:1883
+  hostUrl: tcp://127.0.0.1:1883
   username: admin
   password: wanda@1234
   client-id: IOT-EPC-MJ
@@ -13,12 +13,12 @@ mqtt:
 
 spring:
   profiles:
-    active: beijing_cbd
+    active: nanchang_honggutan
     #redis配置
   redis:
-    host: 10.1.106.166
+    host: 127.0.0.1
     port: 16379
     password:
 
 
-beanName: accessControlDevice
+beanName: carsafeControlDevice

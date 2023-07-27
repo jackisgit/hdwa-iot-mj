@@ -16,11 +16,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 public class CommonTask {
 
     @Autowired
-    private AccessControlDevice accessControlDevice;
+    private CarsafeControlDevice carsafeControlDevice;
 
     @Scheduled(cron = "0/30 * * * * ?")
     public boolean processData() throws Exception {
-        return accessControlDevice.processData();
+        return carsafeControlDevice.processData();
     }
 
 }

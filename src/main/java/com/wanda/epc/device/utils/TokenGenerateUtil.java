@@ -1,50 +1,85 @@
 package com.wanda.epc.device.utils;
 
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+
+import javax.crypto.Mac;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Map;
+
+import static java.util.Arrays.sort;
 
 /**
- * @program: iot_epc
- * @description: 海康威视门禁HTTP请求token工具类
- * @author: LianYanFei
- * @create: 2022-10-11 17:00
- **/
+ *@description 车安门禁token工具类
+ *@author LianYanFei
+ *@date 2023/7/27
+ */
 public class TokenGenerateUtil {
 
-    public static final String md5(String s) {
-        char[] hexDigits = {
-                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                'a', 'b', 'c', 'd', 'e', 'f' };
-        try {
-            MessageDigest mdTemp = MessageDigest.getInstance("MD5");
-            try {
-                mdTemp.update(s.getBytes("UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                mdTemp.update(s.getBytes());
-            }
-            byte[] md = mdTemp.digest();
-            int j = md.length;
-            char[] str = new char[j * 2];
-            int k = 0;
-            for (int i = 0; i < j; i++) {
-                byte byte0 = md[i];
-                str[k++] = hexDigits[byte0 >>> 4 & 0xF];
-                str[k++] = hexDigits[byte0 & 0xF];
-            }
-            return (new String(str)).toUpperCase();
-        } catch (Exception e) {
-            return null;
-        }
+    public static String encode(String content, String seed) throws Exception {
+        String macKey = seed;
+        String macData = content;
+        Mac mac = Mac.getInstance("HMACSHA1");
+        byte[] secretByte = macKey.getBytes("UTF-8");
+        byte[] dataBytes = macData.getBytes("UTF-8");
+        SecretKey secret = new SecretKeySpec(secretByte, "HMACSHA1");
+        mac.init(secret);
+        byte[] doFinal = mac.doFinal(dataBytes);
+        String checksum = Base64.encode(doFinal);
+        System.err.println("ENCODE:" + checksum);
+        return checksum;
     }
 
-    public static final String buildToken(String url, String paramJson, String secret) {
-        String tempUrl = null;
-        tempUrl = url.substring("http://".length());
-        int index = tempUrl.indexOf("/");
-        String URI = tempUrl.substring(index);
-        String[] ss = URI.split("\\?");
-        if (ss.length > 1)
-            return md5(String.valueOf(ss[0]) + ss[1] + secret);
-        return md5(String.valueOf(ss[0]) + paramJson + secret);
+    public static String sendPost(String urlstring, String paramstring) {
+        String result = "";
+        HttpURLConnection connection = null;
+        try {
+
+            URL url = new URL(urlstring);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setDoOutput(true);
+            connection.setRequestMethod("POST");
+            // connection.setConnectTimeout(1000);
+            connection.setRequestProperty("Content-type", "application/json");
+            connection.getOutputStream().write(paramstring.getBytes("UTF-8"));
+            connection.getOutputStream().flush();
+            connection.getOutputStream().close();
+            int code = connection.getResponseCode();
+            InputStream in = connection.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in, "utf-8"));
+            String tempLine = reader.readLine();
+            StringBuilder buider = new StringBuilder();
+            while (tempLine != null) {
+                buider.append(tempLine);
+                tempLine = reader.readLine();
+            }
+            result = buider.toString();
+            reader.close();
+            in.close();
+        } catch (MalformedURLException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        } finally {
+            if (connection != null)
+                connection.disconnect();
+        }
+        return result;
+    }
+
+    public static String signing(Map<String, Object> map) {
+        String[] array = map.values().toArray(new String[0]);
+        sort(array);
+        StringBuilder builder = new StringBuilder();
+        for (String string : array) {
+            builder.append(string);
+        }
+        return builder.toString();
     }
 }
