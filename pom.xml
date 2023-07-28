@@ -9,32 +9,28 @@
     </parent>
 
     <artifactId>iot_epc_mj</artifactId>
-    <version>1.0.0-R20230627</version>
+    <version>1.0.0-R20230727</version>
 
     <dependencies>
         <dependency>
             <groupId>com.wanda.epc</groupId>
             <artifactId>iot_epc_common</artifactId>
             <version>${iot_epc_common.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-httpclient</groupId>
+                    <artifactId>commons-httpclient</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
-        <dependency>
-            <groupId>net.java.dev.jna</groupId>
-            <artifactId>jna</artifactId>
-            <version>4.5.2</version>
-        </dependency>
 
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>27.0-jre</version>
-        </dependency>
 
     </dependencies>
 
 
     <build>
-        <finalName>IOT_EPC_MJ_hikvision_API_${version}</finalName>
+        <finalName>IOT_EPC_MJ_CARSAFE_API_${version}</finalName>
     </build>
 
 </project>
