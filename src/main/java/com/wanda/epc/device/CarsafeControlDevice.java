@@ -165,7 +165,7 @@ public class CarsafeControlDevice extends BaseDevice {
     @Override
     public void dispatchCommand(String meter, Integer funcid, String value, String message) throws Exception {
         DeviceMessage deviceMessage = super.controlParamMap.get(meter + "-" + funcid);
-        if (deviceMessage != null && deviceMessage.getOutParamId() != null && deviceMessage.getOutParamId().endsWith("control")) {
+        if (deviceMessage != null && deviceMessage.getOutParamId() != null && deviceMessage.getOutParamId().endsWith("equipSwitchSet")) {
             //如果为开
             if (value.equals("1.0")) {
                 String outParamId = deviceMessage.getOutParamId();
@@ -240,12 +240,12 @@ public class CarsafeControlDevice extends BaseDevice {
             log.info("开门请求参数：{}", postString);
 
             String result = TokenGenerateUtil.sendPost(doorOpenUrl, postString);
-            String eval = (String) JSONPath.eval(result, "$.flag");
+            JSONObject jsonObject = (JSONObject) JSONPath.eval(result, "$.data");
+            Integer flag = jsonObject.getInteger("flag");
             log.info("开门结果集：{}", result);
-            if (eval.equals("1")) {
+            if (flag == 1) {
                 return true;
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
