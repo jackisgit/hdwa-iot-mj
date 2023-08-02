@@ -7,7 +7,7 @@ public class NET_ISCSI_TARGET extends NetSDKLib.SdkStructure {
 	public NET_ISCSI_TARGET() {
 		this.dwSize = this.size();
 		
-		//System.out.println("NET_ISCSI_TARGET " + this.size());
+		//log.info("NET_ISCSI_TARGET " + this.size());
 	}
 
     public int                dwSize;

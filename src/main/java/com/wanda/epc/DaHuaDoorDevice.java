@@ -146,7 +146,7 @@ public class DaHuaDoorDevice extends BaseDevice {
                     Res.string().getErrorMessage(), JOptionPane.ERROR_MESSAGE);
             return false;
         } else {
-            System.out.println("CLIENT_StartListenEx success.");
+            log.info("CLIENT_StartListenEx success.");
         }
         return true;
     }
@@ -162,7 +162,7 @@ public class DaHuaDoorDevice extends BaseDevice {
                     Res.string().getErrorMessage(), JOptionPane.ERROR_MESSAGE);
             return false;
         } else {
-            System.out.println("CLIENT_StopListen success.");
+            log.info("CLIENT_StopListen success.");
         }
         return true;
     }

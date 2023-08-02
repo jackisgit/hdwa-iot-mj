@@ -3,6 +3,7 @@ package com.netsdk.module;
 import com.netsdk.lib.NetSDKLib.LLong;
 import com.netsdk.lib.ToolKits;
 import com.sun.jna.Native;
+import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
 
@@ -10,7 +11,8 @@ import java.awt.*;
  * 实时预览接口实现
  * 主要有 ：开始拉流、停止拉流功能
  */
-public class RealPlayModule {	
+@Slf4j
+public class RealPlayModule {
 	/**
 	 * \if ENGLISH_LANG
 	 * Start RealPlay
@@ -20,16 +22,16 @@ public class RealPlayModule {
 	 */
 	public static LLong startRealPlay(int channel, int stream, Panel realPlayWindow) {
 		LLong m_hPlayHandle = LoginModule.netsdk.CLIENT_RealPlayEx(LoginModule.m_hLoginHandle, channel, Native.getComponentPointer(realPlayWindow), stream);
-	
+
 	    if(m_hPlayHandle.longValue() == 0) {
 	  	    System.err.println("开始实时预览失败，错误码" + ToolKits.getErrorCodePrint());
 	    } else {
-	  	    System.out.println("Success to start realplay"); 
+	  	    log.info("Success to start realplay");
 	    }
-	    
+
 	    return m_hPlayHandle;
-	} 
-	
+	}
+
 	/**
 	 * \if ENGLISH_LANG
 	 * Start RealPlay
@@ -41,7 +43,7 @@ public class RealPlayModule {
 		if(m_hPlayHandle.longValue() == 0) {
 			return;
 		}
-		
+
 		boolean bRet = LoginModule.netsdk.CLIENT_StopRealPlayEx(m_hPlayHandle);
 		if(bRet) {
 			m_hPlayHandle.setValue(0);

@@ -1,9 +1,12 @@
 package com.netsdk.common;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingDeque;
 
+@Slf4j
 public class EventTaskCommonQueue {
 
     // 设置一个队列，容量看情况改
@@ -45,13 +48,13 @@ public class EventTaskCommonQueue {
     // 向队列添加新的任务
     public boolean addEvent(EventTaskHandler eventHandler) {
         if (!running) {
-            System.out.println("任务已停止");   // warning
+            log.info("任务已停止");   // warning
             return false;
         }
         boolean success = eventTasks.offer(eventHandler);
         if (!success) {
             // 队列已满，无法再添加
-            System.out.println("添加到事件队列失败");
+            log.info("添加到事件队列失败");
         }
         return success;
     }
@@ -63,11 +66,11 @@ public class EventTaskCommonQueue {
         if (eventQueueService.isShutdown()) {
             eventQueueService = Executors.newFixedThreadPool(MAX_THREAD_COUNT);;
             init();
-            System.out.println("线程池已关闭，重新初始化线程池及任务");
+            log.info("线程池已关闭，重新初始化线程池及任务");
         }
         if (eventQueueThreadStatus.isDone()) {
             init();
-            System.out.println("线程池任务结束，重新初始化任务");
+            log.info("线程池任务结束，重新初始化任务");
         }
     }
 

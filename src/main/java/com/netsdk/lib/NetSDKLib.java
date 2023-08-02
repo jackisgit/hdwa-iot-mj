@@ -67,7 +67,7 @@ public interface NetSDKLib extends Library {
                     fieldOrderList.add(field.getName());
                 }
             }
-            //            System.out.println(fieldOrderList);
+            //            log.info(fieldOrderList);
 
             return fieldOrderList;
         }

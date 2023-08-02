@@ -8,6 +8,7 @@ import com.netsdk.module.LoginModule;
 import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -23,6 +24,7 @@ import java.awt.event.WindowEvent;
 import static com.netsdk.lib.NetSDKLib.EM_NET_RECORD_TYPE.NET_RECORD_ACCESSCTLCARD;
 import static com.netsdk.lib.NetSDKLib.NET_DEVSTATE_DEV_RECORDSET_EX;
 
+@Slf4j
 public class OperateManager extends JDialog {
 
     private NetSDKLib.LLong lFindHandle;
@@ -366,7 +368,7 @@ public class OperateManager extends JDialog {
         } else {
             /*JOptionPane.showMessageDialog(null, ToolKits.getErrorCodeShow(), Res.string().getErrorMessage(),
                     JOptionPane.ERROR_MESSAGE);*/
-            System.out.println("Get Finger print data error.there is no data");
+            log.info("Get Finger print data error.there is no data");
         }
         return "";
     }

@@ -2,6 +2,7 @@ package com.netsdk.module;
 
 import com.netsdk.lib.NetSDKLib.fMessCallBack;
 import com.netsdk.lib.ToolKits;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * \if ENGLISH_LANG
@@ -12,11 +13,12 @@ import com.netsdk.lib.ToolKits;
  * 包含 ：向设备订阅报警和停止订阅报警
  * \endif
  */
+@Slf4j
 public class AlarmListenModule {
 
 	private static boolean bListening = false;
 
-	
+
 	/**
 	 * \if ENGLISH_LANG
 	 * start alarm listen
@@ -27,23 +29,23 @@ public class AlarmListenModule {
 	public static boolean startListen(fMessCallBack cbMessage) {
 
 		if (bListening) {
-//			System.out.println("Had Subscribe Alarm.");
+//			log.info("Had Subscribe Alarm.");
 			return true;
 		}
-		
+
 		LoginModule.netsdk.CLIENT_SetDVRMessCallBack(cbMessage, null); // set alarm listen callback
 
 		if (!LoginModule.netsdk.CLIENT_StartListenEx(LoginModule.m_hLoginHandle)) {
 			System.err.printf("CLIENT_StartListenEx Failed!" + ToolKits.getErrorCodePrint());
 			return false;
-		} else { 
-			System.out.println("CLIENT_StartListenEx success."); 
+		} else {
+			log.info("CLIENT_StartListenEx success.");
 		}
-		
+
 		bListening = true;
 		return true;
 	}
-	
+
 	/**
 	 * \if ENGLISH_LANG
 	 * stop alarm listen
@@ -56,20 +58,20 @@ public class AlarmListenModule {
 		if (!bListening) {
 			return true;
 		}
-		
-	   	if (!LoginModule.netsdk.CLIENT_StopListen(LoginModule.m_hLoginHandle)) { 
+
+	   	if (!LoginModule.netsdk.CLIENT_StopListen(LoginModule.m_hLoginHandle)) {
 			System.err.printf("CLIENT_StopListen Failed!" + ToolKits.getErrorCodePrint());
 			return false;
-		} else { 
-			System.out.println("CLIENT_StopListen success."); 
+		} else {
+			log.info("CLIENT_StopListen success.");
 		}
-	   	
-	   	bListening = false;	
+
+	   	bListening = false;
 		return true;
 	}
 
-}	
-	
+}
+
 
 
 

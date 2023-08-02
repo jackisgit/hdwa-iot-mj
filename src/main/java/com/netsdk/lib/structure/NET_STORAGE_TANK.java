@@ -6,7 +6,7 @@ public class NET_STORAGE_TANK extends NetSDKLib.SdkStructure {
 	public NET_STORAGE_TANK() {
 		this.dwSize = this.size();
 		
-		//System.out.println("NET_STORAGE_TANK " + this.size());
+		//log.info("NET_STORAGE_TANK " + this.size());
 	}
 	
 	public int                 dwSize;

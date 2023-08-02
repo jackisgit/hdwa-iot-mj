@@ -4,6 +4,7 @@ import com.sun.jna.IntegerType;
 import com.sun.jna.Native;
 import com.sun.jna.Platform;
 import com.sun.jna.Structure;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -11,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class Utils {
     public Utils() {
 
@@ -124,7 +126,7 @@ public class Utils {
 //			loadLibrary = "";
 //		}  32位mac版本基本没人用了，暂时不用
 
-        System.out.printf("加载库[%s]\n", loadLibrary + library);
+        log.info("加载库[%s]\n", loadLibrary + library);
         return loadLibrary + library;
     }
 
@@ -194,7 +196,7 @@ public class Utils {
                     fieldOrderList.add(field.getName());
                 }
             }
-            //            System.out.println(fieldOrderList);
+            //            log.info(fieldOrderList);
 
             return fieldOrderList;
         }

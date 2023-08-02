@@ -4,20 +4,22 @@ import com.netsdk.lib.NetSDKLib.*;
 import com.netsdk.lib.ToolKits;
 import com.sun.jna.Memory;
 import com.sun.jna.ptr.IntByReference;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 以图搜图接口实现，跟查询人脸库里的人员信息的查找接口是一样的，入参和实现有区别
  * 目前只支持IVSS
  */
+@Slf4j
 public class SearchByPictureModule {
 	// 查询密令
 	public static int nToken = 0;
-	
+
 	private static LLong m_FindHandle = null;
-	
+
 	// 订阅句柄
 	private static LLong attachFaceHandle = new LLong(0);
-	
+
 	/**
 	 * 按条件查询目标识别结果
 	 * @param memory 	  图片缓存
@@ -26,27 +28,27 @@ public class SearchByPictureModule {
 	 * @param isHistory  是否是历史库， true-历史库； false-人脸库
 	 * @param nChn       通道号， 历史库需要通道号，人脸库不需要通道号
 	 * @param similary   相似度
-	 * @return 查询到的所有人员个数  
+	 * @return 查询到的所有人员个数
 	 */
 	public static int startFindPerson(Memory memory,
-									  String startTime, 
+									  String startTime,
 									  String endTime,
 									  boolean isHistory,
 									  int nChn,
-									  String similary) {	
-		
+									  String similary) {
+
 		m_FindHandle = null;
 		nToken = 0;
-		int nTotalCount = 0;  
-		
+		int nTotalCount = 0;
+
 		/*
 		 * 入参, IVVS设备，查询条件只有  stuInStartFind.stPerson 里的参数有效
 		 */
 		NET_IN_STARTFIND_FACERECONGNITION stuIn = new NET_IN_STARTFIND_FACERECONGNITION();
 
 		// 人员信息查询条件是否有效, 并使用扩展结构体
-		stuIn.bPersonExEnable = 1; 
-		
+		stuIn.bPersonExEnable = 1;
+
 		// 图片信息
 		if(memory != null) {
 			stuIn.pBuffer = memory;
@@ -55,18 +57,18 @@ public class SearchByPictureModule {
 			stuIn.stPersonInfoEx.szFacePicInfo[0].dwOffSet = 0;
 			stuIn.stPersonInfoEx.szFacePicInfo[0].dwFileLenth = (int)memory.size();
 		}
-		
+
 		// 相似度
 		if(!similary.isEmpty()) {
 			stuIn.stMatchOptions.nSimilarity = Integer.parseInt(similary);
 		}
-		
+
 		stuIn.stFilterInfo.nGroupIdNum = 0;
 		stuIn.stFilterInfo.nRangeNum = 1;
-		
+
 		if(isHistory) {  // 历史库
 			// 通道号
-			stuIn.nChannelID = nChn; 
+			stuIn.nChannelID = nChn;
 			stuIn.stFilterInfo.szRange[0] = EM_FACE_DB_TYPE.NET_FACE_DB_TYPE_HISTORY;  // 待查询数据库类型，设备只支持一个
 			// 开始时间
 			String[] startTimeStr = startTime.split("-");
@@ -88,24 +90,24 @@ public class SearchByPictureModule {
 		} else {        // 人脸库
 			stuIn.stFilterInfo.szRange[0] = EM_FACE_DB_TYPE.NET_FACE_DB_TYPE_BLACKLIST;  // 待查询数据库类型，设备只支持一个
 		}
-	
+
 	    /*
 	     * 出参
 	     */
 	    NET_OUT_STARTFIND_FACERECONGNITION stuOut = new NET_OUT_STARTFIND_FACERECONGNITION();
 	    stuIn.write();
 	    stuOut.write();
-	    if(LoginModule.netsdk.CLIENT_StartFindFaceRecognition(LoginModule.m_hLoginHandle, stuIn,  stuOut, 4000)) {        
+	    if(LoginModule.netsdk.CLIENT_StartFindFaceRecognition(LoginModule.m_hLoginHandle, stuIn,  stuOut, 4000)) {
 	    	m_FindHandle = stuOut.lFindHandle;
 	    	nTotalCount = stuOut.nTotalCount;
 	    	nToken = stuOut.nToken;
 	    } else {
-	        System.out.println("CLIENT_StartFindFaceRecognition Failed, Error:" + ToolKits.getErrorCodePrint());
+	        log.info("CLIENT_StartFindFaceRecognition Failed, Error:" + ToolKits.getErrorCodePrint());
 	    }
-	    
+
 	    return nTotalCount;
 	}
-	
+
 	/**
 	 * 查找目标识别结果
 	 * @param beginNum 查询起始序号
@@ -120,44 +122,44 @@ public class SearchByPictureModule {
         stuIn.lFindHandle = m_FindHandle;
         stuIn.nCount      = nCount;  	 // 当前想查询的记录条数
         stuIn.nBeginNum   = beginNum;     // 查询起始序号
-        
+
         /*
          * 出参
          */
         NET_OUT_DOFIND_FACERECONGNITION stuOut = new NET_OUT_DOFIND_FACERECONGNITION();;
         stuOut.bUseCandidatesEx = 1;				// 是否使用候选对象扩展结构体
-        
+
         // 必须申请内存，每次查询几个，必须至少申请几个，最大申请20个
         for(int i = 0; i < nCount; i++) {
             stuOut.stuCandidatesEx[i].stPersonInfo.szFacePicInfo[0].nFilePathLen = 256;
             stuOut.stuCandidatesEx[i].stPersonInfo.szFacePicInfo[0].pszFilePath = new Memory(256);
         }
-        
+
     	stuIn.write();
     	stuOut.write();
         if(LoginModule.netsdk.CLIENT_DoFindFaceRecognition(stuIn, stuOut, 4000)) {
         	stuIn.read();
         	stuOut.read();
-        	
+
         	if(stuOut.nCadidateExNum == 0) {
         		return null;
         	}
-        	
+
         	// 获取到的信息
         	CANDIDATE_INFOEX[]	stuCandidatesEx = new CANDIDATE_INFOEX[stuOut.nCadidateExNum];
         	for(int i = 0; i < stuOut.nCadidateExNum; i++) {
         		stuCandidatesEx[i] = new CANDIDATE_INFOEX();
         		stuCandidatesEx[i] = stuOut.stuCandidatesEx[i];
         	}
-        	
+
         	return stuCandidatesEx;
         } else {
-        	System.out.println("CLIENT_DoFindFaceRecognition Failed, Error:" + ToolKits.getErrorCodePrint());
+        	log.info("CLIENT_DoFindFaceRecognition Failed, Error:" + ToolKits.getErrorCodePrint());
         }
-    
+
         return null;
 	}
-	
+
 	/**
 	 * 结束查询
 	 */
@@ -168,7 +170,7 @@ public class SearchByPictureModule {
 		}
 		return bRet;
 	}
-	
+
 	/**
 	 * 订阅人脸查询状态
 	 * @param faceFindStateCb 人脸状态回调函数
@@ -179,32 +181,32 @@ public class SearchByPictureModule {
 		 * 入参
 		 */
 		NET_IN_FACE_FIND_STATE stuIn = new NET_IN_FACE_FIND_STATE();
-		stuIn.nTokenNum = 1;   
+		stuIn.nTokenNum = 1;
 		stuIn.nTokens = new IntByReference(nToken);  // 查询令牌
 		stuIn.cbFaceFindState = faceFindStateCb;
-		
+
 		/*
 		 * 出参
 		 */
 		NET_OUT_FACE_FIND_STATE stuOut = new NET_OUT_FACE_FIND_STATE();
-		
+
 		stuIn.write();
 		attachFaceHandle = LoginModule.netsdk.CLIENT_AttachFaceFindState(LoginModule.m_hLoginHandle, stuIn, stuOut, 4000);
 		stuIn.read();
-		
+
 		if(attachFaceHandle.longValue() != 0) {
-			System.out.println("AttachFaceFindState Succeed!");
+			log.info("AttachFaceFindState Succeed!");
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * 关闭订阅
 	 */
 	public static void detachFaceFindState() {
-		if(attachFaceHandle.longValue() != 0) {		
+		if(attachFaceHandle.longValue() != 0) {
 			LoginModule.netsdk.CLIENT_DetachFaceFindState(attachFaceHandle);
 			attachFaceHandle.setValue(0);
 		}

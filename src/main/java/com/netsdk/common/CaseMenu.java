@@ -1,10 +1,13 @@
 package com.netsdk.common;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.lang.reflect.Method;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.Vector;
 
+@Slf4j
 public class CaseMenu {
 	
 	public static class Item {
@@ -46,11 +49,11 @@ public class CaseMenu {
 	private void showItem() {
 		final String format = "%2d\t%-20s\n";
 		int index = 0; 
-		System.out.printf(format, index++, "exit App");
+		log.info(format, index++, "exit App");
 		for (Item item : items) {
-			System.out.printf(format, index++, item.getItemName());
+			log.info(format, index++, item.getItemName());
 		}
-		System.out.println("Please input a item index to invoke the method:");
+		log.info("Please input a item index to invoke the method:");
 	}
 	
 	public void run() {

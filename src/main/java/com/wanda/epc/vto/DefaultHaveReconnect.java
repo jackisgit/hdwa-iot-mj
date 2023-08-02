@@ -4,15 +4,17 @@ import com.netsdk.common.Res;
 import com.netsdk.lib.NetSDKLib.LLong;
 import com.netsdk.lib.NetSDKLib.fHaveReConnect;
 import com.sun.jna.Pointer;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 
 /**
  * 网络连接恢复，设备重连成功回调 通过 CLIENT_SetAutoReconnect 设置该回调函数，当已断线的设备重连成功时，SDK会调用该函数
- * 
+ *
  * @author 47081
  *
  */
+@Slf4j
 public class DefaultHaveReconnect implements fHaveReConnect {
 	private static DefaultHaveReconnect INSTANCE;
 	private JFrame frame;
@@ -34,7 +36,7 @@ public class DefaultHaveReconnect implements fHaveReConnect {
 
 	@Override
 	public void invoke(LLong lLoginID, String pchDVRIP, int nDVRPort, Pointer dwUser) {
-		System.out.printf("ReConnect Device[%s] Port[%d]\n", pchDVRIP, nDVRPort);
+		log.info("ReConnect Device[%s] Port[%d]\n", pchDVRIP, nDVRPort);
 
 		// 重连提示
 		SwingUtilities.invokeLater(new Runnable() {

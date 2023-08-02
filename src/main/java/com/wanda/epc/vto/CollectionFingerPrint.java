@@ -7,6 +7,7 @@ import com.netsdk.lib.ToolKits;
 import com.netsdk.module.LoginModule;
 import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -14,6 +15,7 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
 
+@Slf4j
 public class CollectionFingerPrint extends JDialog {
 
     private final JPanel contentPanel = new JPanel();
@@ -323,7 +325,7 @@ public class CollectionFingerPrint extends JDialog {
             JOptionPane.showMessageDialog(null, Res.string().getLoginFailed() + ", " + ToolKits.getErrorCodeShow(),
                     Res.string().getErrorMessage(), JOptionPane.ERROR_MESSAGE);
         } else {
-            System.out.println("Login Success [ " + m_strIp + " ]");
+            log.info("Login Success [ " + m_strIp + " ]");
         }
 
         return loginHandler.longValue() == 0 ? false : true;
@@ -387,7 +389,7 @@ public class CollectionFingerPrint extends JDialog {
                     Res.string().getErrorMessage(), JOptionPane.ERROR_MESSAGE);
             return false;
         } else {
-            System.out.println("CLIENT_StartListenEx success.");
+            log.info("CLIENT_StartListenEx success.");
         }
         return true;
     }
@@ -398,7 +400,7 @@ public class CollectionFingerPrint extends JDialog {
                     Res.string().getErrorMessage(), JOptionPane.ERROR_MESSAGE);
             return false;
         } else {
-            System.out.println("CLIENT_StopListen success.");
+            log.info("CLIENT_StopListen success.");
         }
         return true;
     }

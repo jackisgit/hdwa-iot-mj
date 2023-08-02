@@ -3,13 +3,15 @@ package com.wanda.epc.vto;
 import com.netsdk.lib.NetSDKLib.LLong;
 import com.netsdk.lib.NetSDKLib.fDisConnect;
 import com.sun.jna.Pointer;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 设备断线回调函数，空实现。 建议回调函数使用单例模式
- * 
+ *
  * @author 47081
  *
  */
+@Slf4j
 public class DefaultDisConnect implements fDisConnect {
 	private static DefaultDisConnect INSTANCE;
 
@@ -27,7 +29,7 @@ public class DefaultDisConnect implements fDisConnect {
 	@Override
 	public void invoke(LLong lLoginID, String pchDVRIP, int nDVRPort, Pointer dwUser) {
 		// TODO Auto-generated method stub
-		System.out.printf("Device[%s] Port[%d] DisConnectCallBack!\n", pchDVRIP, nDVRPort);
+		log.info("Device[%s] Port[%d] DisConnectCallBack!\n", pchDVRIP, nDVRPort);
 
 	}
 }

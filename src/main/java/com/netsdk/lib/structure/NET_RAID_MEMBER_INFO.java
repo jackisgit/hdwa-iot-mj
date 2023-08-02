@@ -6,7 +6,7 @@ public class NET_RAID_MEMBER_INFO extends NetSDKLib.SdkStructure {
 	public NET_RAID_MEMBER_INFO() {
 		this.dwSize = this.size();
 		
-		//System.out.println("NET_RAID_MEMBER_INFO " + this.size());
+		//log.info("NET_RAID_MEMBER_INFO " + this.size());
 	}
 	
 	

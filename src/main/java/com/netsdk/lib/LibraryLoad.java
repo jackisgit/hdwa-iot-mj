@@ -1,5 +1,7 @@
 package com.netsdk.lib;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.*;
 
 /**
@@ -8,6 +10,7 @@ import java.io.*;
  * @description 动态库加载
  * @date 2020/11/14
  */
+@Slf4j
 public class LibraryLoad {
   private static final String ARCH_WINDOWS = "win";
   private static final String ARCH_LINUX = "linux";
@@ -34,10 +37,10 @@ public class LibraryLoad {
   public static void setExtractPath(String path) {
     EXTRACT_PATH = path;
   }
-  
+
   public static String  getExtractPath() {
 	return EXTRACT_PATH;
-	   
+
 	  }
   /** 动态库路径 */
   private static String INNER_PATH;
@@ -70,7 +73,7 @@ public class LibraryLoad {
     if (!(EXTRACT_PATH.endsWith("/") || EXTRACT_PATH.endsWith("\\"))) {
       path = EXTRACT_PATH + "/";
     }
-    System.out.println("load library: " + path + fullName);
+    log.info("load library: " + path + fullName);
     return path + fullName;
   }
 
@@ -126,7 +129,7 @@ public class LibraryLoad {
       writer.close();
       in.close();
     } catch (Exception e) {
-      System.out.println(
+      log.info(
           "dynamic file[ "
               + fileName
               + " ] not found in project.please ensure you need this library.");

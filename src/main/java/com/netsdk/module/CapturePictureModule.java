@@ -4,6 +4,7 @@ import com.netsdk.lib.NetSDKLib;
 import com.netsdk.lib.NetSDKLib.LLong;
 import com.netsdk.lib.ToolKits;
 import com.sun.jna.ptr.IntByReference;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * \if ENGLISH_LANG
@@ -14,6 +15,7 @@ import com.sun.jna.ptr.IntByReference;
  * 包含: 本地、远程、定时和停止抓图
  * \endif
  */
+@Slf4j
 public class CapturePictureModule {
 
 	/**
@@ -24,16 +26,16 @@ public class CapturePictureModule {
 	 * \endif
 	 */
 	public static boolean localCapturePicture(LLong hPlayHandle, String picFileName) {
-				
-		if (!LoginModule.netsdk.CLIENT_CapturePictureEx(hPlayHandle, picFileName, NetSDKLib.NET_CAPTURE_FORMATS.NET_CAPTURE_JPEG)) { 
+
+		if (!LoginModule.netsdk.CLIENT_CapturePictureEx(hPlayHandle, picFileName, NetSDKLib.NET_CAPTURE_FORMATS.NET_CAPTURE_JPEG)) {
 			System.err.printf("CLIENT_CapturePicture Failed!" + ToolKits.getErrorCodePrint());
 			return false;
-		} else { 
-			System.out.println("CLIENT_CapturePicture success"); 
+		} else {
+			log.info("CLIENT_CapturePicture success");
 		}
 		return true;
 	}
-	
+
 	/**
 	 * \if ENGLISH_LANG
 	 * Remote Capture Picture
@@ -44,7 +46,7 @@ public class CapturePictureModule {
 	public static boolean remoteCapturePicture(int chn) {
 		return snapPicture(chn, 0, 0);
 	}
-	
+
 	/**
 	 * \if ENGLISH_LANG
 	 * Timer Capture Picture
@@ -55,7 +57,7 @@ public class CapturePictureModule {
 	public static boolean timerCapturePicture(int chn) {
 		return snapPicture(chn, 1, 2);
 	}
-	
+
 	/**
 	 * \if ENGLISH_LANG
 	 * Stop Timer Capture Picture
@@ -66,7 +68,7 @@ public class CapturePictureModule {
 	public static boolean stopCapturePicture(int chn) {
 		return snapPicture(chn, -1, 0);
 	}
-	
+
 	/**
 	 * \if ENGLISH_LANG
 	 * Capture Picture (except local capture picture, others all call this interface)
@@ -76,23 +78,23 @@ public class CapturePictureModule {
 	 */
 	private static boolean snapPicture(int chn, int mode, int interval) {
 		// send caputre picture command to device
-		NetSDKLib.SNAP_PARAMS stuSnapParams = new NetSDKLib.SNAP_PARAMS(); 
+		NetSDKLib.SNAP_PARAMS stuSnapParams = new NetSDKLib.SNAP_PARAMS();
 		stuSnapParams.Channel = chn;  			// channel
 		stuSnapParams.mode = mode;    			// capture picture mode
 		stuSnapParams.Quality = 3;				// picture quality
 		stuSnapParams.InterSnap = interval; 	// timer capture picture time interval
-		stuSnapParams.CmdSerial = 0;  			// request serial  
-		
+		stuSnapParams.CmdSerial = 0;  			// request serial
+
 		IntByReference reserved = new IntByReference(0);
-		if (!LoginModule.netsdk.CLIENT_SnapPictureEx(LoginModule.m_hLoginHandle, stuSnapParams, reserved)) { 
+		if (!LoginModule.netsdk.CLIENT_SnapPictureEx(LoginModule.m_hLoginHandle, stuSnapParams, reserved)) {
 			System.err.printf("CLIENT_SnapPictureEx Failed!" + ToolKits.getErrorCodePrint());
 			return false;
-		} else { 
-			System.out.println("CLIENT_SnapPictureEx success"); 
+		} else {
+			log.info("CLIENT_SnapPictureEx success");
 		}
 		return true;
 	}
-	
+
 	/**
 	 * \if ENGLISH_LANG
 	 * Set Capture Picture Callback
@@ -100,7 +102,7 @@ public class CapturePictureModule {
 	 * 设置抓图回调函数
 	 * \endif
 	 */
-	public static void setSnapRevCallBack(NetSDKLib.fSnapRev cbSnapReceive){ 
+	public static void setSnapRevCallBack(NetSDKLib.fSnapRev cbSnapReceive){
 		LoginModule.netsdk.CLIENT_SetSnapRevCallBack(cbSnapReceive, null);
 	}
 }
