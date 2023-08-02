@@ -6,7 +6,6 @@ import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 import com.wanda.epc.device.NetSDKDemo.HCNetSDK;
 import com.wanda.epc.param.DeviceMessage;
-import com.wanda.epc.util.ConvertUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -21,26 +20,64 @@ import java.util.*;
 @Component
 public class HikVisionDoorDevice extends BaseDevice {
 
-    Map<Integer, String> ipMap = new HashMap<>();
-    Map<String, Integer> userMap = new HashMap<>();
-
-    Set<String> ipSet = new HashSet<>();
-
-    List<Integer> userIdList = new ArrayList<>();
-
+    public static HCNetSDK.FMSGCallBack_V31 fMSFCallBack_V31;
     static List<Integer> lAlarmHandleList = new ArrayList<>();
-
     static HCNetSDK hCNetSDK;
-
     static int iCharEncodeType = 0;//设备字符集
     static int lUserID = -1;//用户句柄 实现对设备登录
-
-
+    Map<Integer, String> ipMap = new HashMap<>();
+    Map<String, Integer> userMap = new HashMap<>();
+    Set<String> ipSet = new HashSet<>();
+    List<Integer> userIdList = new ArrayList<>();
     @Resource
     DeviceConfig deviceConfig;
 
-    public static HCNetSDK.FMSGCallBack_V31 fMSFCallBack_V31;
+    /**
+     * @description
+     * @params lUserID :NET_DVR_Login_V40等登录接口的返回值
+     * lGatewayIndex:门禁序号（楼层编号、锁ID），从1开始，-1表示对所有门（或者梯控的所有楼层）进行操作
+     * dwStaic: 命令值：0- 关闭（对于梯控，表示受控），1- 打开（对于梯控，表示开门），2- 常开（对于梯控，表示自由、通道状态），3- 常关（对于梯控，表示禁用），4- 恢复（梯控，普通状态），5- 访客呼梯（梯控），6- 住户呼梯（梯控）
+     * @retrun
+     * @author LianYanFei
+     * @date 2023/4/3
+     */
+    public static void controlGateway(Integer userId, int lGatewayIndex, int dwStaic) {
+        log.info("接受到控门指令：userId：{},lGatewayIndex:{},dwStaic:{}", userId, lGatewayIndex, dwStaic);
+        if (userId >= 0) {
+            boolean result = hCNetSDK.NET_DVR_ControlGateway(userId, lGatewayIndex, dwStaic);
+            if (result) {
+                log.info("远程控门成功");
+            } else {
+                log.info("远程控门失败");
+            }
+        }
+    }
 
+    /**
+     * 动态库加载
+     *
+     * @return
+     */
+    private static boolean createSDKInstance() {
+        if (hCNetSDK == null) {
+            synchronized (HCNetSDK.class) {
+                String strDllPath = "";
+                try {
+                    if (osSelect.isWindows())
+                        //win系统加载库路径
+                        strDllPath = System.getProperty("user.dir") + "\\lib\\HCNetSDK.dll";
+                    else if (osSelect.isLinux())
+                        //Linux系统加载库路径
+                        strDllPath = System.getProperty("user.dir") + "/lib/libhcnetsdk.so";
+                    hCNetSDK = (HCNetSDK) Native.loadLibrary(strDllPath, HCNetSDK.class);
+                } catch (Exception ex) {
+                    log.info("loadLibrary: " + strDllPath + " Error: " + ex.getMessage());
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
     @PostConstruct
     public void init() {
@@ -158,55 +195,6 @@ public class HikVisionDoorDevice extends BaseDevice {
         return lAlarmHandle;
     }
 
-
-    /**
-     * @description
-     * @params lUserID :NET_DVR_Login_V40等登录接口的返回值
-     * lGatewayIndex:门禁序号（楼层编号、锁ID），从1开始，-1表示对所有门（或者梯控的所有楼层）进行操作
-     * dwStaic: 命令值：0- 关闭（对于梯控，表示受控），1- 打开（对于梯控，表示开门），2- 常开（对于梯控，表示自由、通道状态），3- 常关（对于梯控，表示禁用），4- 恢复（梯控，普通状态），5- 访客呼梯（梯控），6- 住户呼梯（梯控）
-     * @retrun
-     * @author LianYanFei
-     * @date 2023/4/3
-     */
-    public static void controlGateway(Integer userId, int lGatewayIndex, int dwStaic) {
-        log.info("接受到控门指令：userId：{},lGatewayIndex:{},dwStaic:{}", userId, lGatewayIndex, dwStaic);
-        if (userId >= 0) {
-            boolean result = hCNetSDK.NET_DVR_ControlGateway(userId, lGatewayIndex, dwStaic);
-            if (result) {
-                log.info("远程控门成功");
-            } else {
-                log.info("远程控门失败");
-            }
-        }
-    }
-
-    /**
-     * 动态库加载
-     *
-     * @return
-     */
-    private static boolean createSDKInstance() {
-        if (hCNetSDK == null) {
-            synchronized (HCNetSDK.class) {
-                String strDllPath = "";
-                try {
-                    if (osSelect.isWindows())
-                        //win系统加载库路径
-                        strDllPath = System.getProperty("user.dir") + "\\lib\\HCNetSDK.dll";
-                    else if (osSelect.isLinux())
-                        //Linux系统加载库路径
-                        strDllPath = System.getProperty("user.dir") + "/lib/libhcnetsdk.so";
-                    hCNetSDK = (HCNetSDK) Native.loadLibrary(strDllPath, HCNetSDK.class);
-                } catch (Exception ex) {
-                    log.info("loadLibrary: " + strDllPath + " Error: " + ex.getMessage());
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-
     @Override
     public void sendMessage(DeviceMessage dm) {
         commonDevice.sendMessage(dm);
@@ -225,14 +213,12 @@ public class HikVisionDoorDevice extends BaseDevice {
                     if (key.getValue()) {
                         if (Objects.nonNull(deviceMessage)) {
                             deviceMessage.setValue("1");
-                            deviceMessage.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
                             log.info("发送门禁设备在线数据==={}", deviceMessage.getOutParamId(), JSON.toJSONString(deviceMessage));
                             sendMessage(deviceMessage);
                         }
                     } else {
                         if (Objects.nonNull(deviceMessage)) {
                             deviceMessage.setValue("0");
-                            deviceMessage.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
                             log.info("发送门禁设备离线数据==={}", deviceMessage.getOutParamId(), JSON.toJSONString(deviceMessage));
                             sendMessage(deviceMessage);
                         }
@@ -256,7 +242,7 @@ public class HikVisionDoorDevice extends BaseDevice {
         Pointer pAcsWorkStatus = acsWorkStatus.getPointer();
         if (!hCNetSDK.NET_DVR_GetDVRConfig(lUserID, HCNetSDK.NET_DVR_GET_ACS_WORK_STATUS_V50, 0, pAcsWorkStatus,
                 acsWorkStatus.size(), new IntByReference(0))) {
-            System.out.println("Failed to get door status! Error code: " + hCNetSDK.NET_DVR_GetLastError());
+            log.error("Failed to get door status! Error code: " + hCNetSDK.NET_DVR_GetLastError());
             return;
         }
         acsWorkStatus.read();
@@ -282,7 +268,6 @@ public class HikVisionDoorDevice extends BaseDevice {
                     } else {
                         deviceMessage.setValue("0");
                     }
-                    deviceMessage.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
                     log.info("发送门禁设备开关状态数据==={}", deviceMessage.getOutParamId(), JSON.toJSONString(deviceMessage));
                     sendMessage(deviceMessage);
                 }
@@ -303,7 +288,6 @@ public class HikVisionDoorDevice extends BaseDevice {
                 DeviceMessage deviceMessage = deviceParamMap.get(key.getKey());
                 if (Objects.nonNull(deviceMessage)) {
                     deviceMessage.setValue("0");
-                    deviceMessage.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
                     log.info("发送门禁设备非法开门报警数据==={}", deviceMessage.getOutParamId(), JSON.toJSONString(deviceMessage));
                     sendMessage(deviceMessage);
                 }
@@ -324,7 +308,6 @@ public class HikVisionDoorDevice extends BaseDevice {
                 DeviceMessage deviceMessage = deviceParamMap.get(key.getKey());
                 if (Objects.nonNull(deviceMessage)) {
                     deviceMessage.setValue("0");
-                    deviceMessage.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
                     log.info("发送门禁设备长时间未关门报警数据==={}", deviceMessage.getOutParamId(), JSON.toJSONString(deviceMessage));
                     sendMessage(deviceMessage);
                 }
@@ -342,7 +325,6 @@ public class HikVisionDoorDevice extends BaseDevice {
         DeviceMessage deviceMessage = deviceParamMap.get(ip.concat("_wD_openDoorOverTimeAlarm"));
         if (Objects.nonNull(deviceMessage)) {
             deviceMessage.setValue("0");
-            deviceMessage.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
             log.info("发送门禁常开==={}", deviceMessage.getOutParamId(), JSON.toJSONString(deviceMessage));
             sendMessage(deviceMessage);
         }
