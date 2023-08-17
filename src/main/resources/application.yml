@@ -13,7 +13,7 @@ mqtt:
 
 spring:
   profiles:
-    active: nanchang_honggutan
+    active: yantai_zhifu
     #redis配置
   redis:
     host: 127.0.0.1
