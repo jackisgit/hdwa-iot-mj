@@ -70,7 +70,6 @@ public class CarsafeControlDevice extends BaseDevice {
         deviceMessageList.forEach(deviceMessage -> {
             if (deviceMessage != null) {
                 deviceMessage.setValue(doorStateDto.getConnected());
-                deviceMessage.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
                 sendMessage(deviceMessage);
                 log.info("采集发送在离线状态数据：{}", JSON.toJSONString(deviceMessage));
             }
@@ -91,7 +90,6 @@ public class CarsafeControlDevice extends BaseDevice {
                 } else {
                     deviceMessage.setValue("0");
                 }
-                deviceMessage.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
                 sendMessage(deviceMessage);
                 log.info("采集发送在开关状态数据：{}", JSON.toJSONString(deviceMessage));
             }
@@ -112,7 +110,6 @@ public class CarsafeControlDevice extends BaseDevice {
                 } else {
                     deviceMessage.setValue("0");
                 }
-                deviceMessage.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
                 sendMessage(deviceMessage);
                 log.info("采集发送故障状态数据：{}", JSON.toJSONString(deviceMessage));
             }
@@ -133,7 +130,6 @@ public class CarsafeControlDevice extends BaseDevice {
                 } else {
                     deviceMessage.setValue("0");
                 }
-                deviceMessage.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
                 sendMessage(deviceMessage);
                 log.info("采集发送防拆报警数据：{}", JSON.toJSONString(deviceMessage));
             }
@@ -154,7 +150,6 @@ public class CarsafeControlDevice extends BaseDevice {
                 } else {
                     deviceMessage.setValue("0");
                 }
-                deviceMessage.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
                 sendMessage(deviceMessage);
                 log.info("采集发送超时未关门报警数据：{}", JSON.toJSONString(deviceMessage));
             }
@@ -181,7 +176,6 @@ public class CarsafeControlDevice extends BaseDevice {
                     deviceMessageList.forEach(deviceMessage1 -> {
                         if (deviceMessage1 != null) {
                             deviceMessage1.setValue("1");
-                            deviceMessage1.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
                             sendMessage(deviceMessage1);
                             log.info("开门发送开关状态数据：{}", JSON.toJSONString(deviceMessage1));
                         }
