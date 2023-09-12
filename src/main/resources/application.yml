@@ -13,7 +13,7 @@ mqtt:
 
 spring:
   profiles:
-    active: fuyang_yingzhou
+    active: beijing_CBD
   redis:
     host: 127.0.0.1
     port: 16379

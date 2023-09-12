@@ -16,11 +16,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 public class CommonTask {
 
     @Autowired
-    private HikVisionDoorDevice hikVisionDoorDevice;// opc
+    private AccessControlDevice accessControlDevice;
 
-    @Scheduled(cron = "0/60 * * * * ?")
+    @Scheduled(cron = "0/30 * * * * ?")
     public boolean processData() throws Exception {
-        return hikVisionDoorDevice.processData();
+        return accessControlDevice.processData();
     }
 
 }
