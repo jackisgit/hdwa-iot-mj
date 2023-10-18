@@ -16,7 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 public class CommonTask {
 
     @Autowired
-    private MJEpcDevice device;
+    private MjDevice device;
 
     @Scheduled(cron = "${jobs.cron:0/30 * * * * ?}")
     public boolean processData() throws Exception {

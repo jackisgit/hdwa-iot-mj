@@ -13,3 +13,4 @@ spring:
     username: sa
     password: sa
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+AcssDoorOpenUrl: http://192.168.1.100:8011/AcssDoorOpen?s_key=D41D8CD98F00B204E9800998ECF8427E&userno=0001000343

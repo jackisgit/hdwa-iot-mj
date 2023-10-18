@@ -1,19 +1,23 @@
 package com.wanda.epc;
 
+import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.wanda.epc.common.RedisUtil;
 import com.wanda.epc.device.BaseDevice;
 import com.wanda.epc.device.CommonDevice;
 import com.wanda.epc.param.DeviceMessage;
-import com.wanda.epc.util.ConvertUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -27,13 +31,15 @@ import java.util.Objects;
  */
 @Slf4j
 @Service
-public class MJEpcDevice extends BaseDevice {
+public class MjDevice extends BaseDevice {
+    @Resource
+    RedisUtil redisUtil;
     @Autowired
     private CommonDevice commonDevice;
-
     @Autowired
     private JdbcTemplate sqlServerJdbcTemple;
-
+    @Value("${AcssDoorOpenUrl}")
+    private String AcssDoorOpenUrl;
 
     @Override
     public void sendMessage(DeviceMessage dm) {
@@ -94,7 +100,7 @@ public class MJEpcDevice extends BaseDevice {
                 }
 
                 //3.非法开门 1报警0正常
-                DeviceMessage illegalOpenAlarm = deviceParamMap.get(pointNumber.concat("_wD_IllegalOpenAlarm"));
+                DeviceMessage illegalOpenAlarm = deviceParamMap.get(pointNumber.concat("_tamperAlarm"));
                 if (Objects.nonNull(illegalOpenAlarm) && StringUtils.isNotEmpty(broken)) {
                     if (broken.equals("1")) {
                         illegalOpenAlarm.setValue("1");
@@ -107,10 +113,10 @@ public class MJEpcDevice extends BaseDevice {
                     }
                 }
 
-                //4.开关状态 1报警0正常
+                //4.开关状态 1开0关
                 DeviceMessage openStatus = deviceParamMap.get(pointNumber.concat("_openStatus"));
                 if (Objects.nonNull(openStatus) && StringUtils.isNotEmpty(opened)) {
-                    if (opened.equals("1") || opened.equals("2")) {
+                    if (opened.equals("11") || opened.equals("12")) {
                         openStatus.setValue("1");
                         log.info("门禁采集器发送开关状态数据：{}", JSON.toJSONString(openStatus));
                         sendMessage(openStatus);
@@ -125,9 +131,25 @@ public class MJEpcDevice extends BaseDevice {
         return true;
     }
 
+
     @Override
     public void dispatchCommand(String meter, Integer funcid, String value, String message) throws Exception {
+        commonDevice.feedback(message);
+        DeviceMessage deviceMessage = controlParamMap.get(meter + "-" + funcid);
+        if (ObjectUtils.isNotEmpty(deviceMessage) && StringUtils.isNotBlank(deviceMessage.getOutParamId())
+                && deviceMessage.getOutParamId().endsWith("equipSwitchSet")) {
+            String outParamId = deviceMessage.getOutParamId();
+            if (redisUtil.hasKey(outParamId)) {
+                return;
+            }
+            redisUtil.set(outParamId, "0", 5);
+            final String[] strings = deviceMessage.getOutParamId().split("_");
+            String acssDoorOpenUrl = AcssDoorOpenUrl + "&controllerno=" + strings[0] + "&doorno=" + strings[1];
+            final String constent = HttpUtil.get(acssDoorOpenUrl);
+            log.info("发送开门指令地址为：{}返回：{}", acssDoorOpenUrl, JSONObject.toJSONString(constent));
+        }
     }
+
 
     @Override
     public boolean processData(String... obj) throws Exception {
