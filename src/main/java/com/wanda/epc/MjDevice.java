@@ -1,7 +1,6 @@
 package com.wanda.epc;
 
 import cn.hutool.http.HttpUtil;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.wanda.epc.common.RedisUtil;
 import com.wanda.epc.device.BaseDevice;
@@ -20,7 +19,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author LianYanFei
@@ -72,58 +70,54 @@ public class MjDevice extends BaseDevice {
                 //点位编号
                 String pointNumber = controllerNo.concat("_").concat(doorNo);
                 //1.连接状态 - 在离线  1在线0离线
-                DeviceMessage connectStatus = deviceParamMap.get(pointNumber.concat("_onlineStatus"));
-                if (Objects.nonNull(connectStatus) && StringUtils.isNotEmpty(connected)) {
+                List<DeviceMessage> connectStatus = deviceParamListMap.get(pointNumber.concat("_onlineStatus"));
+                if (!CollectionUtils.isEmpty(connectStatus) && StringUtils.isNotEmpty(connected)) {
+                    String value = "0";
                     if (connected.equals("1")) {
-                        connectStatus.setValue("1");
-                        log.info("门禁采集器发送设备在线数据：{}", JSON.toJSONString(connectStatus));
-                        sendMessage(connectStatus);
-                    } else {
-                        connectStatus.setValue("0");
-                        log.info("门禁采集器发送设备离线数据：{}", JSON.toJSONString(connectStatus));
-                        sendMessage(connectStatus);
+                        value = "1";
+                    }
+                    for (DeviceMessage deviceMessage : connectStatus) {
+                        deviceMessage.setValue(value);
+                        sendMessage(deviceMessage);
                     }
                 }
 
                 //2.门超时报警 1报警0正常
-                DeviceMessage openDoorOverTimeAlarm = deviceParamMap.get(pointNumber.concat("_wD_openDoorOverTimeAlarm"));
-                if (Objects.nonNull(openDoorOverTimeAlarm) && StringUtils.isNotEmpty(openedTimeout)) {
+                List<DeviceMessage> openDoorOverTimeAlarms = deviceParamListMap.get(pointNumber.concat("_wD_openDoorOverTimeAlarm"));
+                if (!CollectionUtils.isEmpty(openDoorOverTimeAlarms) && StringUtils.isNotEmpty(openedTimeout)) {
+                    String value = "0";
                     if (openedTimeout.equals("1")) {
-                        openDoorOverTimeAlarm.setValue("1");
-                        log.info("门禁采集器发送探头超时状态数据：{}", JSON.toJSONString(openDoorOverTimeAlarm));
-                        sendMessage(openDoorOverTimeAlarm);
-                    } else {
-                        openDoorOverTimeAlarm.setValue("0");
-                        log.info("门禁采集器发送探头超时状态数据：{}", JSON.toJSONString(openDoorOverTimeAlarm));
-                        sendMessage(openDoorOverTimeAlarm);
+                        value = "1";
+                    }
+                    for (DeviceMessage deviceMessage : openDoorOverTimeAlarms) {
+                        deviceMessage.setValue(value);
+                        sendMessage(deviceMessage);
                     }
                 }
 
                 //3.非法开门 1报警0正常
-                DeviceMessage illegalOpenAlarm = deviceParamMap.get(pointNumber.concat("_tamperAlarm"));
-                if (Objects.nonNull(illegalOpenAlarm) && StringUtils.isNotEmpty(broken)) {
+                List<DeviceMessage> illegalOpenAlarms = deviceParamListMap.get(pointNumber.concat("_tamperAlarm"));
+                if (!CollectionUtils.isEmpty(illegalOpenAlarms) && StringUtils.isNotEmpty(broken)) {
+                    String value = "0";
                     if (broken.equals("1")) {
-                        illegalOpenAlarm.setValue("1");
-                        log.info("门禁采集器发送非法开门状态数据：{}", JSON.toJSONString(illegalOpenAlarm));
-                        sendMessage(illegalOpenAlarm);
-                    } else {
-                        illegalOpenAlarm.setValue("0");
-                        log.info("门禁采集器发送非法开门状态数据：{}", JSON.toJSONString(illegalOpenAlarm));
-                        sendMessage(illegalOpenAlarm);
+                        value = "1";
+                    }
+                    for (DeviceMessage deviceMessage : illegalOpenAlarms) {
+                        deviceMessage.setValue(value);
+                        sendMessage(deviceMessage);
                     }
                 }
 
                 //4.开关状态 1开0关
-                DeviceMessage openStatus = deviceParamMap.get(pointNumber.concat("_openStatus"));
-                if (Objects.nonNull(openStatus) && StringUtils.isNotEmpty(opened)) {
+                List<DeviceMessage> openStatus = deviceParamListMap.get(pointNumber.concat("_openStatus"));
+                if (!CollectionUtils.isEmpty(openStatus) && StringUtils.isNotEmpty(opened)) {
+                    String value = "0";
                     if (opened.equals("11") || opened.equals("12")) {
-                        openStatus.setValue("1");
-                        log.info("门禁采集器发送开关状态数据：{}", JSON.toJSONString(openStatus));
-                        sendMessage(openStatus);
-                    } else {
-                        openStatus.setValue("0");
-                        log.info("门禁采集器发送开关状态数据：{}", JSON.toJSONString(openStatus));
-                        sendMessage(openStatus);
+                        value = "1";
+                    }
+                    for (DeviceMessage deviceMessage : openStatus) {
+                        deviceMessage.setValue(value);
+                        sendMessage(deviceMessage);
                     }
                 }
             }
