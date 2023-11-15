@@ -73,7 +73,7 @@ public class DaHuaDoorDevice extends BaseDevice {
         loginMap.clear();
         userMap.clear();
         LoginModule.init(DefaultDisConnect.GetInstance(), DefaultHaveReconnect.getINSTANCE());
-        deviceParamMap.entrySet().forEach(key -> {
+        deviceParamListMap.entrySet().forEach(key -> {
             String ip = key.getKey();
             String[] param = ip.split("_");
             String doorIp = param[0];
@@ -92,7 +92,7 @@ public class DaHuaDoorDevice extends BaseDevice {
     @Override
     public boolean processData() throws Exception {
         Queue<String> allIp = new LinkedList<String>();
-        deviceParamMap.entrySet().forEach(entry -> {
+        deviceParamListMap.entrySet().forEach(entry -> {
             List<String> ipList = Arrays.asList(entry.getKey().split("_"));
             if (ipList.size() == 2) {
                 String online = ipList.get(1);
