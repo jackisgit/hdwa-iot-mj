@@ -1,4 +1,4 @@
-package com.wanda.epc;
+package com.wanda.epc.device;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -16,11 +16,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 public class CommonTask {
 
     @Autowired
-    private MJEpcDevice device;
+    private MjHandler mjHandler;
 
     @Scheduled(cron = "${jobs.cron:0/30 * * * * ?}")
     public boolean processData() throws Exception {
-        return device.processData();
+        return mjHandler.processData();
     }
 
 }

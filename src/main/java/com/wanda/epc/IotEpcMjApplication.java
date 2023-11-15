@@ -6,10 +6,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
 @EnableAsync
-public class IotEpaApplication {
+public class IotEpcMjApplication {
 
-    public static void main(String[] args)  {
-        SpringApplication.run(IotEpaApplication.class, args);
+    public static void main(String[] args) {
+        SpringApplication.run(IotEpcMjApplication.class, args);
     }
 
 }

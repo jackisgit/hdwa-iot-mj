@@ -16,15 +16,10 @@
             <version>${iot_epc_common.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.microsoft</groupId>
-            <artifactId>sqljdbc4</artifactId>
-            <version>3.0</version>
-        </dependency>
-
+        <!-- 实现对 Spring MVC 的自动化配置 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
     </dependencies>
 

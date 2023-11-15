@@ -11,15 +11,12 @@ mqtt:
   isOpen: true
   qos: 1
 
-beanName: mJEpcDevice
+beanName: mjHandler
 spring:
   profiles:
-    active: jinan_weijiazhuang
+    active: zhangzhou_xiangcheng
   #redis配置
   redis:
     host: 127.0.0.1
     port: 16379
     password:
-
-jobs:
-  cron: 0/60 * * * * ?

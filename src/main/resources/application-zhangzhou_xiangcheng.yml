@@ -1,0 +1,13 @@
+#广场ID及GatewayId
+epc:
+  gatewayId: FD
+  gcId: 5001130030
+  subsystem: mjgl/
+  threadNum: 1
+netty:
+  port: 60000
+jobs:
+  cron: 0/30 * * * * ?
+
+
+
