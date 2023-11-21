@@ -26,7 +26,6 @@ import java.util.*;
 public class StatusDevice extends BaseDevice {
 
 
-
     @Autowired
     CommonDevice commonDevice;
 
@@ -46,7 +45,7 @@ public class StatusDevice extends BaseDevice {
         //当前时间 转为 长整型 Long
         Long begin = beginTime.getTime();
         Queue<String> nvrIp = new LinkedList<String>();
-        deviceParamMap.entrySet().forEach(entry -> {
+        deviceParamListMap.entrySet().forEach(entry -> {
             List<String> ipList = Arrays.asList(entry.getKey().split("_"));
             if (ipList.size() == 2) {
                 nvrIp.offer(ipList.get(0));
