@@ -26,6 +26,7 @@ import java.util.*;
 public class StatusDevice extends BaseDevice {
 
 
+
     @Autowired
     CommonDevice commonDevice;
 
