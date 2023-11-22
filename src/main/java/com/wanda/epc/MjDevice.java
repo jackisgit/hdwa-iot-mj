@@ -96,7 +96,7 @@ public class MjDevice extends BaseDevice {
                 }
 
                 //3.非法开门 1报警0正常
-                List<DeviceMessage> illegalOpenAlarms = deviceParamListMap.get(pointNumber.concat("_tamperAlarm"));
+                List<DeviceMessage> illegalOpenAlarms = deviceParamListMap.get(pointNumber.concat("_wD_IllegalOpenAlarm"));
                 if (!CollectionUtils.isEmpty(illegalOpenAlarms) && StringUtils.isNotEmpty(broken)) {
                     String value = "0";
                     if (broken.equals("1")) {
