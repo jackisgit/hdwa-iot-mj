@@ -8,8 +8,6 @@ import com.wanda.epc.device.dto.DoorStateDto;
 import com.wanda.epc.device.dto.DoorStateResultDto;
 import com.wanda.epc.device.utils.TokenGenerateUtil;
 import com.wanda.epc.param.DeviceMessage;
-import com.wanda.epc.util.ConvertUtil;
-import io.netty.util.internal.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +16,10 @@ import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * @author LianYanFei
@@ -37,7 +38,6 @@ public class CarsafeControlDevice extends BaseDevice {
 
     @Value("${access.doorStatusUrl}")
     private String doorStatusUrl;
-
 
     @Override
     public void sendMessage(DeviceMessage dm) {
@@ -59,7 +59,6 @@ public class CarsafeControlDevice extends BaseDevice {
         return true;
     }
 
-
     /**
      * @description 采集在离线
      * @author LianYanFei
@@ -67,12 +66,13 @@ public class CarsafeControlDevice extends BaseDevice {
      */
     public void olineStatus(DoorStateDto doorStateDto) {
         List<DeviceMessage> deviceMessageList = deviceParamListMap.get(doorStateDto.getControllerno().concat("_").concat(doorStateDto.getDoorno()).concat("_onlineStatus"));
+        if (CollectionUtils.isEmpty(deviceMessageList)) {
+            return;
+        }
         deviceMessageList.forEach(deviceMessage -> {
-            if (deviceMessage != null) {
-                deviceMessage.setValue(doorStateDto.getConnected());
-                sendMessage(deviceMessage);
-                log.info("采集发送在离线状态数据：{}", JSON.toJSONString(deviceMessage));
-            }
+            deviceMessage.setValue(doorStateDto.getConnected());
+            sendMessage(deviceMessage);
+            log.info("采集发送在离线状态数据：{}", JSON.toJSONString(deviceMessage));
         });
     }
 
@@ -83,16 +83,17 @@ public class CarsafeControlDevice extends BaseDevice {
      */
     public void openStatus(DoorStateDto doorStateDto) {
         List<DeviceMessage> deviceMessageList = deviceParamListMap.get(doorStateDto.getControllerno().concat("_").concat(doorStateDto.getDoorno()).concat("_openStatus"));
+        if (CollectionUtils.isEmpty(deviceMessageList)) {
+            return;
+        }
         deviceMessageList.forEach(deviceMessage -> {
-            if (deviceMessage != null) {
-                if (doorStateDto.getOpened().equals("1") || doorStateDto.getOpened().equals("2")) {
-                    deviceMessage.setValue("1");
-                } else {
-                    deviceMessage.setValue("0");
-                }
-                sendMessage(deviceMessage);
-                log.info("采集发送在开关状态数据：{}", JSON.toJSONString(deviceMessage));
+            if (doorStateDto.getOpened().equals("1") || doorStateDto.getOpened().equals("2")) {
+                deviceMessage.setValue("1");
+            } else {
+                deviceMessage.setValue("0");
             }
+            sendMessage(deviceMessage);
+            log.info("采集发送在开关状态数据：{}", JSON.toJSONString(deviceMessage));
         });
     }
 
@@ -103,16 +104,17 @@ public class CarsafeControlDevice extends BaseDevice {
      */
     public void faultStatus(DoorStateDto doorStateDto) {
         List<DeviceMessage> deviceMessageList = deviceParamListMap.get(doorStateDto.getControllerno().concat("_").concat(doorStateDto.getDoorno()).concat("_faultStatus"));
+        if (CollectionUtils.isEmpty(deviceMessageList)) {
+            return;
+        }
         deviceMessageList.forEach(deviceMessage -> {
-            if (deviceMessage != null) {
-                if (doorStateDto.getConnected().equals("0")) {
-                    deviceMessage.setValue("1");
-                } else {
-                    deviceMessage.setValue("0");
-                }
-                sendMessage(deviceMessage);
-                log.info("采集发送故障状态数据：{}", JSON.toJSONString(deviceMessage));
+            if (doorStateDto.getConnected().equals("0")) {
+                deviceMessage.setValue("1");
+            } else {
+                deviceMessage.setValue("0");
             }
+            sendMessage(deviceMessage);
+            log.info("采集发送故障状态数据：{}", JSON.toJSONString(deviceMessage));
         });
     }
 
@@ -123,16 +125,17 @@ public class CarsafeControlDevice extends BaseDevice {
      */
     public void tamperAlarm(DoorStateDto doorStateDto) {
         List<DeviceMessage> deviceMessageList = deviceParamListMap.get(doorStateDto.getControllerno().concat("_").concat(doorStateDto.getDoorno()).concat("_tamperAlarm"));
+        if (CollectionUtils.isEmpty(deviceMessageList)) {
+            return;
+        }
         deviceMessageList.forEach(deviceMessage -> {
-            if (deviceMessage != null) {
-                if (doorStateDto.getBroken().equals("1")) {
-                    deviceMessage.setValue("1");
-                } else {
-                    deviceMessage.setValue("0");
-                }
-                sendMessage(deviceMessage);
-                log.info("采集发送防拆报警数据：{}", JSON.toJSONString(deviceMessage));
+            if (doorStateDto.getBroken().equals("1")) {
+                deviceMessage.setValue("1");
+            } else {
+                deviceMessage.setValue("0");
             }
+            sendMessage(deviceMessage);
+            log.info("采集发送防拆报警数据：{}", JSON.toJSONString(deviceMessage));
         });
     }
 
@@ -143,23 +146,23 @@ public class CarsafeControlDevice extends BaseDevice {
      */
     public void openDoorOverTimeAlarm(DoorStateDto doorStateDto) {
         List<DeviceMessage> deviceMessageList = deviceParamListMap.get(doorStateDto.getControllerno().concat("_").concat(doorStateDto.getDoorno()).concat("_openDoorOverTimeAlarm"));
+        if (CollectionUtils.isEmpty(deviceMessageList)) {
+            return;
+        }
         deviceMessageList.forEach(deviceMessage -> {
-            if (deviceMessage != null) {
-                if (doorStateDto.getOpenedtimeout().equals("1")) {
-                    deviceMessage.setValue("1");
-                } else {
-                    deviceMessage.setValue("0");
-                }
-                sendMessage(deviceMessage);
-                log.info("采集发送超时未关门报警数据：{}", JSON.toJSONString(deviceMessage));
+            if (doorStateDto.getOpenedtimeout().equals("1")) {
+                deviceMessage.setValue("1");
+            } else {
+                deviceMessage.setValue("0");
             }
+            sendMessage(deviceMessage);
+            log.info("采集发送超时未关门报警数据：{}", JSON.toJSONString(deviceMessage));
         });
     }
 
-
     @Override
     public void dispatchCommand(String meter, Integer funcid, String value, String message) throws Exception {
-        DeviceMessage deviceMessage = super.controlParamMap.get(meter + "-" + funcid);
+        DeviceMessage deviceMessage = controlParamMap.get(meter + "-" + funcid);
         if (deviceMessage != null && deviceMessage.getOutParamId() != null && deviceMessage.getOutParamId().endsWith("equipSwitchSet")) {
             //如果为开
             if (value.equals("1.0")) {
@@ -191,48 +194,38 @@ public class CarsafeControlDevice extends BaseDevice {
         return false;
     }
 
-
     /**
      * @description 门禁开门
      * @author LianYanFei
      * @date 2023/7/28
      */
     public Boolean openDoor(String controllerNo, String doorNo) {
-
         try {
             Map<String, String> dataMap = new HashMap<>();
             dataMap.put("controllerno", controllerNo);
             dataMap.put("doorno", doorNo);
-
             String dataStr = JSONObject.toJSONString(dataMap);
             Object data = JSONObject.parse(dataStr); //从String转换成Object类型 "data":{}与"data":"{}" 区别
-
-
             // 获取当前日期时间
             LocalDateTime currentDateTime = LocalDateTime.now();
             // 定义日期时间格式
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             // 格式化当前日期时间为指定格式的字符串
             String nowDateTime = currentDateTime.format(formatter);
-
             Map<String, Object> validateMap = new HashMap<String, Object>();
             validateMap.put("from", "UT");// caller
             validateMap.put("timestamp", nowDateTime);// timestemp
             validateMap.put("nonce", String.valueOf(randomMath()));// nonce
-
             String signing = TokenGenerateUtil.signing(validateMap);
             log.info("门禁开门signing: {}", signing);
             signing = signing + data;  //此处追加data进行加密
             String sign = TokenGenerateUtil.encode(signing, privateKey);
-
             validateMap.put("sign", sign);
             validateMap.put("branchno", "1");
             validateMap.put("queryFormat", null);
-
             validateMap.put("data", data);
             String postString = JSONObject.toJSONString(validateMap);
             log.info("开门请求参数：{}", postString);
-
             String result = TokenGenerateUtil.sendPost(doorOpenUrl, postString);
             JSONObject jsonObject = (JSONObject) JSONPath.eval(result, "$.data");
             Integer flag = jsonObject.getInteger("flag");
@@ -241,11 +234,10 @@ public class CarsafeControlDevice extends BaseDevice {
                 return true;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("开门结果异常", e);
         }
         return false;
     }
-
 
     /**
      * @description 门禁列表
@@ -253,7 +245,6 @@ public class CarsafeControlDevice extends BaseDevice {
      * @date 2023/7/28
      */
     public List<DoorStateDto> doorStateList() {
-
         try {
             // 获取当前日期时间
             LocalDateTime currentDateTime = LocalDateTime.now();
@@ -261,24 +252,19 @@ public class CarsafeControlDevice extends BaseDevice {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             // 格式化当前日期时间为指定格式的字符串
             String nowDateTime = currentDateTime.format(formatter);
-
             Map<String, Object> validateMap = new HashMap<String, Object>();
             validateMap.put("from", "UT");// caller
             validateMap.put("timestamp", nowDateTime);// timestemp
             validateMap.put("nonce", String.valueOf(randomMath()));// nonce
-
             String signing = TokenGenerateUtil.signing(validateMap);
             log.info("门禁列表signing:{}", signing);
             String sign = TokenGenerateUtil.encode(signing, privateKey);
-
             validateMap.put("sign", sign);
             validateMap.put("branchno", "1");
             validateMap.put("queryFormat", null);
             validateMap.put("data", null);
             String postString = JSONObject.toJSONString(validateMap);
             log.info("门禁门状态列表请求参数：{}", postString);
-
-
             String result = TokenGenerateUtil.sendPost(doorStatusUrl, postString);
             log.info("门禁门状态列表结果集：{}", result);
             if (StringUtils.isNotBlank(result)) {
@@ -287,7 +273,7 @@ public class CarsafeControlDevice extends BaseDevice {
                 return doorStateDtoList;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("门禁门状态列表结果集异常", e);
         }
         return null;
     }
