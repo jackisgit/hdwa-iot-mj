@@ -227,9 +227,9 @@ public class CarsafeControlDevice extends BaseDevice {
             String postString = JSONObject.toJSONString(validateMap);
             log.info("开门请求参数：{}", postString);
             String result = TokenGenerateUtil.sendPost(doorOpenUrl, postString);
+            log.info("开门结果集：{}", result);
             JSONObject jsonObject = (JSONObject) JSONPath.eval(result, "$.data");
             Integer flag = jsonObject.getInteger("flag");
-            log.info("开门结果集：{}", result);
             if (flag == 1) {
                 return true;
             }
