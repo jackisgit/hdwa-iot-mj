@@ -64,11 +64,14 @@ public class HikVisionDoorDevice extends BaseDevice {
                 String strDllPath = "";
                 try {
                     if (osSelect.isWindows())
-                        //win系统加载库路径
+                    //win系统加载库路径
+                    {
                         strDllPath = System.getProperty("user.dir") + "\\lib\\HCNetSDK.dll";
-                    else if (osSelect.isLinux())
-                        //Linux系统加载库路径
+                    } else if (osSelect.isLinux())
+                    //Linux系统加载库路径
+                    {
                         strDllPath = System.getProperty("user.dir") + "/lib/libhcnetsdk.so";
+                    }
                     hCNetSDK = (HCNetSDK) Native.loadLibrary(strDllPath, HCNetSDK.class);
                 } catch (Exception ex) {
                     log.info("loadLibrary: " + strDllPath + " Error: " + ex.getMessage());
@@ -81,7 +84,7 @@ public class HikVisionDoorDevice extends BaseDevice {
 
     @PostConstruct
     public void init() {
-        deviceParamMap.entrySet().forEach(key -> {
+        deviceParamListMap.entrySet().forEach(key -> {
             String[] param = key.getKey().split("_");
             String ip = param[0];
             ipSet.add(ip);
@@ -282,14 +285,14 @@ public class HikVisionDoorDevice extends BaseDevice {
      */
 
     public void llegalOpenAlarm() {
-        deviceParamMap.entrySet().forEach(key -> {
+        deviceParamListMap.entrySet().forEach(key -> {
             if (key.getKey().endsWith("_wD_IllegalOpenAlarm")) {
-                log.info("非法开门报警：{}", key.getKey());
-                DeviceMessage deviceMessage = deviceParamMap.get(key.getKey());
-                if (Objects.nonNull(deviceMessage)) {
-                    deviceMessage.setValue("0");
-                    log.info("发送门禁设备非法开门报警数据==={}", deviceMessage.getOutParamId(), JSON.toJSONString(deviceMessage));
-                    sendMessage(deviceMessage);
+                List<DeviceMessage> deviceMessages = deviceParamListMap.get(key.getKey());
+                if (!CollectionUtils.isEmpty(deviceMessages)) {
+                    deviceMessages.forEach(deviceMessage -> {
+                        deviceMessage.setValue("0");
+                        sendMessage(deviceMessage);
+                    });
                 }
             }
         });
@@ -301,15 +304,14 @@ public class HikVisionDoorDevice extends BaseDevice {
      * @date 2023/4/18
      */
     public void openDoorOverTimeAlarm() {
-        log.info("_wD_openDoorOverTimeAlarm");
-        deviceParamMap.entrySet().forEach(key -> {
+        deviceParamListMap.entrySet().forEach(key -> {
             if (key.getKey().endsWith("_wD_openDoorOverTimeAlarm")) {
-                log.info("长时间未关门报警：{}", key.getKey());
-                DeviceMessage deviceMessage = deviceParamMap.get(key.getKey());
-                if (Objects.nonNull(deviceMessage)) {
-                    deviceMessage.setValue("0");
-                    log.info("发送门禁设备长时间未关门报警数据==={}", deviceMessage.getOutParamId(), JSON.toJSONString(deviceMessage));
-                    sendMessage(deviceMessage);
+                List<DeviceMessage> deviceMessages = deviceParamListMap.get(key.getKey());
+                if (!CollectionUtils.isEmpty(deviceMessages)) {
+                    deviceMessages.forEach(deviceMessage -> {
+                        deviceMessage.setValue("0");
+                        sendMessage(deviceMessage);
+                    });
                 }
             }
         });
@@ -322,11 +324,12 @@ public class HikVisionDoorDevice extends BaseDevice {
      * @return
      */
     public void wD_openDoorOverTimeAlarm(String ip) {
-        DeviceMessage deviceMessage = deviceParamMap.get(ip.concat("_wD_openDoorOverTimeAlarm"));
-        if (Objects.nonNull(deviceMessage)) {
-            deviceMessage.setValue("0");
-            log.info("发送门禁常开==={}", deviceMessage.getOutParamId(), JSON.toJSONString(deviceMessage));
-            sendMessage(deviceMessage);
+        List<DeviceMessage> deviceMessages = deviceParamListMap.get(ip.concat("_wD_openDoorOverTimeAlarm"));
+        if (!CollectionUtils.isEmpty(deviceMessages)) {
+            deviceMessages.forEach(deviceMessage -> {
+                deviceMessage.setValue("0");
+                sendMessage(deviceMessage);
+            });
         }
     }
 
@@ -374,11 +377,11 @@ public class HikVisionDoorDevice extends BaseDevice {
         HCNetSDK.NET_DVR_DEVICEINFO_V40 m_strDeviceInfo = new HCNetSDK.NET_DVR_DEVICEINFO_V40();
         HCNetSDK.NET_DVR_USER_LOGIN_INFO m_strLoginInfo = new HCNetSDK.NET_DVR_USER_LOGIN_INFO();
         // 注册设备-登录参数，包括设备地址、登录用户、密码等
-        m_strLoginInfo.sDeviceAddress = new byte[hCNetSDK.NET_DVR_DEV_ADDRESS_MAX_LEN];
+        m_strLoginInfo.sDeviceAddress = new byte[HCNetSDK.NET_DVR_DEV_ADDRESS_MAX_LEN];
         System.arraycopy(sDeviceIP.getBytes(), 0, m_strLoginInfo.sDeviceAddress, 0, sDeviceIP.length());
-        m_strLoginInfo.sUserName = new byte[hCNetSDK.NET_DVR_LOGIN_USERNAME_MAX_LEN];
+        m_strLoginInfo.sUserName = new byte[HCNetSDK.NET_DVR_LOGIN_USERNAME_MAX_LEN];
         System.arraycopy(sUserName.getBytes(), 0, m_strLoginInfo.sUserName, 0, sUserName.length());
-        m_strLoginInfo.sPassword = new byte[hCNetSDK.NET_DVR_LOGIN_PASSWD_MAX_LEN];
+        m_strLoginInfo.sPassword = new byte[HCNetSDK.NET_DVR_LOGIN_PASSWD_MAX_LEN];
         System.arraycopy(sPassWord.getBytes(), 0, m_strLoginInfo.sPassword, 0, sPassWord.length());
         m_strLoginInfo.wPort = Short.parseShort(String.valueOf(iPort));
         m_strLoginInfo.bUseAsynLogin = false; //是否异步登录：0- 否，1- 是
