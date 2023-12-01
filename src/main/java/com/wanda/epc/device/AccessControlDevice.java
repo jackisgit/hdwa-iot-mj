@@ -98,19 +98,16 @@ public class AccessControlDevice extends BaseDevice {
 
         //4.获取历史事件
         List<DoorEventDto> doorEvents = getDoorEvents(userUid);
-        for (String uuid : doorUuid) {
-
-        }
-
         for (DoorEventDto doorEventDto : doorEvents) {
             //设备防拆报警
             if (doorEventDto.getDeviceType().equals(tamperAlarm)) {
                 String outParamOnline = doorEventDto.getDoorUuid() + "_tamperAlarm";
-                DeviceMessage deviceMessageOnline = deviceParamMap.get(outParamOnline);
-                if (deviceMessageOnline != null) {
-                    deviceMessageOnline.setValue("1");
-                    sendMessage(deviceMessageOnline);
-                    log.info("采集到门禁{}产生{}", doorEventDto.getDoorUuid(), "设备防拆报警");
+                List<DeviceMessage> deviceMessageOnlines = deviceParamListMap.get(outParamOnline);
+                if (!CollectionUtils.isEmpty(deviceMessageOnlines)) {
+                    deviceMessageOnlines.forEach(deviceMessage -> {
+                        deviceMessage.setValue("1");
+                        sendMessage(deviceMessage);
+                    });
                 }
                 //删除报警的设备
                 doorUuid.remove(doorEventDto.getDoorUuid());
@@ -119,25 +116,31 @@ public class AccessControlDevice extends BaseDevice {
             //开门超时报警
             if (doorEventDto.getDeviceType().equals(openTimeoutAlarm)) {
                 String outParamOnline = doorEventDto.getDoorUuid() + "_openTimeoutAlarm";
-                DeviceMessage deviceMessageOnline = deviceParamMap.get(outParamOnline);
-                if (deviceMessageOnline != null) {
-                    deviceMessageOnline.setValue("1");
-                    sendMessage(deviceMessageOnline);
-                    log.info("采集到门禁{}产生{}", doorEventDto.getDoorUuid(), "开门超时报警");
+                List<DeviceMessage> deviceMessageOnlines = deviceParamListMap.get(outParamOnline);
+                if (!CollectionUtils.isEmpty(deviceMessageOnlines)) {
+                    deviceMessageOnlines.forEach(deviceMessage -> {
+                        deviceMessage.setValue("1");
+                        sendMessage(deviceMessage);
+                    });
+
                 }
                 doorUuid.remove(doorEventDto.getDoorUuid());
             }
         }
         for (String uuid : doorUuid) {
-            DeviceMessage deviceMessageTamper = deviceParamMap.get(uuid + "_tamperAlarm");
-            if (deviceMessageTamper != null) {
-                deviceMessageTamper.setValue("0");
-                sendMessage(deviceMessageTamper);
+            List<DeviceMessage> deviceMessageTampers = deviceParamListMap.get(uuid + "_tamperAlarm");
+            if (!CollectionUtils.isEmpty(deviceMessageTampers)) {
+                deviceMessageTampers.forEach(deviceMessage -> {
+                    deviceMessage.setValue("0");
+                    sendMessage(deviceMessage);
+                });
             }
-            DeviceMessage deviceMessageTimeout = deviceParamMap.get(uuid + "_openTimeoutAlarm");
-            if (deviceMessageTimeout != null) {
-                deviceMessageTimeout.setValue("0");
-                sendMessage(deviceMessageTimeout);
+            List<DeviceMessage> deviceMessageTimeouts = deviceParamListMap.get(uuid + "_openTimeoutAlarm");
+            if (!CollectionUtils.isEmpty(deviceMessageTimeouts)) {
+                deviceMessageTimeouts.forEach(deviceMessage -> {
+                    deviceMessage.setValue("0");
+                    sendMessage(deviceMessage);
+                });
             }
         }
         return true;
@@ -308,11 +311,12 @@ public class AccessControlDevice extends BaseDevice {
         List<DeviceStatusDto> deviceStatusList = list.toJavaList(DeviceStatusDto.class);
         deviceStatusList.forEach(deviceStatus -> {
             String outParam = deviceStatus.getDoorUuid() + "_doorStatus";
-            DeviceMessage deviceMessage = deviceParamMap.get(outParam);
-            if (deviceMessage != null && StringUtils.isNotEmpty(deviceStatus.getDoorStatus())) {
-                deviceMessage.setValue(deviceStatus.getDoorStatus());
-                sendMessage(deviceMessage);
-                log.info("{}门禁开关状态采集：{}", outParam, deviceStatus.getDoorStatus());
+            List<DeviceMessage> deviceMessages = deviceParamListMap.get(outParam);
+            if (!CollectionUtils.isEmpty(deviceMessages) && StringUtils.isNotEmpty(deviceStatus.getDoorStatus())) {
+                deviceMessages.forEach(deviceMessage -> {
+                    deviceMessage.setValue(deviceStatus.getDoorStatus());
+                    sendMessage(deviceMessage);
+                });
             }
         });
         return deviceStatusList;
