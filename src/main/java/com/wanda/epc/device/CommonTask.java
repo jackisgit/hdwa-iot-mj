@@ -19,8 +19,8 @@ public class CommonTask {
     private DeviceHandler deviceHandler;
 
     @Scheduled(cron = "${jobs.cron:0/30 * * * * ?}")
-    public boolean processData() throws Exception {
-        return deviceHandler.processData();
+    public void getOnlineStatus() throws Exception {
+        deviceHandler.getOnlineStatus();
     }
 
     @Scheduled(cron = "${40 10 * * * ?}")

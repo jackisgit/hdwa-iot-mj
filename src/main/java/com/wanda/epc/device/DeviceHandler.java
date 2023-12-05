@@ -3,9 +3,10 @@ package com.wanda.epc.device;
 import cn.hutool.core.codec.Base64;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
-import com.wanda.epc.DTO.AlarmDTO;
+import com.wanda.epc.DTO.*;
 import com.wanda.epc.param.DeviceMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -21,6 +22,7 @@ import java.security.KeyFactory;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.X509EncodedKeySpec;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,23 +99,55 @@ public class DeviceHandler extends BaseDevice {
     private String mqinfoURI = "/evo-apigw/evo-event/{0}/subscribe/mqinfo";
 
     public static void main(String[] args) {
-        String param="{\"channelCodes\":[\"1002725$7$0$1\", \"1002726$7$0$1\"],\"allowSmartLock\":false}";
+        String param = "{\"channelCodes\":[\"1002725$7$0$1\", \"1002726$7$0$1\"],\"allowSmartLock\":false}";
         System.out.println(param);
     }
 
-    public void test() {
+    public void getOnlineStatus() {
         String url = host + MessageFormat.format(treeSearchURI, version);
         log.info("接口:{}", url);
         String result = HttpRequest.post(url).body("{\"typeCode\":\"01;0;8;7\"}").addHeaders(header).timeout(2000).execute().body();
         log.info("接口:{},返回值:{}", url, result);
+        Object read = JSONPath.read(result, "$.data.children");
+        List<SearchDTO> searchDTOS = JSONArray.parseArray(String.valueOf(read), SearchDTO.class);
+        if (CollectionUtils.isEmpty(searchDTOS)) {
+            return;
+        }
+        List<String> idList = new ArrayList<>();
+        searchDTOS.forEach(searchDTO -> {
+            String id = searchDTO.getId().replace("ACC_", "");
+            String value = "1";
+            if (!"1".equals(searchDTO.getOnline())) {
+                value = "0";
+            }
+            sendMsg(id + "_onlineStatus", value);
+            idList.add(id);
+        });
+        getOpenStatus(idList);
     }
 
-    public void test2() {
-        String param="{\"channelCodes\":[\"1002725$7$0$1\", \"1002726$7$0$1\"],\"allowSmartLock\":false}";
+    public void getOpenStatus(List<String> idList) {
+        ChannelCodesDTO channelCodesDTO = new ChannelCodesDTO();
+        channelCodesDTO.setChannelCodes(idList);
+        channelCodesDTO.setAllowSmartLock(false);
+        String orderStr = JSONObject.toJSONString(channelCodesDTO);
         String url = host + MessageFormat.format(channelsURI, version);
         log.info("接口:{}", url);
-        String result = HttpRequest.post(url).addHeaders(header).timeout(2000).execute().body();
+        String result = HttpRequest.post(url).addHeaders(header).body(orderStr).timeout(2000).execute().body();
         log.info("接口:{},返回值:{}", url, result);
+        Object read = JSONPath.read(result, "$.data");
+        List<ChannelDTO> channelDTOS = JSONArray.parseArray(String.valueOf(read), ChannelDTO.class);
+        if (CollectionUtils.isEmpty(channelDTOS)) {
+            return;
+        }
+        channelDTOS.forEach(channelDTO -> {
+            String id = channelDTO.getChannelCode();
+            String value = "1";
+            if (!"1".equals(channelDTO.getStatus())) {
+                value = "0";
+            }
+            sendMsg(id + "_openStatus", value);
+        });
     }
 
 
@@ -217,17 +251,26 @@ public class DeviceHandler extends BaseDevice {
             }
             redisUtil.set(outParamId, "0", 5);
             final String[] strings = deviceMessage.getOutParamId().split("_");
-            String orderStr = "{\"channelCodeList\": [\"" + strings[0] + "\"]}";
+            ChannelCodeListDTO channelCodeListDTO = new ChannelCodeListDTO();
+            List<String> list = new ArrayList<>();
+            list.add(strings[0]);
+            channelCodeListDTO.setChannelCodeList(list);
+            String orderStr = JSONObject.toJSONString(channelCodeListDTO);
+            String url;
+            String result;
             if ("1.0".equals(value)) {
-                String url = host + MessageFormat.format(openDoorURI, version);
+                url = host + MessageFormat.format(openDoorURI, version);
                 log.info("接口:{}", url);
-                String result = HttpRequest.post(url).body(orderStr).addHeaders(header).timeout(2000).execute().body();
-                log.info("接口:{},返回值:{}", url, result);
+                result = HttpRequest.post(url).body(orderStr).addHeaders(header).timeout(2000).execute().body();
             } else {
-                String url = host + MessageFormat.format(closeDoorURI, version);
+                url = host + MessageFormat.format(closeDoorURI, version);
                 log.info("接口:{}", url);
-                String result = HttpRequest.post(url).body(orderStr).addHeaders(header).timeout(2000).execute().body();
-                log.info("接口:{},返回值:{}", url, result);
+                result = HttpRequest.post(url).body(orderStr).addHeaders(header).timeout(2000).execute().body();
+            }
+            log.info("接口:{},返回值:{}", url, result);
+            Object read = JSONPath.read(result, "$.success");
+            if (ObjectUtils.isNotEmpty(read) && !"false".equals(String.valueOf(read))) {
+                sendMsg(strings[0] + "_openStatus", value);
             }
         }
     }

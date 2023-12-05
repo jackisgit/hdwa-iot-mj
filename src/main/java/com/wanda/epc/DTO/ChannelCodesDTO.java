@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class StatusDTO {
+public class ChannelCodesDTO {
 
     private List<String> channelCodes;
 
