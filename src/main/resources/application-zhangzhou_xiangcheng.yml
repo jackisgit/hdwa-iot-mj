@@ -4,6 +4,15 @@ epc:
   gcId: 5001130030
   subsystem: mjgl/
   threadNum: 1
+  host: https://192.168.21.251
+  clientId: xswanda
+  clientSecret: 7028860d-4dc9-452a-ba50-03d5f6fe7bd5
+  grantType: password
+  username: system
+  password: dh@123456
+  version: 1.0.0
+  service: ThirdParty
+  localhost: 10.107.192.21
 netty:
   port: 60000
 jobs:

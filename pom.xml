@@ -25,7 +25,7 @@
 
 
     <build>
-        <finalName>IOT_EPC_MJ_fushi_odbc_${version}</finalName>
+        <finalName>IOT_EPC_MJ_dahua_API_${version}</finalName>
     </build>
 
 </project>
