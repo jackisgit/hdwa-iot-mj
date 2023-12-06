@@ -57,8 +57,6 @@ public class DeviceHandler extends BaseDevice {
     private String localhost;
     @Value("${server.port}")
     private String serverPort;
-    @Value("${epc.machineId}")
-    private String machineId;
     private String publicKey;
     private String encryptedText;
     private String Authorization;

@@ -1,6 +1,6 @@
 #广场ID及GatewayId
 epc:
-  gatewayId: FD
+  gatewayId: MJ
   gcId: 5001130030
   subsystem: mjgl/
   threadNum: 1

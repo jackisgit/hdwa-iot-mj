@@ -6,10 +6,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 /**
- * @program: iot_epc
- * @description: 变压器采集
- * @author: liuruishuo
- * @create: 2022-11-08 17:07
+ * @author: 孙率众
  **/
 @Configuration
 @EnableScheduling
@@ -23,7 +20,7 @@ public class CommonTask {
         deviceHandler.getOnlineStatus();
     }
 
-    @Scheduled(cron = "${40 10 * * * ?}")
+    @Scheduled(cron = "40 10 * * * ?")
     public void getToken() throws Exception {
         deviceHandler.init();
     }
