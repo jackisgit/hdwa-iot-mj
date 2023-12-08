@@ -11,7 +11,6 @@ import com.sun.jna.ptr.IntByReference;
 import com.wanda.epc.device.BaseDevice;
 import com.wanda.epc.device.CommonDevice;
 import com.wanda.epc.param.DeviceMessage;
-import com.wanda.epc.util.ConvertUtil;
 import com.wanda.epc.util.PingUtil;
 import com.wanda.epc.vto.AlarmAccessDataCB;
 import com.wanda.epc.vto.DefaultDisConnect;
@@ -43,21 +42,12 @@ public class DaHuaDoorDevice extends BaseDevice {
 
     @Autowired
     RedisTemplate redisTemplate;
-
+    List<NetSDKLib.LLong> LoginHandleList = new ArrayList<>();
+    HashMap<NetSDKLib.LLong, String> loginMap = new HashMap<>();
+    HashMap<String, NetSDKLib.LLong> userMap = new HashMap<>();
+    Set<String> ipSet = new HashSet<>();
     @Autowired
     private CommonDevice commonDevice;
-
-
-    List<NetSDKLib.LLong> LoginHandleList = new ArrayList<>();
-
-    HashMap<NetSDKLib.LLong, String> loginMap = new HashMap<>();
-
-    HashMap<String, NetSDKLib.LLong> userMap = new HashMap<>();
-
-
-    Set<String> ipSet = new HashSet<>();
-
-
     @Value("${m_strUser}")
     private String m_strUser;
 
@@ -134,6 +124,7 @@ public class DaHuaDoorDevice extends BaseDevice {
 
     /**
      * 开始监听
+     *
      * @param loginHandler
      * @return
      */
@@ -153,6 +144,7 @@ public class DaHuaDoorDevice extends BaseDevice {
 
     /**
      * 停止监听
+     *
      * @param loginHandler
      * @return
      */
@@ -222,20 +214,13 @@ public class DaHuaDoorDevice extends BaseDevice {
             if (!CollectionUtils.isEmpty(deviceMessageList)) {
                 deviceMessageList.forEach(deviceMessage -> {
                     if ("门打开".equals(stateType[doorStatus.emStateType])) {
-                        if (Objects.nonNull(deviceMessage)) {
-                            deviceMessage.setValue("1");
-                            log.info("门禁设备采集发送门打开状态数据：{}", JSON.toJSONString(deviceMessage));
-                            sendMessage(deviceMessage);
-                        }
+                        String value = "1";
+                    } else if ("门关闭".equals(stateType[doorStatus.emStateType])) {
+                        String value = "0";
+
                     }
-                    if ("门关闭".equals(stateType[doorStatus.emStateType])) {
-                        if (Objects.nonNull(deviceMessage)) {
-                            deviceMessage.setValue("0");
-                            log.info("门禁设备采集发送门开状态数据：{}", JSON.toJSONString(deviceMessage));
-                            sendMessage(deviceMessage);
-                        }
-                    }
-                    log.info("doorStatus-Channel:{},type:{}", doorStatus.nChannel, stateType[doorStatus.emStateType]);
+                    deviceMessage.setValue("0");
+                    sendMessage(deviceMessage);
                 });
             }
         });
@@ -298,6 +283,7 @@ public class DaHuaDoorDevice extends BaseDevice {
 
     /**
      * ping
+     *
      * @param allIp
      */
     private void ping(Queue<String> allIp) {
@@ -315,12 +301,8 @@ public class DaHuaDoorDevice extends BaseDevice {
                 List<DeviceMessage> deviceMessageList = deviceParamListMap.get(ip.concat("_onlineStatus"));
                 if (!CollectionUtils.isEmpty(deviceMessageList)) {
                     deviceMessageList.forEach(deviceMessage -> {
-                        if (deviceMessage != null) {
-                            deviceMessage.setValue("1");
-                            log.info("门禁设备采集发送在线状态数据：{}", JSON.toJSONString(deviceMessage));
-                            sendMessage(deviceMessage);
-                            log.info("门禁设备在线状态为在线" + "ip为" + ip);
-                        }
+                        deviceMessage.setValue("1");
+                        sendMessage(deviceMessage);
                     });
                 }
             });
@@ -338,6 +320,7 @@ public class DaHuaDoorDevice extends BaseDevice {
 
     /**
      * 重试
+     *
      * @param allIp
      */
     private void reload(Queue<String> allIp) {
@@ -356,11 +339,8 @@ public class DaHuaDoorDevice extends BaseDevice {
                 List<DeviceMessage> deviceMessageList = deviceParamListMap.get(ip.concat("_onlineStatus"));
                 if (!CollectionUtils.isEmpty(deviceMessageList)) {
                     deviceMessageList.forEach(deviceMessage -> {
-                        if (deviceMessage != null) {
-                            deviceMessage.setValue("1");
-                            log.info("重试设备采集发送在线状态数据：{}", JSON.toJSONString(deviceMessage));
-                            sendMessage(deviceMessage);
-                        }
+                        deviceMessage.setValue("1");
+                        sendMessage(deviceMessage);
                     });
                 }
             });
@@ -373,11 +353,8 @@ public class DaHuaDoorDevice extends BaseDevice {
                 List<DeviceMessage> deviceMessageList = deviceParamListMap.get(ip.concat("_onlineStatus"));
                 if (!CollectionUtils.isEmpty(deviceMessageList)) {
                     deviceMessageList.forEach(deviceMessage -> {
-                        if (deviceMessage != null) {
-                            deviceMessage.setValue("0");
-                            log.info("重试设备采集发送离线状态数据：{}", JSON.toJSONString(deviceMessage));
-                            sendMessage(deviceMessage);
-                        }
+                        deviceMessage.setValue("0");
+                        sendMessage(deviceMessage);
                     });
                 }
             });

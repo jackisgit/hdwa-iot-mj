@@ -57,7 +57,7 @@ public class LoginModule {
 		setLog.bSetPrintStrategy = 1;
 		bLogopen = netsdk.CLIENT_LogOpen(setLog);
 		if(!bLogopen ) {
-			System.err.println("Failed to open NetSDK log");
+			log.error("Failed to open NetSDK log");
 		}
 
 		// 设置断线重连回调接口，设置过断线重连成功回调函数后，当设备出现断线情况，SDK内部会自动进行重连操作
@@ -119,7 +119,7 @@ public class LoginModule {
 		//m_hLoginHandle = netsdk.CLIENT_LoginEx2(m_strIp, m_nPort, m_strUser, m_strPassword, 0, null, m_stDeviceInfo, nError);
 		m_hLoginHandle=netsdk.CLIENT_LoginWithHighLevelSecurity(pstInParam, pstOutParam);
 		if(m_hLoginHandle.longValue() == 0) {
-			System.err.printf("Login Device[%s] Port[%d]Failed. %s\n", m_strIp, m_nPort, ToolKits.getErrorCodePrint());
+			log.error("Login Device[{}] Port[{}]Failed. {}", m_strIp, m_nPort, ToolKits.getErrorCodePrint());
 		} else {
 			log.info("Login Success [ " + m_strIp + " ]");
 		}

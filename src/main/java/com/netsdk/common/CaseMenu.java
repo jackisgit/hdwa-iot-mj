@@ -64,14 +64,14 @@ public class CaseMenu {
 				int input = Integer.parseInt(scanner.nextLine());
 
 				if (input <= 0 ) {
-					System.err.println("input <= 0 || scanner.nextLine() == null");
+					log.error("input <= 0 || scanner.nextLine() == null");
 //					scanner.close();
 //					System.exit(0);
 					break;
 				}
 					
 				if (input < 0 || input > items.size()) {
-					System.err.println("Input Error Item Index.");
+					log.error("Input Error Item Index.");
 					continue;
 				}
 				
@@ -84,7 +84,7 @@ public class CaseMenu {
 //				System.exit(0);
 				break;
 			} catch (NumberFormatException e) {
-				System.err.println("Input Error NumberFormat.");
+				log.error("Input Error NumberFormat.");
 				continue;
 			} catch (Exception e) {
 				e.printStackTrace();

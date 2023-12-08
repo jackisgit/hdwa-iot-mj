@@ -34,10 +34,10 @@ public class EventTaskCommonQueue {
                         try {
                             task.eventTaskProcess();    // 主要的运行函数
                         } catch (Exception e) {
-                            System.err.println("任务处理发生错误");   // error
+                            log.error("任务处理发生错误");   // error
                         }
                     } catch (InterruptedException e) {
-                        System.err.println("任务已意外停止");   // error
+                        log.error("任务已意外停止");   // error
                         running = false;
                     }
                 }

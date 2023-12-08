@@ -28,8 +28,7 @@ public class DefaultDisConnect implements fDisConnect {
 
 	@Override
 	public void invoke(LLong lLoginID, String pchDVRIP, int nDVRPort, Pointer dwUser) {
-		// TODO Auto-generated method stub
-		log.info("Device[%s] Port[%d] DisConnectCallBack!\n", pchDVRIP, nDVRPort);
+		log.info("Device[{}] Port[{}] DisConnectCallBack!", pchDVRIP, nDVRPort);
 
 	}
 }
