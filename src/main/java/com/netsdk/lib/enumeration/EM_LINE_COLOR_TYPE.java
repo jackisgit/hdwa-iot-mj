@@ -16,13 +16,13 @@ public enum EM_LINE_COLOR_TYPE {
     EM_LINE_COLOR_TYPE_BLACK(5, "黑色"),
     EM_LINE_COLOR_TYPE_WHITE(6, "白色");
 
+    private int type;
+    private String color;
+
     private EM_LINE_COLOR_TYPE(int type, String color) {
         this.type = type;
         this.color = color;
     }
-
-    private int type;
-    private String color;
 
     public EM_LINE_COLOR_TYPE getColorType(int type) {
         for (EM_LINE_COLOR_TYPE color : EM_LINE_COLOR_TYPE.values()

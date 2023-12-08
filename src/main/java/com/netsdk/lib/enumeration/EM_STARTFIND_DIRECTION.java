@@ -6,56 +6,56 @@ package com.netsdk.lib.enumeration;
  * @date 2022/11/03 10:19:57
  */
 public enum EM_STARTFIND_DIRECTION {
-	/**
-	 * 未知
-	 */
-	EM_STARTFIND_DIRECTION_UNKNOWN(0, "未知"),
-	/**
-	 * 全部
-	 */
-	EM_STARTFIND_DIRECTION_BOTH(1, "全部"),
-	/**
-	 * 左到右
-	 */
-	EM_STARTFIND_DIRECTION_LEFTTORIGHT(2, "左到右"),
-	/**
-	 * 右到左
-	 */
-	EM_STARTFIND_DIRECTION_RIGHTTOLEFT(3, "右到左");
+    /**
+     * 未知
+     */
+    EM_STARTFIND_DIRECTION_UNKNOWN(0, "未知"),
+    /**
+     * 全部
+     */
+    EM_STARTFIND_DIRECTION_BOTH(1, "全部"),
+    /**
+     * 左到右
+     */
+    EM_STARTFIND_DIRECTION_LEFTTORIGHT(2, "左到右"),
+    /**
+     * 右到左
+     */
+    EM_STARTFIND_DIRECTION_RIGHTTOLEFT(3, "右到左");
 
-	private int value;
+    private int value;
 
-	private String note;
+    private String note;
 
-	public String getNote() {
-		return note;
-	}
+    EM_STARTFIND_DIRECTION(int givenValue, String note) {
+        this.value = givenValue;
+        this.note = note;
+    }
 
-	public int getValue() {
-		return value;
-	}
+    public static String getNoteByValue(int givenValue) {
+        for (EM_STARTFIND_DIRECTION enumType : EM_STARTFIND_DIRECTION.values()) {
+            if (givenValue == enumType.getValue()) {
+                return enumType.getNote();
+            }
+        }
+        return null;
+    }
 
-	EM_STARTFIND_DIRECTION(int givenValue, String note) {
-		this.value = givenValue;
-		this.note = note;
-	}
+    public static int getValueByNote(String givenNote) {
+        for (EM_STARTFIND_DIRECTION enumType : EM_STARTFIND_DIRECTION.values()) {
+            if (givenNote.equals(enumType.getNote())) {
+                return enumType.getValue();
+            }
+        }
+        return -1;
+    }
 
-	public static String getNoteByValue(int givenValue) {
-		for (EM_STARTFIND_DIRECTION enumType : EM_STARTFIND_DIRECTION.values()) {
-			if (givenValue == enumType.getValue()) {
-				return enumType.getNote();
-			}
-		}
-		return null;
-	}
+    public String getNote() {
+        return note;
+    }
 
-	public static int getValueByNote(String givenNote) {
-		for (EM_STARTFIND_DIRECTION enumType : EM_STARTFIND_DIRECTION.values()) {
-			if (givenNote.equals(enumType.getNote())) {
-				return enumType.getValue();
-			}
-		}
-		return -1;
-	}
+    public int getValue() {
+        return value;
+    }
 
 }

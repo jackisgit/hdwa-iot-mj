@@ -36,14 +36,6 @@ public enum EM_RADAR_GETCAPS_RADAR_TYPE {
 
     private String note;
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     EM_RADAR_GETCAPS_RADAR_TYPE(int givenValue, String note) {
         this.value = givenValue;
         this.note = note;
@@ -73,6 +65,14 @@ public enum EM_RADAR_GETCAPS_RADAR_TYPE {
                 return e;
         }
         return EM_RADAR_GETCAPS_RADAR_TYPE.EM_RADAR_GETCAPS_RADAR_TYPE_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

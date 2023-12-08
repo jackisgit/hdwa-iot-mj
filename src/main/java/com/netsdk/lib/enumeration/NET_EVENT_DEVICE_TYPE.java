@@ -1,19 +1,11 @@
 package com.netsdk.lib.enumeration;
 
 public enum NET_EVENT_DEVICE_TYPE {
-    NET_EVENT_DEVICE_TYPE_UNKOWN (0,"未知"),
-    NET_EVENT_DEVICE_TYPE_CARD(1,"卡片");
+    NET_EVENT_DEVICE_TYPE_UNKOWN(0, "未知"),
+    NET_EVENT_DEVICE_TYPE_CARD(1, "卡片");
     private int value;
 
     private String note;
-
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
 
     NET_EVENT_DEVICE_TYPE(int givenValue, String note) {
         this.value = givenValue;
@@ -44,5 +36,13 @@ public enum NET_EVENT_DEVICE_TYPE {
                 return e;
         }
         return NET_EVENT_DEVICE_TYPE.NET_EVENT_DEVICE_TYPE_UNKOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

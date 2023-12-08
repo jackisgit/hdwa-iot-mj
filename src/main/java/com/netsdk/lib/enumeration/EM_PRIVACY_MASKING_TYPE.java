@@ -6,51 +6,51 @@ package com.netsdk.lib.enumeration;
  * @date 2022/07/21 13:40:56
  */
 public enum EM_PRIVACY_MASKING_TYPE {
-	/**
-	 * 未知类型
-	 */
-	EM_MASKING_TYPE_UNKNOWN(0, "未知类型"),
-	/**
-	 * 矩形
-	 */
-	EM_MASKING_TYPE_RECT(1, "矩形"),
-	/**
-	 * 多边形
-	 */
-	EM_MASKING_TYPE_POLYGON(2, "多边形");
+    /**
+     * 未知类型
+     */
+    EM_MASKING_TYPE_UNKNOWN(0, "未知类型"),
+    /**
+     * 矩形
+     */
+    EM_MASKING_TYPE_RECT(1, "矩形"),
+    /**
+     * 多边形
+     */
+    EM_MASKING_TYPE_POLYGON(2, "多边形");
 
-	private int value;
+    private int value;
 
-	private String note;
+    private String note;
 
-	public String getNote() {
-		return note;
-	}
+    EM_PRIVACY_MASKING_TYPE(int givenValue, String note) {
+        this.value = givenValue;
+        this.note = note;
+    }
 
-	public int getValue() {
-		return value;
-	}
+    public static String getNoteByValue(int givenValue) {
+        for (EM_PRIVACY_MASKING_TYPE enumType : EM_PRIVACY_MASKING_TYPE.values()) {
+            if (givenValue == enumType.getValue()) {
+                return enumType.getNote();
+            }
+        }
+        return null;
+    }
 
-	EM_PRIVACY_MASKING_TYPE(int givenValue, String note) {
-		this.value = givenValue;
-		this.note = note;
-	}
+    public static int getValueByNote(String givenNote) {
+        for (EM_PRIVACY_MASKING_TYPE enumType : EM_PRIVACY_MASKING_TYPE.values()) {
+            if (givenNote.equals(enumType.getNote())) {
+                return enumType.getValue();
+            }
+        }
+        return -1;
+    }
 
-	public static String getNoteByValue(int givenValue) {
-		for (EM_PRIVACY_MASKING_TYPE enumType : EM_PRIVACY_MASKING_TYPE.values()) {
-			if (givenValue == enumType.getValue()) {
-				return enumType.getNote();
-			}
-		}
-		return null;
-	}
+    public String getNote() {
+        return note;
+    }
 
-	public static int getValueByNote(String givenNote) {
-		for (EM_PRIVACY_MASKING_TYPE enumType : EM_PRIVACY_MASKING_TYPE.values()) {
-			if (givenNote.equals(enumType.getNote())) {
-				return enumType.getValue();
-			}
-		}
-		return -1;
-	}
+    public int getValue() {
+        return value;
+    }
 }

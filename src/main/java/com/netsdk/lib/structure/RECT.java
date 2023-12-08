@@ -10,14 +10,14 @@ import com.sun.jna.NativeLong;
  */
 public class RECT extends NetSDKLib.SdkStructure {
 
-	public NativeLong left;
+    public NativeLong left;
 
-	public NativeLong top;
+    public NativeLong top;
 
-	public NativeLong right;
+    public NativeLong right;
 
-	public NativeLong bottom;
+    public NativeLong bottom;
 
-	public RECT() {
-	}
+    public RECT() {
+    }
 }

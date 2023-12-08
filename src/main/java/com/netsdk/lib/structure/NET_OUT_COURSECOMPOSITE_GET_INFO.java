@@ -4,6 +4,7 @@ import com.netsdk.lib.NetSDKLib;
 
 /**
  * 获取组合通道信息出参 {@link NetSDKLib#CLIENT_OperateCourseCompositeChannel}
+ *
  * @author ： 47040
  * @since ： Created in 2020/9/28 20:05
  */

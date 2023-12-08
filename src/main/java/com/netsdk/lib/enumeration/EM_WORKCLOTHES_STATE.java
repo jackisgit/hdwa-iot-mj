@@ -11,27 +11,19 @@ public enum EM_WORKCLOTHES_STATE {
     /**
      * 未知
      */
-    EM_WORKCLOTHES_STATE_UNKNOWN(0,"未知"),
+    EM_WORKCLOTHES_STATE_UNKNOWN(0, "未知"),
     /**
      * 无工作服
      */
-    EM_WORKCLOTHES_STATE_NOTWEAR(1,"无工作服"),
+    EM_WORKCLOTHES_STATE_NOTWEAR(1, "无工作服"),
     /**
      * 有工作服
      */
-    EM_WORKCLOTHES_STATE_WEAR(2,"有工作服");
+    EM_WORKCLOTHES_STATE_WEAR(2, "有工作服");
 
     private int value;
 
     private String note;
-
-    public String getNote() {
-             return note;
-         }
-
-    public int getValue() {
-             return value;
-         }
 
     EM_WORKCLOTHES_STATE(int givenValue, String note) {
         this.value = givenValue;
@@ -62,6 +54,14 @@ public enum EM_WORKCLOTHES_STATE {
                 return e;
         }
         return EM_WORKCLOTHES_STATE.EM_WORKCLOTHES_STATE_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

@@ -2,6 +2,7 @@ package com.netsdk.lib.structure;
 
 
 import com.netsdk.lib.NetSDKLib;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.UnsupportedEncodingException;
 
@@ -10,7 +11,7 @@ import java.io.UnsupportedEncodingException;
  * @description ： 车辆流量统计车辆行驶方向信息
  * @since ： Created in 2022/03/10 10:12
  */
-
+@Slf4j
 public class NET_TRAFFIC_FLOWSTAT_INFO_DIR extends NetSDKLib.SdkStructure {
     /**
      * 行驶方向
@@ -34,13 +35,13 @@ public class NET_TRAFFIC_FLOWSTAT_INFO_DIR extends NetSDKLib.SdkStructure {
         try {
             return "NET_TRAFFIC_FLOWSTAT_INFO_DIR{" +
                     "emDrivingDir=" + emDrivingDir +
-                    ", szUpGoing UTF-8=" + new String(szUpGoing,"UTF-8").trim() +
-                    ", szUpGoing GBK=" + new String(szUpGoing,"GBK").trim() +
-                    ", szDownGoing UTF-8=" + new String(szDownGoing,"UTF-8").trim() +
-                    ", szDownGoing GBK=" + new String(szDownGoing,"GBK").trim() +
+                    ", szUpGoing UTF-8=" + new String(szUpGoing, "UTF-8").trim() +
+                    ", szUpGoing GBK=" + new String(szUpGoing, "GBK").trim() +
+                    ", szDownGoing UTF-8=" + new String(szDownGoing, "UTF-8").trim() +
+                    ", szDownGoing GBK=" + new String(szDownGoing, "GBK").trim() +
                     '}';
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
         return null;
     }

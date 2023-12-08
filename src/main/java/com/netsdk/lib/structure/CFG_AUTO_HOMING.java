@@ -16,12 +16,12 @@ public class CFG_AUTO_HOMING extends NetSDKLib.SdkStructure {
      * 自动归位开关
      */
 
-    public int	bEnable;
+    public int bEnable;
 
     /**
      * 空闲时间,表示空闲的时间，单位为秒
      */
-    public int	nTime;
+    public int nTime;
 
 
 }

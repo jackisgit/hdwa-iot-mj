@@ -21,14 +21,6 @@ public enum EM_HELMET_EVENT_TYPE {
 
     private String note;
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     EM_HELMET_EVENT_TYPE(int givenValue, String note) {
         this.value = givenValue;
         this.note = note;
@@ -58,6 +50,14 @@ public enum EM_HELMET_EVENT_TYPE {
                 return e;
         }
         return EM_HELMET_EVENT_TYPE.EM_UNKNOWN_TYPE;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

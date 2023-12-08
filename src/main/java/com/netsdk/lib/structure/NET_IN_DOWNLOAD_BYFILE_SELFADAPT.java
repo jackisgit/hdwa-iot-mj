@@ -86,20 +86,20 @@ public class NET_IN_DOWNLOAD_BYFILE_SELFADAPT extends NetSDKLib.SdkStructure {
     /**
      * 0-主码流录像 1-辅码1流录像 2-辅码流2 3-辅码流3录像
      */
-    public byte bRecType;    
+    public byte bRecType;
     /**
      * 加密录像密码，密码长度不小于8
-     */ 
-    public byte[] szEncryptPasswd=new byte[64];
-    
+     */
+    public byte[] szEncryptPasswd = new byte[64];
+
     /**
      * VK信息回调
      */
-	public NetSDKLib.fVKInfoCallBack pVKInfoCallBack;
-	/**
-	 * VK信息回调用户信息
-	 */
-	public Pointer		dwVKInfoUser;
+    public NetSDKLib.fVKInfoCallBack pVKInfoCallBack;
+    /**
+     * VK信息回调用户信息
+     */
+    public Pointer dwVKInfoUser;
 
     public NET_IN_DOWNLOAD_BYFILE_SELFADAPT() {
         dwSize = this.size();

@@ -35,14 +35,6 @@ public enum EM_COURSE_RECORD_TYPE {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_COURSE_RECORD_TYPE enumType : EM_COURSE_RECORD_TYPE.values()) {
             if (givenValue == enumType.getValue()) {
@@ -67,5 +59,13 @@ public enum EM_COURSE_RECORD_TYPE {
                 return e;
         }
         return EM_COURSE_RECORD_TYPE.EM_COURSE_RECORD_TYPE_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

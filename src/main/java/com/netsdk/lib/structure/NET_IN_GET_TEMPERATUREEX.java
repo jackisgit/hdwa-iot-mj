@@ -8,16 +8,16 @@ import com.netsdk.lib.NetSDKLib;
  * @date 2022/05/12 16:28:47
  */
 public class NET_IN_GET_TEMPERATUREEX extends NetSDKLib.SdkStructure {
-	/**
-	 * 结构体大小
-	 */
-	public int dwSize;
-	/**
-	 * 温度类型 {@link com.netsdk.lib.enumeration.EM_TEMPERATUREEX_TYPE}
-	 */
-	public int emTemperatureType;
+    /**
+     * 结构体大小
+     */
+    public int dwSize;
+    /**
+     * 温度类型 {@link com.netsdk.lib.enumeration.EM_TEMPERATUREEX_TYPE}
+     */
+    public int emTemperatureType;
 
-	public NET_IN_GET_TEMPERATUREEX() {
-		this.dwSize = this.size();
-	}
+    public NET_IN_GET_TEMPERATUREEX() {
+        this.dwSize = this.size();
+    }
 }

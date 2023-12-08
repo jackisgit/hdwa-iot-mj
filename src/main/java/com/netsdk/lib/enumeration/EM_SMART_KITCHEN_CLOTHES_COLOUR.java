@@ -6,12 +6,12 @@ package com.netsdk.lib.enumeration;
  * @description 厨师服颜色
  * @date 2021/7/26 15:24
  */
-public enum  EM_SMART_KITCHEN_CLOTHES_COLOUR {
+public enum EM_SMART_KITCHEN_CLOTHES_COLOUR {
 
-        	EM_SMART_KITCHEN_CLOTHES_COLOUR_UNKNOWN(0,"未知"),                    // 未知
-            EM_SMART_KITCHEN_CLOTHES_COLOUR_RED(1,"红"),                     	// 红
-            EM_SMART_KITCHEN_CLOTHES_COLOUR_BLACK(2,"黑"),                      // 黑
-            EM_SMART_KITCHEN_CLOTHES_COLOUR_WHITE(3,"白");						// 白
+    EM_SMART_KITCHEN_CLOTHES_COLOUR_UNKNOWN(0, "未知"),                    // 未知
+    EM_SMART_KITCHEN_CLOTHES_COLOUR_RED(1, "红"),                        // 红
+    EM_SMART_KITCHEN_CLOTHES_COLOUR_BLACK(2, "黑"),                      // 黑
+    EM_SMART_KITCHEN_CLOTHES_COLOUR_WHITE(3, "白");                        // 白
 
     private final int value;
     private final String note;
@@ -19,14 +19,6 @@ public enum  EM_SMART_KITCHEN_CLOTHES_COLOUR {
     EM_SMART_KITCHEN_CLOTHES_COLOUR(int givenValue, String note) {
         this.value = givenValue;
         this.note = note;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
     }
 
     public static String getNoteByValue(int givenValue) {
@@ -53,5 +45,13 @@ public enum  EM_SMART_KITCHEN_CLOTHES_COLOUR {
                 return e;
         }
         return EM_SMART_KITCHEN_CLOTHES_COLOUR.EM_SMART_KITCHEN_CLOTHES_COLOUR_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

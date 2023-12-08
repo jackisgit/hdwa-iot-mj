@@ -335,7 +335,7 @@ public class NET_EM_CFG_OPERATE_TYPE {
             = 4016;     // 定制单片机兼容cpu卡和ic卡功能切换,对应结构体 NET_CFG_CARD_MNG_INFO
     public static final int NET_EM_CFG_VSP_LXSJ = 4004;        // 平台接入配置 对应结构体 NET_CFG_VSP_LXSJ_INFO，配置较大，建议内存new出来
 
-    public static final int NET_EM_CFG_FINANCIAL_CABINET_CONFIG     = 4020;     // 金融业务库配置 对应结构体 NET_CFG_FINANCIAL_CABINET_CONFIG_INFO
+    public static final int NET_EM_CFG_FINANCIAL_CABINET_CONFIG = 4020;     // 金融业务库配置 对应结构体 NET_CFG_FINANCIAL_CABINET_CONFIG_INFO
 
 
     /***********雷球联动配置************************************************************************************************/
@@ -344,9 +344,9 @@ public class NET_EM_CFG_OPERATE_TYPE {
     public static final int NET_EM_CFG_RADAR_SCREEN_RULE = 6012;    // 雷达屏幕显示规则配置, 对应结构体NET_CFG_RADAR_SCREEN_RULE_INFO
     public static final int NET_EM_CFG_MINIRADAR_DECT_PARAM = 6016;     // Mini雷达探测参数配置, 对应结构体 NET_CFG_MINIRADAR_DECT_PARAM_INFO
     public static final int NET_EM_CFG_MINIRADAR_INDOOR_ALARM = 6017;   // Mini雷达报警配置, 对应结构体 NET_CFG_MINIRADAR_INDOOR_ALARM_INFO
-    public static final int NET_EM_CFG_MINIRADAR_COMP_INFO = 6018;		// Mini雷达角度补偿配置, 对应结构体 NET_CFG_MINIRADAR_COMP_INFO
-    public static final int NET_EM_CFG_MINIRADAR_INSTALL_INFO = 6019;	// Mini雷达安装信息配置, 对应结构体 NET_CFG_MINIRADAR_INSTALL_INFO
-    public static final int NET_EM_CFG_MINIRADAR_REGION_DETECT = 6020;	// Mini雷达探测区域配置, 对应结构体 NET_CFG_MINIRADAR_REGION_DETECT_INFO
+    public static final int NET_EM_CFG_MINIRADAR_COMP_INFO = 6018;        // Mini雷达角度补偿配置, 对应结构体 NET_CFG_MINIRADAR_COMP_INFO
+    public static final int NET_EM_CFG_MINIRADAR_INSTALL_INFO = 6019;    // Mini雷达安装信息配置, 对应结构体 NET_CFG_MINIRADAR_INSTALL_INFO
+    public static final int NET_EM_CFG_MINIRADAR_REGION_DETECT = 6020;    // Mini雷达探测区域配置, 对应结构体 NET_CFG_MINIRADAR_REGION_DETECT_INFO
 
     /***********第三方配置************************************************************************************************/
     public static final int NET_EM_CFG_VSP_PAAS = 9000; // 乐橙云注册配置修改, 对应结构体 NET_CFG_VSP_PAAS_INFO
@@ -374,11 +374,11 @@ public class NET_EM_CFG_OPERATE_TYPE {
 
     /***********热成像相关配置******************************************************************************************/
     public static final int NET_EM_CFG_HOT_COLD_SPOT_WARNING = 1505; // 热冷点报警配置, 对应的结构体 NET_HOT_COLD_SPOT_WARNING_INFO
-    public static final int NET_EM_CFG_SENSOR_MAINTAIN = 11100;		// 热成像机芯维护配置,对应结构体 NET_CFG_SENSOR_MAINTAIN
-    public static final int NET_EM_CFG_TILT_LIMIT = 11101;		    // 激光测距俯仰角限制,对应结构体 NET_CFG_TILT_LIMIT
-    public static final int NET_EM_CFG_RADIO_REGULATOR = 11102;		// 人体测温标准黑体配置, 对应结构体 NET_CFG_RADIO_REGULATOR，通道号不能为-1
+    public static final int NET_EM_CFG_SENSOR_MAINTAIN = 11100;        // 热成像机芯维护配置,对应结构体 NET_CFG_SENSOR_MAINTAIN
+    public static final int NET_EM_CFG_TILT_LIMIT = 11101;            // 激光测距俯仰角限制,对应结构体 NET_CFG_TILT_LIMIT
+    public static final int NET_EM_CFG_RADIO_REGULATOR = 11102;        // 人体测温标准黑体配置, 对应结构体 NET_CFG_RADIO_REGULATOR，通道号不能为-1
     public static final int NET_EM_CFG_HUMAN_THERM_CALIBRATE = 11103;// 人体测温标定信息, 对应结构体 NET_CFG_HUMAN_THERM_CALLBRATE_INFO ，通道号必须是-1
-    public static final int NET_EM_CFG_TELESCOPE_OPTIONS = 11104;	// 望远镜配置,对应结构体 NET_CFG_TELESCOPE_OPTIONS_INFO
+    public static final int NET_EM_CFG_TELESCOPE_OPTIONS = 11104;    // 望远镜配置,对应结构体 NET_CFG_TELESCOPE_OPTIONS_INFO
     public static final int NET_EM_CFG_ENVIRONMENT_THERM_INFO = 11105;    // 环境温度信息(热成像内部配置,只可读,不可设),通道号需要填热成像通道号  对应结构体 NET_CFG_ENVIRONMENT_THERM_INFO
 
     /***********DHRS相关配置******************************************************************************************/
@@ -391,7 +391,7 @@ public class NET_EM_CFG_OPERATE_TYPE {
     public static final int NET_EM_CFG_COURSE_RECORD_UPLOAD =
             12101; // 录播设备支持录像文件上传配置, 对应结构体 NET_CFG_COURSE_RECORD_UPLOAD
     /***********硬盘相关配置******************************************************************************************/
-    public static final int NET_EM_CFG_NAS_DIRECTORY = 12302;					// 共享文件夹信息配置, 对应结构体 NET_CFG_NAS_DIRECTORY
+    public static final int NET_EM_CFG_NAS_DIRECTORY = 12302;                    // 共享文件夹信息配置, 对应结构体 NET_CFG_NAS_DIRECTORY
     /***********信号机相关配置******************************************************************************************/
     public static final int NET_EM_CFG_RTSC_SCH_CROSSLIST = 14000;                // 路口数据列表配置, 对应结构体NET_CFG_RTSC_SCH_CROSSLIST_INFO, 与通道无关, 通道号需填成-1
     public static final int NET_EM_CFG_RTSC_SCH_CHANNELS = 14001;                    // 通道表, 对应结构体NET_CFG_RTSC_SCH_CHANNELS_INFO

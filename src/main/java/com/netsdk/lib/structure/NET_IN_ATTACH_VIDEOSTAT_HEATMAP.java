@@ -14,11 +14,11 @@ public class NET_IN_ATTACH_VIDEOSTAT_HEATMAP extends NetSDKLib.SdkStructure {
     /**
      * 此结构体大小
      */
-    public int                   dwSize;
+    public int dwSize;
     /**
      * 视频通道号
      */
-    public int                     nChannel;
+    public int nChannel;
     /**
      * 热图数据回调
      */
@@ -27,7 +27,8 @@ public class NET_IN_ATTACH_VIDEOSTAT_HEATMAP extends NetSDKLib.SdkStructure {
      * 用户数据
      */
     public Pointer dwUser;
-    public NET_IN_ATTACH_VIDEOSTAT_HEATMAP(){
-        this.dwSize=size();
+
+    public NET_IN_ATTACH_VIDEOSTAT_HEATMAP() {
+        this.dwSize = size();
     }
 }

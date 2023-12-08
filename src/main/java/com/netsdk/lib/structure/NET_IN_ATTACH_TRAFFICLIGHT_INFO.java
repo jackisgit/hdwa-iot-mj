@@ -12,21 +12,21 @@ import com.netsdk.lib.NetSDKLib;
  */
 public class NET_IN_ATTACH_TRAFFICLIGHT_INFO extends NetSDKLib.SdkStructure {
     /**
-     *  结构体大小
+     * 结构体大小
      */
     public int dwSize;
 
     /**
-     *  回调函数
+     * 回调函数
      */
     public NetSDKLib.fTrafficLightState cbState;
 
     /**
-     *  用户信息
+     * 用户信息
      */
     public long dwUser;
 
-    public NET_IN_ATTACH_TRAFFICLIGHT_INFO(){
+    public NET_IN_ATTACH_TRAFFICLIGHT_INFO() {
         this.dwSize = this.size();
     }
 }

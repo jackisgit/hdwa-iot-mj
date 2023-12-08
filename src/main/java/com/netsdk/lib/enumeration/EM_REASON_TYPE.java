@@ -51,14 +51,6 @@ public enum EM_REASON_TYPE {
         this.reason = reson;
     }
 
-    public String getReason() {
-        return reason;
-    }
-
-    public int getType() {
-        return type;
-    }
-
     public static String getReason(int type) {
         for (EM_REASON_TYPE reason : EM_REASON_TYPE.values()) {
             if (type == reason.getType()) {
@@ -75,5 +67,13 @@ public enum EM_REASON_TYPE {
             }
         }
         return null;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public int getType() {
+        return type;
     }
 }

@@ -8,9 +8,9 @@ import com.netsdk.lib.NetSDKLib;
  * @date 2021/02/22
  */
 public class NET_ANATOMY_TEMP_DETECT_ANATOMYTEMPDETECT_RESULT extends NetSDKLib.SdkStructure {
-	/**
-	 * 预留字段
-	 */
-	public byte[] byReserved = new byte[1024];
+    /**
+     * 预留字段
+     */
+    public byte[] byReserved = new byte[1024];
 
 }

@@ -11,15 +11,15 @@ import com.netsdk.lib.NetSDKLib.SdkStructure;
  */
 public class NET_IN_GET_CAMERA_INFO extends SdkStructure {
 
-	// 结构体大小
-	public int dwSize;
+    // 结构体大小
+    public int dwSize;
 
 
-	// 相机编号
-	public int nCameraNo;
+    // 相机编号
+    public int nCameraNo;
 
-	public NET_IN_GET_CAMERA_INFO() {
-		this.dwSize = this.size();
-	}
+    public NET_IN_GET_CAMERA_INFO() {
+        this.dwSize = this.size();
+    }
 
 }

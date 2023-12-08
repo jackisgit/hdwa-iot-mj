@@ -9,13 +9,13 @@ public class NET_EPIDEMIC_AREA_EXPERIENCE extends NetSDKLib.SdkStructure {
     /**
      * 疫区地址
      */
-    public byte[]									szAddress=new byte[128];
+    public byte[] szAddress = new byte[128];
     /**
      * 在疫区时间
      */
-    public NET_TIME								    stuTime;
+    public NET_TIME stuTime;
     /**
      * 预留字段
      */
-    public byte[]									byReserved=new byte[256];
+    public byte[] byReserved = new byte[256];
 }

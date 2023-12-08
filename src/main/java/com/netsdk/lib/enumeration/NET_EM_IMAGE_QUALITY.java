@@ -23,14 +23,6 @@ public enum NET_EM_IMAGE_QUALITY {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (NET_EM_IMAGE_QUALITY enumType : NET_EM_IMAGE_QUALITY.values()) {
             if (givenValue == enumType.getValue()) {
@@ -55,5 +47,13 @@ public enum NET_EM_IMAGE_QUALITY {
                 return e;
         }
         return NET_EM_IMAGE_QUALITY.EM_IMAGE_QUALITY_Q10;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

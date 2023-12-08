@@ -8,16 +8,16 @@ import com.netsdk.lib.NetSDKLib;
  * @date 2022/09/22 15:28:44
  */
 public class NET_IN_PTZ_CURRENT_FOV_VALUE extends NetSDKLib.SdkStructure {
-	/**
-	 * 结构体大小
-	 */
-	public int dwSize;
-	/**
-	 * 通道号
-	 */
-	public int nChannel;
+    /**
+     * 结构体大小
+     */
+    public int dwSize;
+    /**
+     * 通道号
+     */
+    public int nChannel;
 
-	public NET_IN_PTZ_CURRENT_FOV_VALUE() {
-		this.dwSize = this.size();
-	}
+    public NET_IN_PTZ_CURRENT_FOV_VALUE() {
+        this.dwSize = this.size();
+    }
 }

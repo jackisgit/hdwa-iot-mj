@@ -33,14 +33,6 @@ public enum EM_VIDEOINPUTS_SERVICE_TYPE {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_VIDEOINPUTS_SERVICE_TYPE enumType : EM_VIDEOINPUTS_SERVICE_TYPE.values()) {
             if (givenValue == enumType.getValue()) {
@@ -57,6 +49,14 @@ public enum EM_VIDEOINPUTS_SERVICE_TYPE {
             }
         }
         return -1;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

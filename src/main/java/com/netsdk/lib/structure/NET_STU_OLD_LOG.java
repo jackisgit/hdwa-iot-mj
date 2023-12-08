@@ -4,6 +4,7 @@ import com.netsdk.lib.NetSDKLib;
 
 /**
  * 旧的日志结构体,为了和新的对齐
+ *
  * @author 47081
  */
 public class NET_STU_OLD_LOG extends NetSDKLib.SdkStructure {
@@ -14,5 +15,5 @@ public class NET_STU_OLD_LOG extends NetSDKLib.SdkStructure {
     /**
      * 保留
      */
-    public byte[]          bReserved=new byte[48];
+    public byte[] bReserved = new byte[48];
 }

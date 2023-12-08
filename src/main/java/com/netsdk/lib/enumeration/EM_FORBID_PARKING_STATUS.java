@@ -28,14 +28,6 @@ public enum EM_FORBID_PARKING_STATUS {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_FORBID_PARKING_STATUS enumType : EM_FORBID_PARKING_STATUS.values()) {
             if (givenValue == enumType.getValue()) {
@@ -60,5 +52,13 @@ public enum EM_FORBID_PARKING_STATUS {
                 return e;
         }
         return EM_FORBID_PARKING_STATUS.EM_FORBID_PARKING_STATUS_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

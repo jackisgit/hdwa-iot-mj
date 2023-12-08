@@ -7,9 +7,9 @@ import com.netsdk.lib.NetSDKLib;
  * @description 定时上报以及上报周期
  * @date 2021/11/07
  */
-public class CFG_SUPPORT_SCHEDULE_REPORT extends NetSDKLib.SdkStructure{
+public class CFG_SUPPORT_SCHEDULE_REPORT extends NetSDKLib.SdkStructure {
     /**
-     *  是否支持定时上报功能
+     * 是否支持定时上报功能
      */
     public int bEnable;
 
@@ -19,7 +19,7 @@ public class CFG_SUPPORT_SCHEDULE_REPORT extends NetSDKLib.SdkStructure{
     public int nSupportPeriodNum;
 
     /**
-     *  设备支持的上报周期颗粒度数组，单位为分钟
+     * 设备支持的上报周期颗粒度数组，单位为分钟
      */
     public int[] nSupportPeriod = new int[16];
 }

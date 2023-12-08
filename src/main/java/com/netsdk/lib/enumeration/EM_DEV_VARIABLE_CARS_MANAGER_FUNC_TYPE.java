@@ -3,8 +3,8 @@ package com.netsdk.lib.enumeration;
 /**
  * className：EM_DEV_VARIABLE_CARS_MANAGER_FUNC_TYPE
  * description：
- *   枚举值,下发设置&获取设置
- *
+ * 枚举值,下发设置&获取设置
+ * <p>
  * author：251589
  * createTime：2020/12/29 14:04
  *

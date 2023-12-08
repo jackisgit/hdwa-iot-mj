@@ -11,7 +11,7 @@ import com.netsdk.lib.NetSDKLib;
  * @version v1.0
  */
 public class NET_USER_PICTURE_DATA extends NetSDKLib.SdkStructure {
-    public String  pszPictureData;                     // 图片数据，最大 200K
-    public int      nPictureLen;                        // pszPictureData 长度
-    public byte[]   byReserved = new byte[1020];        // 预留字段
+    public String pszPictureData;                     // 图片数据，最大 200K
+    public int nPictureLen;                        // pszPictureData 长度
+    public byte[] byReserved = new byte[1020];        // 预留字段
 }

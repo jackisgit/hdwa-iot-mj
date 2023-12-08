@@ -6,8 +6,8 @@ package com.netsdk.lib.enumeration;
  */
 public enum EM_SUBCLASSID_TYPE {
 
-    EM_SUBCLASSID_UNKNOWN(0,"未知"),
-    EM_SUBCLASSID_ASSISTDEVICE(1,"辅助设备 (ITSE使用)");
+    EM_SUBCLASSID_UNKNOWN(0, "未知"),
+    EM_SUBCLASSID_ASSISTDEVICE(1, "辅助设备 (ITSE使用)");
 
     private final int value;
     private final String note;
@@ -15,14 +15,6 @@ public enum EM_SUBCLASSID_TYPE {
     EM_SUBCLASSID_TYPE(int givenValue, String note) {
         this.value = givenValue;
         this.note = note;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
     }
 
     public static String getNoteByValue(int givenValue) {
@@ -49,6 +41,14 @@ public enum EM_SUBCLASSID_TYPE {
                 return e;
         }
         return EM_SUBCLASSID_TYPE.EM_SUBCLASSID_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

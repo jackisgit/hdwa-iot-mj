@@ -13,6 +13,6 @@ import static com.netsdk.lib.NetSDKLib.DH_MAX_PERSON_INFO_LEN;
  * @version v1.0
  */
 public class CUSTOM_PERSON_INFO extends NetSDKLib.SdkStructure {
-    public byte[]    szPersonInfo = new byte[DH_MAX_PERSON_INFO_LEN];    //人员扩展信息
-    public byte[]    byReserved = new byte[124];    // 保留字节
+    public byte[] szPersonInfo = new byte[DH_MAX_PERSON_INFO_LEN];    //人员扩展信息
+    public byte[] byReserved = new byte[124];    // 保留字节
 }

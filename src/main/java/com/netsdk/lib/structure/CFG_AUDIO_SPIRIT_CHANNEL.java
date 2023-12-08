@@ -12,15 +12,15 @@ public class CFG_AUDIO_SPIRIT_CHANNEL extends NetSDKLib.SdkStructure {
     /**
      * 语音激励联动视频通道号
      */
-    public int				nChannel;				 
+    public int nChannel;
     /**
      * 语音激励优先级, 1~10
      */
-    public int				nPriority;				 
+    public int nPriority;
     /**
      * 对应的视频摄像机的预置点, 与云台一致0~255
      */
-    public int				nPreset;
+    public int nPreset;
 
     @Override
     public String toString() {

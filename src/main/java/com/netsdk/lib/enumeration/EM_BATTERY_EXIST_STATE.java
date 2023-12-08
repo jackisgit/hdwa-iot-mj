@@ -14,14 +14,6 @@ public enum EM_BATTERY_EXIST_STATE {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_BATTERY_EXIST_STATE enumType : EM_BATTERY_EXIST_STATE.values()) {
             if (givenValue == enumType.getValue()) {
@@ -38,6 +30,14 @@ public enum EM_BATTERY_EXIST_STATE {
             }
         }
         return -1;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

@@ -2,6 +2,7 @@ package com.netsdk.lib.structure;
 
 
 import com.netsdk.lib.NetSDKLib;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.UnsupportedEncodingException;
 
@@ -10,7 +11,7 @@ import java.io.UnsupportedEncodingException;
  * @description ： 交通路口车道统计事件 (对应 DH_ALARM_TRAFFIC_FLOW_STAT)
  * @since ： Created in 2022/03/10 10:12
  */
-
+@Slf4j
 public class ALARM_TRAFFIC_FLOW_STAT_INFO extends NetSDKLib.SdkStructure {
     /**
      * 事件动作 0:脉冲
@@ -64,11 +65,11 @@ public class ALARM_TRAFFIC_FLOW_STAT_INFO extends NetSDKLib.SdkStructure {
     @Override
     public String toString() {
         String stuStatesStr = "";
-        if(stuStates.length > 0){
+        if (stuStates.length > 0) {
             stuStatesStr += "stuStates[0] = ";
             stuStatesStr += stuStates[0].toString();
         }
-        for(int i = 1; i < stuStates.length; i ++){
+        for (int i = 1; i < stuStates.length; i++) {
             stuStatesStr += ",stuStates[" + i + "] = ";
             stuStatesStr += stuStates[i].toString();
         }
@@ -76,8 +77,8 @@ public class ALARM_TRAFFIC_FLOW_STAT_INFO extends NetSDKLib.SdkStructure {
             return "ALARM_TRAFFIC_FLOW_STAT_INFO{" +
                     "nAction=" + nAction +
                     ", nChannelID=" + nChannelID +
-                    ", szName UTF-8=" + new String(szName,"UTF-8").trim() +
-                    ", szName GBK=" + new String(szName,"GBK").trim() +
+                    ", szName UTF-8=" + new String(szName, "UTF-8").trim() +
+                    ", szName GBK=" + new String(szName, "GBK").trim() +
                     ", PTS=" + PTS +
                     ", nEventID=" + nEventID +
                     ", stuUTC=" + stuUTC.toStringTime() +
@@ -88,7 +89,7 @@ public class ALARM_TRAFFIC_FLOW_STAT_INFO extends NetSDKLib.SdkStructure {
                     ", nDetectionAreaVehicleNum=" + nDetectionAreaVehicleNum +
                     '}';
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
         return null;
     }

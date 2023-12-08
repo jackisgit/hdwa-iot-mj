@@ -5,6 +5,7 @@ import com.netsdk.lib.structure.*;
 
 /**
  * {@link NetSDKLib#CLIENT_OperateCourseCompositeChannelMode}
+ *
  * @author ： 47040
  * @since ： Created in 2020/9/27 16:30
  */
@@ -43,14 +44,6 @@ public enum NET_COURSECOMPOSITE_MODE_OPERATE_TYPE {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (NET_COURSECOMPOSITE_MODE_OPERATE_TYPE enumType : NET_COURSECOMPOSITE_MODE_OPERATE_TYPE.values()) {
             if (givenValue == enumType.getValue()) {
@@ -75,5 +68,13 @@ public enum NET_COURSECOMPOSITE_MODE_OPERATE_TYPE {
                 return e;
         }
         return NET_COURSECOMPOSITE_MODE_OPERATE_TYPE.NET_COURSECOMPOSITE_MODE_GET;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

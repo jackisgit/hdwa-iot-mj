@@ -11,27 +11,19 @@ public enum EM_COMPLIANCE_STATE {
     /**
      * 合规
      */
-    EM_COMPLIANCE_STATE_COMPLIANT(0,"合规"),
+    EM_COMPLIANCE_STATE_COMPLIANT(0, "合规"),
     /**
      * 不合规
      */
-    EM_COMPLIANCE_STATE_NONCOMPLIANT(1,"不合规"),
+    EM_COMPLIANCE_STATE_NONCOMPLIANT(1, "不合规"),
     /**
      * 未知
      */
-    EM_COMPLIANCE_STATE_UNKNOWN(2,"未知");
+    EM_COMPLIANCE_STATE_UNKNOWN(2, "未知");
 
     private int value;
 
     private String note;
-
-    public String getNote() {
-             return note;
-         }
-
-    public int getValue() {
-             return value;
-         }
 
     EM_COMPLIANCE_STATE(int givenValue, String note) {
         this.value = givenValue;
@@ -62,6 +54,14 @@ public enum EM_COMPLIANCE_STATE {
                 return e;
         }
         return EM_COMPLIANCE_STATE.EM_COMPLIANCE_STATE_COMPLIANT;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

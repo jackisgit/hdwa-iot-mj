@@ -34,14 +34,6 @@ public enum EM_TEMPERATURE_UNIT_EX {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_TEMPERATURE_UNIT_EX enumType : EM_TEMPERATURE_UNIT_EX.values()) {
             if (givenValue == enumType.getValue()) {
@@ -66,6 +58,14 @@ public enum EM_TEMPERATURE_UNIT_EX {
                 return e;
         }
         return EM_TEMPERATURE_UNIT_EX.EM_TEMPERATURE_EX_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

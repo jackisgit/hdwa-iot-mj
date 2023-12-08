@@ -9,29 +9,21 @@ package com.netsdk.lib.enumeration;
 
 public enum NET_EM_FLOW_ATTRIBUTE {
     /**
-     * 
+     *
      */
-    EM_FLOW_ATTRIBUTE_UNKNOWN(0,""),
+    EM_FLOW_ATTRIBUTE_UNKNOWN(0, ""),
     /**
      * 流量监测
      */
-    EM_FLOW_ATTRIBUTE_FLOW_DETECTION(1,"流量监测"),
+    EM_FLOW_ATTRIBUTE_FLOW_DETECTION(1, "流量监测"),
     /**
      * 排队检测
      */
-    EM_FLOW_ATTRIBUTE_QUEUE_DETECTION(2,"排队检测");
+    EM_FLOW_ATTRIBUTE_QUEUE_DETECTION(2, "排队检测");
 
     private int value;
 
     private String note;
-
-    public String getNote() {
-             return note;
-         }
-
-    public int getValue() {
-             return value;
-         }
 
     NET_EM_FLOW_ATTRIBUTE(int givenValue, String note) {
         this.value = givenValue;
@@ -62,6 +54,14 @@ public enum NET_EM_FLOW_ATTRIBUTE {
                 return e;
         }
         return NET_EM_FLOW_ATTRIBUTE.EM_FLOW_ATTRIBUTE_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

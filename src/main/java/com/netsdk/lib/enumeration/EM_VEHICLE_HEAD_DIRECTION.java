@@ -29,14 +29,6 @@ public enum EM_VEHICLE_HEAD_DIRECTION {
 
     private String note;
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     EM_VEHICLE_HEAD_DIRECTION(int givenValue, String note) {
         this.value = givenValue;
         this.note = note;
@@ -66,6 +58,14 @@ public enum EM_VEHICLE_HEAD_DIRECTION {
                 return e;
         }
         return EM_VEHICLE_HEAD_DIRECTION.EM_VEHICLE_HEAD_DIRECTION_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

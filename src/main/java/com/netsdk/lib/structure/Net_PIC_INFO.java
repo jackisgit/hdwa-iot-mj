@@ -13,7 +13,7 @@ import static com.netsdk.lib.NetSDKLib.MAX_PATH;
  * @version v1.0
  */
 public class Net_PIC_INFO extends NetSDKLib.SdkStructure {
-    public int    dwFileLenth;    // 文件大小, 单位:字节
-    public byte[]    szFilePath = new byte[MAX_PATH];    // 文件路径
-    public byte[]    bReserved = new byte[256];    // 保留字段
+    public int dwFileLenth;    // 文件大小, 单位:字节
+    public byte[] szFilePath = new byte[MAX_PATH];    // 文件路径
+    public byte[] bReserved = new byte[256];    // 保留字段
 }

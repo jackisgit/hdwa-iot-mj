@@ -28,14 +28,6 @@ public enum EM_PARKINGSPACE_STATE {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_PARKINGSPACE_STATE enumType : EM_PARKINGSPACE_STATE.values()) {
             if (givenValue == enumType.getValue()) {
@@ -60,5 +52,13 @@ public enum EM_PARKINGSPACE_STATE {
                 return e;
         }
         return EM_PARKINGSPACE_STATE.EM_PARKINGSPACE_STATE_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

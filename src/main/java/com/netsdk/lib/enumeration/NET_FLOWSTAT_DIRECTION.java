@@ -11,27 +11,19 @@ public enum NET_FLOWSTAT_DIRECTION {
     /**
      * 兼容之前
      */
-    DRIVING_DIR_UNKNOW(0,"兼容之前"),
+    DRIVING_DIR_UNKNOW(0, "兼容之前"),
     /**
      * 上行,即车辆离设备部署点越来越近
      */
-    DRIVING_DIR_APPROACH(1,"上行,即车辆离设备部署点越来越近"),
+    DRIVING_DIR_APPROACH(1, "上行,即车辆离设备部署点越来越近"),
     /**
      * 下行,即车辆离设备部署点越来越远
      */
-    DRIVING_DIR_LEAVE(2,"下行,即车辆离设备部署点越来越远");
+    DRIVING_DIR_LEAVE(2, "下行,即车辆离设备部署点越来越远");
 
     private int value;
 
     private String note;
-
-    public String getNote() {
-             return note;
-         }
-
-    public int getValue() {
-             return value;
-         }
 
     NET_FLOWSTAT_DIRECTION(int givenValue, String note) {
         this.value = givenValue;
@@ -62,6 +54,14 @@ public enum NET_FLOWSTAT_DIRECTION {
                 return e;
         }
         return NET_FLOWSTAT_DIRECTION.DRIVING_DIR_UNKNOW;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

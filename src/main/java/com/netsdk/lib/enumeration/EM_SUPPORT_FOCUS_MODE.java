@@ -17,13 +17,13 @@ public enum EM_SUPPORT_FOCUS_MODE {
     ENUM_SUPPORT_FOCUS_PEOPLE(3, "看清人模式"),
     ENUM_SUPPORT_FOCUS_FACE(4, "看清人脸模式");
 
+    private int mode;
+    private String desc;
+
     private EM_SUPPORT_FOCUS_MODE(int mode, String desc) {
         this.mode = mode;
         this.desc = desc;
     }
-
-    private int mode;
-    private String desc;
 
     public int getMode() {
         return mode;

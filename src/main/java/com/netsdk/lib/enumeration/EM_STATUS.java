@@ -7,49 +7,49 @@ package com.netsdk.lib.enumeration;
  */
 public enum EM_STATUS {
 
-	// 未知
-	EM_STATUS_UNKNOWN(-1, "未知"),
-	// 无效
-	EM_STATUS_INVALID(0, "无效"),
-	// 工作正常
-	EM_STATUS_NORMAL(1, "工作正常"),
-	// 故障状态
-	EM_STATUS_FAULT(2, "故障状态"),
-	// 其他
-	EM_STATUS_OTHER(3, "其他");
+    // 未知
+    EM_STATUS_UNKNOWN(-1, "未知"),
+    // 无效
+    EM_STATUS_INVALID(0, "无效"),
+    // 工作正常
+    EM_STATUS_NORMAL(1, "工作正常"),
+    // 故障状态
+    EM_STATUS_FAULT(2, "故障状态"),
+    // 其他
+    EM_STATUS_OTHER(3, "其他");
 
-	private int value;
-	private String note;
+    private int value;
+    private String note;
 
-	private EM_STATUS(int givenValue, String note) {
-		this.value = givenValue;
-		this.note = note;
-	}
+    private EM_STATUS(int givenValue, String note) {
+        this.value = givenValue;
+        this.note = note;
+    }
 
-	public String getNote() {
-		return note;
-	}
+    public static String getNoteByValue(int givenValue) {
+        for (EM_STATUS enumType : EM_STATUS.values()) {
+            if (givenValue == enumType.getValue()) {
+                return enumType.getNote();
+            }
+        }
+        return null;
+    }
 
-	public int getValue() {
-		return value;
-	}
+    public static int getValueByNote(String givenNote) {
+        for (EM_STATUS enumType : EM_STATUS.values()) {
+            if (givenNote.equals(enumType.getNote())) {
+                return enumType.getValue();
+            }
+        }
+        return -2;
+    }
 
-	public static String getNoteByValue(int givenValue) {
-		for (EM_STATUS enumType : EM_STATUS.values()) {
-			if (givenValue == enumType.getValue()) {
-				return enumType.getNote();
-			}
-		}
-		return null;
-	}
+    public String getNote() {
+        return note;
+    }
 
-	public static int getValueByNote(String givenNote) {
-		for (EM_STATUS enumType : EM_STATUS.values()) {
-			if (givenNote.equals(enumType.getNote())) {
-				return enumType.getValue();
-			}
-		}
-		return -2;
-	}
+    public int getValue() {
+        return value;
+    }
 
 }

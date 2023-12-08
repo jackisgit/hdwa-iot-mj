@@ -29,14 +29,6 @@ public enum EM_TRAFFIC_FLOW_STATUS {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_TRAFFIC_FLOW_STATUS enumType : EM_TRAFFIC_FLOW_STATUS.values()) {
             if (givenValue == enumType.getValue()) {
@@ -61,5 +53,13 @@ public enum EM_TRAFFIC_FLOW_STATUS {
                 return e;
         }
         return EM_TRAFFIC_FLOW_STATUS.EM_TRAFFIC_FLOW_STATUS_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

@@ -1,13 +1,14 @@
 package com.netsdk.lib.enumeration;
+
 /**
  * @author ： 291189
  * @since ： Created in 2021/6/30 10:51
- *  安检门事件人员性别
+ * 安检门事件人员性别
  */
 public enum EM_SECURITYGATE_SEX_TYPE {
-    EM_SECURITYGATE_SEX_MAN(0,"男"),								// 男
-    EM_SECURITYGATE_SEX_WOMEN(1,"女"),									// 女
-    EM_SECURITYGATE_SEX_UNKNOWN(2,"未知");								// 未知
+    EM_SECURITYGATE_SEX_MAN(0, "男"),                                // 男
+    EM_SECURITYGATE_SEX_WOMEN(1, "女"),                                    // 女
+    EM_SECURITYGATE_SEX_UNKNOWN(2, "未知");                                // 未知
 
     private final int value;
     private final String note;
@@ -15,14 +16,6 @@ public enum EM_SECURITYGATE_SEX_TYPE {
     EM_SECURITYGATE_SEX_TYPE(int givenValue, String note) {
         this.value = givenValue;
         this.note = note;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
     }
 
     public static String getNoteByValue(int givenValue) {
@@ -49,5 +42,13 @@ public enum EM_SECURITYGATE_SEX_TYPE {
                 return e;
         }
         return EM_SECURITYGATE_SEX_TYPE.EM_SECURITYGATE_SEX_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

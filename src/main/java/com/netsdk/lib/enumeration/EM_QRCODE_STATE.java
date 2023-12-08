@@ -7,19 +7,25 @@ package com.netsdk.lib.enumeration;
  * @date 2021/2/22
  */
 public enum EM_QRCODE_STATE {
-  /** 未知 */
-  EM_QRCODE_STATE_UNKNOWN,
-  /** 已批准 */
-  EM_QRCODE_STATE_CLEARED,
-  /** 未批准 */
-  EM_QRCODE_STATE_NOCLEARED;
+    /**
+     * 未知
+     */
+    EM_QRCODE_STATE_UNKNOWN,
+    /**
+     * 已批准
+     */
+    EM_QRCODE_STATE_CLEARED,
+    /**
+     * 未批准
+     */
+    EM_QRCODE_STATE_NOCLEARED;
 
-  public static EM_QRCODE_STATE getQrcodeState(int state) {
-    for (EM_QRCODE_STATE qrcodeState : EM_QRCODE_STATE.values()) {
-      if (qrcodeState.ordinal() == state) {
-        return qrcodeState;
-      }
+    public static EM_QRCODE_STATE getQrcodeState(int state) {
+        for (EM_QRCODE_STATE qrcodeState : EM_QRCODE_STATE.values()) {
+            if (qrcodeState.ordinal() == state) {
+                return qrcodeState;
+            }
+        }
+        return EM_QRCODE_STATE_UNKNOWN;
     }
-    return EM_QRCODE_STATE_UNKNOWN;
-  }
 }

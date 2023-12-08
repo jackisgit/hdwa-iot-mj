@@ -19,6 +19,10 @@ public class AlarmAccessDataCB implements NetSDKLib.fMessCallBack {
     private AlarmAccessDataCB() {
     }
 
+    public static AlarmAccessDataCB getInstance() {
+        return AlarmAccessDataCB.fAlarmDataCBHolder.instance;
+    }
+
     @Override
     public boolean invoke(int lCommand, NetSDKLib.LLong lLoginID, Pointer pStuEvent, int dwBufLen, String strDeviceIP, NativeLong nDevicePort, Pointer dwUser) {
         log.info("门禁报警事件command = " + lCommand);
@@ -35,9 +39,5 @@ public class AlarmAccessDataCB implements NetSDKLib.fMessCallBack {
 
     private static class fAlarmDataCBHolder {
         private static AlarmAccessDataCB instance = new AlarmAccessDataCB();
-    }
-
-    public static AlarmAccessDataCB getInstance() {
-        return AlarmAccessDataCB.fAlarmDataCBHolder.instance;
     }
 }

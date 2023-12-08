@@ -33,14 +33,6 @@ public enum EM_H264_PROFILE_RANK {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_H264_PROFILE_RANK enumType : EM_H264_PROFILE_RANK.values()) {
             if (givenValue == enumType.getValue()) {
@@ -65,5 +57,13 @@ public enum EM_H264_PROFILE_RANK {
                 return e;
         }
         return EM_H264_PROFILE_RANK.NET_PROFILE_BASELINE;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

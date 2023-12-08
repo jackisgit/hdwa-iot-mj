@@ -4,29 +4,27 @@ import com.netsdk.lib.NetSDKLib;
 
 
 /**
- * 
- * 
  * @author ： 260611
  * @since ： Created in 2021/10/19 19:35
  */
 public class NET_RECT extends NetSDKLib.SdkStructure {
 
     /**
-     *    int             nLeft;
+     * int             nLeft;
      */
-    public int					nLeft;
+    public int nLeft;
     /**
-     *    int             nTop;
+     * int             nTop;
      */
-    public int					nTop;
+    public int nTop;
     /**
-     *    int             nRight;
+     * int             nRight;
      */
-    public int					nRight;
+    public int nRight;
     /**
-     *    int             nBottom;
+     * int             nBottom;
      */
-    public int					nBottom;
+    public int nBottom;
 
     @Override
     public String toString() {

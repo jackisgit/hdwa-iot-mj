@@ -58,7 +58,7 @@ public class NET_IN_DOWNLOAD_MULTI_FILE extends NetSDKLib.SdkStructure {
      */
     public Pointer pFileOptions;
 
-    public NET_IN_DOWNLOAD_MULTI_FILE(){
+    public NET_IN_DOWNLOAD_MULTI_FILE() {
         dwSize = this.size();
     }
 }

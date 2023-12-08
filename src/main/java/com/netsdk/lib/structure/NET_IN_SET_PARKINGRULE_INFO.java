@@ -10,18 +10,18 @@ import com.netsdk.lib.NetSDKLib;
  */
 public class NET_IN_SET_PARKINGRULE_INFO extends NetSDKLib.SdkStructure {
 
-	/**
-	 * 结构体大小
-	 */
-	public int dwSize;
+    /**
+     * 结构体大小
+     */
+    public int dwSize;
 
-	/**
-	 * 停车时长阈值，单位秒
-	 */
-	public int nParkingTimeThreshold;
+    /**
+     * 停车时长阈值，单位秒
+     */
+    public int nParkingTimeThreshold;
 
-	public NET_IN_SET_PARKINGRULE_INFO() {
-		this.dwSize = this.size();
-	}
+    public NET_IN_SET_PARKINGRULE_INFO() {
+        this.dwSize = this.size();
+    }
 
 }

@@ -18,14 +18,6 @@ public enum EM_INFRARED_LIGHT_LEVEL {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_INFRARED_LIGHT_LEVEL enumType : EM_INFRARED_LIGHT_LEVEL.values()) {
             if (givenValue == enumType.getValue()) {
@@ -50,6 +42,14 @@ public enum EM_INFRARED_LIGHT_LEVEL {
                 return e;
         }
         return EM_INFRARED_LIGHT_LEVEL.EM_INFRARED_LIGHT_LEVEL_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

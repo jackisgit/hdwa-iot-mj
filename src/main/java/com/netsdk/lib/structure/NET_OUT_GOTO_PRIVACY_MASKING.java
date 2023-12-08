@@ -8,12 +8,12 @@ import com.netsdk.lib.NetSDKLib;
  * @date 2022/07/21 17:20:00
  */
 public class NET_OUT_GOTO_PRIVACY_MASKING extends NetSDKLib.SdkStructure {
-	/**
-	 * 结构体大小
-	 */
-	public int dwSize;
+    /**
+     * 结构体大小
+     */
+    public int dwSize;
 
-	public NET_OUT_GOTO_PRIVACY_MASKING() {
-		this.dwSize = this.size();
-	}
+    public NET_OUT_GOTO_PRIVACY_MASKING() {
+        this.dwSize = this.size();
+    }
 }

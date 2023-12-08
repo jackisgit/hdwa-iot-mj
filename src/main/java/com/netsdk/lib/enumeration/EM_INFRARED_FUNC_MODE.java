@@ -18,14 +18,6 @@ public enum EM_INFRARED_FUNC_MODE {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_INFRARED_FUNC_MODE enumType : EM_INFRARED_FUNC_MODE.values()) {
             if (givenValue == enumType.getValue()) {
@@ -50,6 +42,14 @@ public enum EM_INFRARED_FUNC_MODE {
                 return e;
         }
         return EM_INFRARED_FUNC_MODE.EM_INFRARED_FUNC_MODE_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

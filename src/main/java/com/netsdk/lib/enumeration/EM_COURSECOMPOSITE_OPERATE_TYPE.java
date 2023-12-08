@@ -48,14 +48,6 @@ public enum EM_COURSECOMPOSITE_OPERATE_TYPE {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_COURSECOMPOSITE_OPERATE_TYPE enumType : EM_COURSECOMPOSITE_OPERATE_TYPE.values()) {
             if (givenValue == enumType.getValue()) {
@@ -80,5 +72,13 @@ public enum EM_COURSECOMPOSITE_OPERATE_TYPE {
                 return e;
         }
         return EM_COURSECOMPOSITE_OPERATE_TYPE.EM_COURSECOMPOSITE_TYPE_LOCK_CONTROL;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

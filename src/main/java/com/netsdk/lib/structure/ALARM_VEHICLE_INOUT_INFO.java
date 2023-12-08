@@ -47,7 +47,7 @@ public class ALARM_VEHICLE_INOUT_INFO extends NetSDKLib.SdkStructure {
      * 各个车道实时交通流量统计信息, 最大支持8车道
      */
     public NET_TRAFFIC_FLOW_STAT[] stuStats = new NET_TRAFFIC_FLOW_STAT[8];
-    
+
     /**
      * 雷达安装角度（雷达坐标系Y轴与正北方向的逆时针夹角）单位：度 (0 ~ 360)
      */

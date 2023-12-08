@@ -12,11 +12,11 @@ import com.netsdk.lib.NetSDKLib;
  */
 public class NET_OUT_ATTACH_TRAFFICLIGHT_INFO extends NetSDKLib.SdkStructure {
     /**
-     *  结构体大小
+     * 结构体大小
      */
     public int dwSize;
 
-    public NET_OUT_ATTACH_TRAFFICLIGHT_INFO(){
+    public NET_OUT_ATTACH_TRAFFICLIGHT_INFO() {
         this.dwSize = this.size();
     }
 }

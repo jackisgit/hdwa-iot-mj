@@ -8,8 +8,8 @@ package com.netsdk.lib.enumeration;
  */
 public enum EM_DOWNLOAD_FILE_TYPE {
 
-    EM_DOWNLOAD_BY_FILENAME(0,"按文件名下载"),
-    EM_DOWNLOAD_BY_CONDITION(1,"按条件下载");
+    EM_DOWNLOAD_BY_FILENAME(0, "按文件名下载"),
+    EM_DOWNLOAD_BY_CONDITION(1, "按条件下载");
 
     private final int value;
     private final String note;
@@ -17,14 +17,6 @@ public enum EM_DOWNLOAD_FILE_TYPE {
     EM_DOWNLOAD_FILE_TYPE(int givenValue, String note) {
         this.value = givenValue;
         this.note = note;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
     }
 
     public static String getNoteByValue(int givenValue) {
@@ -51,6 +43,14 @@ public enum EM_DOWNLOAD_FILE_TYPE {
                 return e;
         }
         return EM_DOWNLOAD_FILE_TYPE.EM_DOWNLOAD_BY_FILENAME;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

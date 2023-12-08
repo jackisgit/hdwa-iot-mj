@@ -9,37 +9,29 @@ package com.netsdk.lib.enumeration;
 
 public enum NET_TRAFFIC_ROAD_RANK {
     /**
-     * 
+     *
      */
-    ROAD_RANK_UNKNOWN(0,""),
+    ROAD_RANK_UNKNOWN(0, ""),
     /**
      * 快速路
      */
-    ROAD_RANK_RAPID(1,"快速路"),
+    ROAD_RANK_RAPID(1, "快速路"),
     /**
      * 主干路
      */
-    ROAD_RANK_TRUNK(2,"主干路"),
+    ROAD_RANK_TRUNK(2, "主干路"),
     /**
      * 次干路
      */
-    ROAD_RANK_SUBTRUNK(3,"次干路"),
+    ROAD_RANK_SUBTRUNK(3, "次干路"),
     /**
      * 支路
      */
-    ROAD_RANK_BRANCH(4,"支路");
+    ROAD_RANK_BRANCH(4, "支路");
 
     private int value;
 
     private String note;
-
-    public String getNote() {
-             return note;
-         }
-
-    public int getValue() {
-             return value;
-         }
 
     NET_TRAFFIC_ROAD_RANK(int givenValue, String note) {
         this.value = givenValue;
@@ -70,6 +62,14 @@ public enum NET_TRAFFIC_ROAD_RANK {
                 return e;
         }
         return NET_TRAFFIC_ROAD_RANK.ROAD_RANK_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

@@ -9,10 +9,10 @@ import com.netsdk.lib.NetSDKLib;
  */
 public class NET_UINT_POINT extends NetSDKLib.SdkStructure {
 
-	public int nx;
+    public int nx;
 
-	public int ny;
+    public int ny;
 
-	public NET_UINT_POINT() {
-	}
+    public NET_UINT_POINT() {
+    }
 }

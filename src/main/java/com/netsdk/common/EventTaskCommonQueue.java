@@ -1,4 +1,5 @@
 package com.netsdk.common;
+
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.ExecutorService;
@@ -64,7 +65,8 @@ public class EventTaskCommonQueue {
     public void activeService() {
         running = true;
         if (eventQueueService.isShutdown()) {
-            eventQueueService = Executors.newFixedThreadPool(MAX_THREAD_COUNT);;
+            eventQueueService = Executors.newFixedThreadPool(MAX_THREAD_COUNT);
+            ;
             init();
             log.info("线程池已关闭，重新初始化线程池及任务");
         }

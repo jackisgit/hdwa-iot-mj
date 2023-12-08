@@ -84,7 +84,7 @@ public class DEV_EVENT_TRAFFIC_PEDESTRAINRUNREDLIGHT_INFO extends NetSDKLib.SdkS
 
     @Override
     public String toString() {
-        NumberFormat nf=NumberFormat.getInstance();
+        NumberFormat nf = NumberFormat.getInstance();
         nf.setGroupingUsed(false);
         return "行人闯红灯事件,DEV_EVENT_TRAFFIC_PEDESTRAINRUNREDLIGHT_INFO{" +
                 "通道号=" + nChannelID +
@@ -93,14 +93,14 @@ public class DEV_EVENT_TRAFFIC_PEDESTRAINRUNREDLIGHT_INFO extends NetSDKLib.SdkS
                 ", 事件发生的时间=" + UTC.toStringTime() +
                 ", 事件ID=" + nEventID +
                 ", 车道号=" + nLane +
-                ", 行人信息={ nAction:"+stuObject.nAction+",szObjectType=" + new String(stuObject.szObjectType).trim()+",szObjectSubType:"+new String(stuObject.szObjectSubType).trim() +
+                ", 行人信息={ nAction:" + stuObject.nAction + ",szObjectType=" + new String(stuObject.szObjectType).trim() + ",szObjectSubType:" + new String(stuObject.szObjectSubType).trim() +
                 "}, 文件信息=" + stuFileInfo +
                 ", 抓拍序号=" + nSequence +
                 ", 事件动作=" + bEventAction +
                 ", 图片序号=" + byImageIndex +
                 ", 抓图标志=" + dwSnapFlagMask +
                 ", 图片的分辨率=" + stuResolution.toString() +
-                ", 公共信息= { emSnapCategory:" + stCommInfo.emSnapCategory +'}'+
+                ", 公共信息= { emSnapCategory:" + stCommInfo.emSnapCategory + '}' +
                 '}';
     }
 }

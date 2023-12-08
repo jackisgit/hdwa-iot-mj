@@ -21,14 +21,6 @@ public enum EM_MOBILE_ENFORCE_FORMAT {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_MOBILE_ENFORCE_FORMAT enumType : EM_MOBILE_ENFORCE_FORMAT.values()) {
             if (givenValue == enumType.getValue()) {
@@ -53,6 +45,14 @@ public enum EM_MOBILE_ENFORCE_FORMAT {
                 return e;
         }
         return EM_MOBILE_ENFORCE_FORMAT.EM_MOBILE_ENFORCE_FORMAT_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

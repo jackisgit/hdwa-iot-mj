@@ -525,14 +525,6 @@ public enum ENUMERROR {
         this.error = error;
     }
 
-    public int getCode() {
-        return code;
-    }
-
-    public String getError() {
-        return error;
-    }
-
     public static ENUMERROR getENUMError() {
         int code = NetSDKLib.NETSDK_INSTANCE.CLIENT_GetLastError() & 0x7fffffff;
         for (ENUMERROR error : ENUMERROR.values()) {
@@ -563,5 +555,13 @@ public enum ENUMERROR {
     public static String getFullError() {
         ENUMERROR error = getENUMError();
         return error.getCode() + "," + error.getError();
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public String getError() {
+        return error;
     }
 }

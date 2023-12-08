@@ -81,14 +81,6 @@ public enum NET_EM_LOGIC_CHANNEL {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (NET_EM_LOGIC_CHANNEL enumType : NET_EM_LOGIC_CHANNEL.values()) {
             if (givenValue == enumType.getValue()) {
@@ -105,5 +97,13 @@ public enum NET_EM_LOGIC_CHANNEL {
             }
         }
         return -1;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

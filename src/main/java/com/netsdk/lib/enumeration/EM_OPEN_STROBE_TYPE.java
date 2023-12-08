@@ -23,9 +23,10 @@ public enum EM_OPEN_STROBE_TYPE {
      * 手动开闸
      */
     EM_OPEN_STROBE_TYPE_MANUAL;
-    public static EM_OPEN_STROBE_TYPE getOpenStrobeTyppe(int type){
-        for (EM_OPEN_STROBE_TYPE strobeType : EM_OPEN_STROBE_TYPE.values() ) {
-            if(strobeType.ordinal()==type){
+
+    public static EM_OPEN_STROBE_TYPE getOpenStrobeTyppe(int type) {
+        for (EM_OPEN_STROBE_TYPE strobeType : EM_OPEN_STROBE_TYPE.values()) {
+            if (strobeType.ordinal() == type) {
                 return strobeType;
             }
         }

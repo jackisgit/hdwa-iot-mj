@@ -11,31 +11,23 @@ public enum EM_CFG_CROSSREGION_ALARMTYPE {
     /**
      * 未知
      */
-    EM_CFG_CROSSREGION_ALARMTYPE_UNKNOWN(0,"未知"),
+    EM_CFG_CROSSREGION_ALARMTYPE_UNKNOWN(0, "未知"),
     /**
      * 报警
      */
-    EM_CFG_CROSSREGION_ALARMTYPE_ALARM(1,"报警"),
+    EM_CFG_CROSSREGION_ALARMTYPE_ALARM(1, "报警"),
     /**
      * 预警
      */
-    EM_CFG_CROSSREGION_ALARMTYPE_WARNING(2,"预警"),
+    EM_CFG_CROSSREGION_ALARMTYPE_WARNING(2, "预警"),
     /**
      * 屏蔽
      */
-    EM_CFG_CROSSREGION_ALARMTYPE_SHIELD(3,"屏蔽");
+    EM_CFG_CROSSREGION_ALARMTYPE_SHIELD(3, "屏蔽");
 
     private int value;
 
     private String note;
-
-    public String getNote() {
-             return note;
-         }
-
-    public int getValue() {
-             return value;
-         }
 
     EM_CFG_CROSSREGION_ALARMTYPE(int givenValue, String note) {
         this.value = givenValue;
@@ -66,6 +58,14 @@ public enum EM_CFG_CROSSREGION_ALARMTYPE {
                 return e;
         }
         return EM_CFG_CROSSREGION_ALARMTYPE.EM_CFG_CROSSREGION_ALARMTYPE_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

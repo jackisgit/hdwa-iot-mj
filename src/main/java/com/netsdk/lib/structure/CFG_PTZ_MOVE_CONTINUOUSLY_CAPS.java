@@ -15,7 +15,7 @@ public class CFG_PTZ_MOVE_CONTINUOUSLY_CAPS extends NetSDKLib.SdkStructure {
      */
     public CFG_PTZ_ACTION_CAPS stuPTZ;
     /**
-     *连续移动方式类型
+     * 连续移动方式类型
      */
     public CFG_PTZ_CONTINUOUSLY_TYPE stuType;
     /**

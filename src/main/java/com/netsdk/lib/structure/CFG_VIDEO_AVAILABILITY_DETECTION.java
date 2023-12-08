@@ -9,6 +9,8 @@ import com.netsdk.lib.NetSDKLib;
  * @date 2021/2/22
  */
 public class CFG_VIDEO_AVAILABILITY_DETECTION extends NetSDKLib.SdkStructure {
-  /** 使能配置 */
-  public boolean bEnable;
+    /**
+     * 使能配置
+     */
+    public boolean bEnable;
 }

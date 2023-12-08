@@ -8,6 +8,6 @@ import com.netsdk.lib.NetSDKLib;
  * @description
  * @date 2022/8/31 20:35
  */
-public class BYTE_32   extends NetSDKLib.SdkStructure {
-    public	 byte[]					SN_32=new byte[32];
+public class BYTE_32 extends NetSDKLib.SdkStructure {
+    public byte[] SN_32 = new byte[32];
 }

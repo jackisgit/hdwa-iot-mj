@@ -5,11 +5,11 @@ package com.netsdk.lib.enumeration;
  * @since ： Created in 2021/6/30 10:19
  * 人员通过方向枚举
  */
-public enum  EM_SECURITYGATE_PERSON_PASS_DIRECTION {
+public enum EM_SECURITYGATE_PERSON_PASS_DIRECTION {
     // 未知
-    EM_SECURITYGATE_PERSON_PASS_DIRECTION_UNKNOWN (0,"未知"),
-    EM_SECURITYGATE_PERSON_PASS_DIRECTION_IN(1,"进入"),			// 进入
-    EM_SECURITYGATE_PERSON_PASS_DIRECTION_OUT(2,"离开");	// 离开
+    EM_SECURITYGATE_PERSON_PASS_DIRECTION_UNKNOWN(0, "未知"),
+    EM_SECURITYGATE_PERSON_PASS_DIRECTION_IN(1, "进入"),            // 进入
+    EM_SECURITYGATE_PERSON_PASS_DIRECTION_OUT(2, "离开");    // 离开
 
     private final int value;
     private final String note;
@@ -17,14 +17,6 @@ public enum  EM_SECURITYGATE_PERSON_PASS_DIRECTION {
     EM_SECURITYGATE_PERSON_PASS_DIRECTION(int givenValue, String note) {
         this.value = givenValue;
         this.note = note;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
     }
 
     public static String getNoteByValue(int givenValue) {
@@ -51,5 +43,13 @@ public enum  EM_SECURITYGATE_PERSON_PASS_DIRECTION {
                 return e;
         }
         return EM_SECURITYGATE_PERSON_PASS_DIRECTION.EM_SECURITYGATE_PERSON_PASS_DIRECTION_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

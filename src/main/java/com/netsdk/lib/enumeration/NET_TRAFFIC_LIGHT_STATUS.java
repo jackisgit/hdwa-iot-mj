@@ -33,14 +33,6 @@ public enum NET_TRAFFIC_LIGHT_STATUS {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (NET_TRAFFIC_LIGHT_STATUS enumType : NET_TRAFFIC_LIGHT_STATUS.values()) {
             if (givenValue == enumType.getValue()) {
@@ -57,5 +49,13 @@ public enum NET_TRAFFIC_LIGHT_STATUS {
             }
         }
         return -1;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

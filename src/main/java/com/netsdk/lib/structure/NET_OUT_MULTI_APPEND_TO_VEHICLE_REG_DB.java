@@ -11,13 +11,16 @@ import com.sun.jna.Pointer;
  * @date 2021/8/17 15:15
  */
 public class NET_OUT_MULTI_APPEND_TO_VEHICLE_REG_DB extends NetSDKLib.SdkStructure {
-    public  int                           			dwSize;							// 结构体大小
-    public int nErrCodeNum;                	// 错误码个数
-    public int nRetErrCodeNum;                	// 返回的错误码数量
-    /** {@link com.netsdk.lib.enumeration.EM_VEHICLE_REG_DB_OPERATOR_ERRCODE} */
-    public Pointer emErrCode=new Memory(1000*4);              	// 错误码信息  要求：实现VehicleRegisterDB.multiAppend +vehicle object[1000] 数组定1000
+    public int dwSize;                            // 结构体大小
+    public int nErrCodeNum;                    // 错误码个数
+    public int nRetErrCodeNum;                    // 返回的错误码数量
+    /**
+     * {@link com.netsdk.lib.enumeration.EM_VEHICLE_REG_DB_OPERATOR_ERRCODE}
+     */
+    public Pointer emErrCode = new Memory(1000 * 4);                // 错误码信息  要求：实现VehicleRegisterDB.multiAppend +vehicle object[1000] 数组定1000
+
     // public int[]  		emErrCode=new int[1000];
-        public NET_OUT_MULTI_APPEND_TO_VEHICLE_REG_DB(){
-            this.dwSize=this.size();
-        }
+    public NET_OUT_MULTI_APPEND_TO_VEHICLE_REG_DB() {
+        this.dwSize = this.size();
+    }
 }

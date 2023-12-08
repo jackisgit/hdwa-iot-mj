@@ -41,14 +41,6 @@ public enum EM_WORKSTATDETECTION_TYPE {
 
     private String note;
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     EM_WORKSTATDETECTION_TYPE(int givenValue, String note) {
         this.value = givenValue;
         this.note = note;
@@ -78,6 +70,14 @@ public enum EM_WORKSTATDETECTION_TYPE {
                 return e;
         }
         return EM_WORKSTATDETECTION_TYPE.EM_WORKSTATDETECTION_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

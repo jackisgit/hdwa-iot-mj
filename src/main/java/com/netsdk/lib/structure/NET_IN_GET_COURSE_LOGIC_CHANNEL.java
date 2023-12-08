@@ -24,7 +24,7 @@ public class NET_IN_GET_COURSE_LOGIC_CHANNEL extends NetSDKLib.SdkStructure {
      */
     public int[] nChannel = new int[MAX_PREVIEW_CHANNEL_NUM];
 
-    public NET_IN_GET_COURSE_LOGIC_CHANNEL(){
+    public NET_IN_GET_COURSE_LOGIC_CHANNEL() {
         dwSize = this.size();
     }
 }

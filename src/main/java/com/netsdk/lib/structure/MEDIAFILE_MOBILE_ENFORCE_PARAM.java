@@ -32,7 +32,7 @@ public class MEDIAFILE_MOBILE_ENFORCE_PARAM extends NetSDKLib.SdkStructure {
      * 文件上传标志 枚举值 {@link EM_MOBILE_ENFORCE_UPLOAD_FLAG}
      */
     public int emUploadFlag;
-    
+
     /**
      * 预留字节
      */

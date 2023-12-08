@@ -5,66 +5,66 @@ import com.netsdk.lib.NetSDKLib;
 
 /**
  * 表情
- * 
+ *
  * @author ： 260611
  * @since ： Created in 2021/10/19 20:21
  */
 public class EM_EMOTION_TYPE extends NetSDKLib.SdkStructure {
 
     /**
-     *  未知
+     * 未知
      */
-    public static final int					EM_EMOTION_TYPE_UNKNOWN = 0;
+    public static final int EM_EMOTION_TYPE_UNKNOWN = 0;
     /**
-     *  普通/正常
+     * 普通/正常
      */
-    public static final int					EM_EMOTION_TYPE_NORMAL = 1;
+    public static final int EM_EMOTION_TYPE_NORMAL = 1;
     /**
-     *  微笑
+     * 微笑
      */
-    public static final int					EM_EMOTION_TYPE_SMILE = 2;
+    public static final int EM_EMOTION_TYPE_SMILE = 2;
     /**
-     *  愤怒
+     * 愤怒
      */
-    public static final int					EM_EMOTION_TYPE_ANGER = 3;
+    public static final int EM_EMOTION_TYPE_ANGER = 3;
     /**
-     *  悲伤
+     * 悲伤
      */
-    public static final int					EM_EMOTION_TYPE_SADNESS = 4;
+    public static final int EM_EMOTION_TYPE_SADNESS = 4;
     /**
-     *  厌恶
+     * 厌恶
      */
-    public static final int					EM_EMOTION_TYPE_DISGUST = 5;
+    public static final int EM_EMOTION_TYPE_DISGUST = 5;
     /**
-     *  害怕
+     * 害怕
      */
-    public static final int					EM_EMOTION_TYPE_FEAR = 6;
+    public static final int EM_EMOTION_TYPE_FEAR = 6;
     /**
-     *  惊讶
+     * 惊讶
      */
-    public static final int					EM_EMOTION_TYPE_SURPRISE = 7;
+    public static final int EM_EMOTION_TYPE_SURPRISE = 7;
     /**
-     *  正常
+     * 正常
      */
-    public static final int					EM_EMOTION_TYPE_NEUTRAL = 8;
+    public static final int EM_EMOTION_TYPE_NEUTRAL = 8;
     /**
-     *  大笑
+     * 大笑
      */
-    public static final int					EM_EMOTION_TYPE_LAUGH = 9;
+    public static final int EM_EMOTION_TYPE_LAUGH = 9;
     /**
-     *  高兴
+     * 高兴
      */
-    public static final int					EM_EMOTION_TYPE_HAPPY = 10;
+    public static final int EM_EMOTION_TYPE_HAPPY = 10;
     /**
-     *  困惑
+     * 困惑
      */
-    public static final int					EM_EMOTION_TYPE_CONFUSED = 11;
+    public static final int EM_EMOTION_TYPE_CONFUSED = 11;
     /**
-     *  尖叫
+     * 尖叫
      */
-    public static final int					EM_EMOTION_TYPE_SCREAM = 12;
+    public static final int EM_EMOTION_TYPE_SCREAM = 12;
     /**
-     *  平静
+     * 平静
      */
-    public static final int					EM_EMOTION_TYPE_CALMNESS = 13;
+    public static final int EM_EMOTION_TYPE_CALMNESS = 13;
 }

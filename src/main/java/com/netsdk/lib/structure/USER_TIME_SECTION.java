@@ -9,5 +9,5 @@ import com.netsdk.lib.NetSDKLib;
  * @date 2021/2/8
  */
 public class USER_TIME_SECTION extends NetSDKLib.SdkStructure {
-    public byte[] userTimeSections=new byte[20];
+    public byte[] userTimeSections = new byte[20];
 }

@@ -10,6 +10,9 @@ import com.netsdk.lib.NetSDKLib;
  */
 public class NET_TRAFFIC_LATTICE_SCREEN_LOGO_INFO extends NetSDKLib.SdkStructure {
 
-    public  int			emLogoType;			/** LOGO类型 {@link com.netsdk.lib.enumeration.NET_EM_LATTICE_SCREEN_LOGO_TYPE} */
-   public byte[]		szContent=new byte[128];		// emLogoType为文字时，为文字内容;emLogoType为图片时，为图片名称
+    public int emLogoType;
+    /**
+     * LOGO类型 {@link com.netsdk.lib.enumeration.NET_EM_LATTICE_SCREEN_LOGO_TYPE}
+     */
+    public byte[] szContent = new byte[128];        // emLogoType为文字时，为文字内容;emLogoType为图片时，为图片名称
 }

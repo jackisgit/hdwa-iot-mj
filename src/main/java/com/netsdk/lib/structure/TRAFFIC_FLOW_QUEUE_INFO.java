@@ -47,11 +47,11 @@ public class TRAFFIC_FLOW_QUEUE_INFO extends NetSDKLib.SdkStructure {
     public String toString() {
 
         String stuQueueInfos = "";
-        if(nQueueInfoNum > 0){
+        if (nQueueInfoNum > 0) {
             stuQueueInfos += "stuQueueInfo[0] = ";
             stuQueueInfos += stuQueueInfo[0].toString();
         }
-        for(int i = 1; i < nQueueInfoNum; i ++){
+        for (int i = 1; i < nQueueInfoNum; i++) {
             stuQueueInfos += ",stuQueueInfo[" + i + "] = ";
             stuQueueInfos += stuQueueInfo[i].toString();
         }

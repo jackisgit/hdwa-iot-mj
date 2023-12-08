@@ -33,14 +33,6 @@ public enum EM_EVENT_LEVEL {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_EVENT_LEVEL enumType : EM_EVENT_LEVEL.values()) {
             if (givenValue == enumType.getValue()) {
@@ -65,5 +57,13 @@ public enum EM_EVENT_LEVEL {
                 return e;
         }
         return EM_EVENT_LEVEL.EM_EVENT_LEVEL_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

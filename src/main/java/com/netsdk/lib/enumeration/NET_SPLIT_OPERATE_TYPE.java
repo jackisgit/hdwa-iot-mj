@@ -127,14 +127,6 @@ public enum NET_SPLIT_OPERATE_TYPE {
 
     private String note;
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     NET_SPLIT_OPERATE_TYPE(int givenValue, String note) {
         this.value = givenValue;
         this.note = note;
@@ -164,6 +156,14 @@ public enum NET_SPLIT_OPERATE_TYPE {
                 return e;
         }
         return NET_SPLIT_OPERATE_TYPE.NET_SPLIT_OPERATE_SET_BACKGROUND;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

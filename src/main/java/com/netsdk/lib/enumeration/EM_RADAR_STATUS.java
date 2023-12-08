@@ -24,14 +24,6 @@ public enum EM_RADAR_STATUS {
 
     private String note;
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     EM_RADAR_STATUS(int givenValue, String note) {
         this.value = givenValue;
         this.note = note;
@@ -61,6 +53,14 @@ public enum EM_RADAR_STATUS {
                 return e;
         }
         return EM_RADAR_STATUS.EM_RADAR_STATUS_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

@@ -1,4 +1,5 @@
 package com.netsdk.lib.enumeration;
+
 /**
  * @author 251823
  * @description 卷类型枚举
@@ -14,5 +15,5 @@ public class NET_VOLUME_TYPE {
     public static final int VOLUME_TYPE_GLOBAL_SPARE = 6;    //全局热备卷
     public static final int VOLUME_TYPE_NAS = 7;    //NAS盘(包括FTP, SAMBA, NFS)
     public static final int VOLUME_TYPE_INVIDUAL_RAID = 8;    //独立RAID卷（指没有加入到，虚拟卷组等组中）
-    public static final int VOLUME_TYPE_MAX = 9;    
+    public static final int VOLUME_TYPE_MAX = 9;
 }

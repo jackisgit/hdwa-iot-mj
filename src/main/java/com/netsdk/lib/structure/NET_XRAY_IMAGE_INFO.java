@@ -12,29 +12,29 @@ import com.netsdk.lib.NetSDKLib;
 public class NET_XRAY_IMAGE_INFO extends NetSDKLib.SdkStructure {
 
     /**
-     *  视图类型
+     * 视图类型
      */
-    public int					emViewType;
+    public int emViewType;
 
     /**
-     *  图片类型
+     * 图片类型
      */
-    public int					emImageType;
+    public int emImageType;
 
     /**
-     *  在二进制数据块中的偏移
+     * 在二进制数据块中的偏移
      */
-    public int					nOffset;
+    public int nOffset;
 
     /**
-     *  图片大小,单位:字节
+     * 图片大小,单位:字节
      */
-    public int					nLength;
+    public int nLength;
 
     /**
-     *  预留字节
+     * 预留字节
      */
-    public byte					byReserved[] = new byte[1024];
+    public byte byReserved[] = new byte[1024];
 
     @Override
     public String toString() {

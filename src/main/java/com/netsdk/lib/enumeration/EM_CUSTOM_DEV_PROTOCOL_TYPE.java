@@ -51,14 +51,6 @@ public enum EM_CUSTOM_DEV_PROTOCOL_TYPE {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_CUSTOM_DEV_PROTOCOL_TYPE enumType : EM_CUSTOM_DEV_PROTOCOL_TYPE.values()) {
             if (givenValue == enumType.getValue()) {
@@ -70,10 +62,18 @@ public enum EM_CUSTOM_DEV_PROTOCOL_TYPE {
 
     public static int getValueByNote(String givenNote) {
         for (EM_CUSTOM_DEV_PROTOCOL_TYPE enumType : EM_CUSTOM_DEV_PROTOCOL_TYPE.values()) {
-            if (givenNote.equals(enumType.getNote()) ) {
+            if (givenNote.equals(enumType.getNote())) {
                 return enumType.getValue();
             }
         }
         return -1;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

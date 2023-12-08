@@ -5,134 +5,134 @@ import com.netsdk.lib.NetSDKLib;
 
 /**
  * 衣服颜色
- * 
+ *
  * @author ： 260611
  * @since ： Created in 2021/10/19 19:35
  */
 public class EM_CLOTHES_COLOR extends NetSDKLib.SdkStructure {
 
     /**
-     *  未知
+     * 未知
      */
-    public static final int					EM_CLOTHES_COLOR_UNKNOWN = 0;
+    public static final int EM_CLOTHES_COLOR_UNKNOWN = 0;
     /**
-     *  白色
+     * 白色
      */
-    public static final int					EM_CLOTHES_COLOR_WHITE = 1;
+    public static final int EM_CLOTHES_COLOR_WHITE = 1;
     /**
-     *  橙色
+     * 橙色
      */
-    public static final int					EM_CLOTHES_COLOR_ORANGE = 2;
+    public static final int EM_CLOTHES_COLOR_ORANGE = 2;
     /**
-     *  粉色
+     * 粉色
      */
-    public static final int					EM_CLOTHES_COLOR_PINK = 3;
+    public static final int EM_CLOTHES_COLOR_PINK = 3;
     /**
-     *  黑色
+     * 黑色
      */
-    public static final int					EM_CLOTHES_COLOR_BLACK = 4;
+    public static final int EM_CLOTHES_COLOR_BLACK = 4;
     /**
-     *  红色
+     * 红色
      */
-    public static final int					EM_CLOTHES_COLOR_RED = 5;
+    public static final int EM_CLOTHES_COLOR_RED = 5;
     /**
-     *  黄色
+     * 黄色
      */
-    public static final int					EM_CLOTHES_COLOR_YELLOW = 6;
+    public static final int EM_CLOTHES_COLOR_YELLOW = 6;
     /**
-     *  灰色
+     * 灰色
      */
-    public static final int					EM_CLOTHES_COLOR_GRAY = 7;
+    public static final int EM_CLOTHES_COLOR_GRAY = 7;
     /**
-     *  蓝色
+     * 蓝色
      */
-    public static final int					EM_CLOTHES_COLOR_BLUE = 8;
+    public static final int EM_CLOTHES_COLOR_BLUE = 8;
     /**
-     *  绿色 
+     * 绿色
      */
-    public static final int					EM_CLOTHES_COLOR_GREEN = 9;
+    public static final int EM_CLOTHES_COLOR_GREEN = 9;
     /**
-     *  紫色
+     * 紫色
      */
-    public static final int					EM_CLOTHES_COLOR_PURPLE = 10;
+    public static final int EM_CLOTHES_COLOR_PURPLE = 10;
     /**
-     *  棕色
+     * 棕色
      */
-    public static final int					EM_CLOTHES_COLOR_BROWN = 11;
+    public static final int EM_CLOTHES_COLOR_BROWN = 11;
     /**
-     *  深橙色
+     * 深橙色
      */
-    public static final int					EM_CLOTHES_COLOR_DARKORANGE = 12;
+    public static final int EM_CLOTHES_COLOR_DARKORANGE = 12;
     /**
-     *  其他颜色(该选项设备协议已不支持, 此处为了兼容保留)
+     * 其他颜色(该选项设备协议已不支持, 此处为了兼容保留)
      */
-    public static final int					EM_CLOTHES_COLOR_OTHER = 13;
+    public static final int EM_CLOTHES_COLOR_OTHER = 13;
     /**
-     *  银色
+     * 银色
      */
-    public static final int					EM_CLOTHES_COLOR_SILVER = 14;
+    public static final int EM_CLOTHES_COLOR_SILVER = 14;
     /**
-     *  暗紫罗兰色
+     * 暗紫罗兰色
      */
-    public static final int					EM_CLOTHES_COLOR_DARKVIOLET = 15;
+    public static final int EM_CLOTHES_COLOR_DARKVIOLET = 15;
     /**
-     *  栗色
+     * 栗色
      */
-    public static final int					EM_CLOTHES_COLOR_MARRON = 16;
+    public static final int EM_CLOTHES_COLOR_MARRON = 16;
     /**
-     *  暗灰色
+     * 暗灰色
      */
-    public static final int					EM_CLOTHES_COLOR_DIMGRAY = 17;
+    public static final int EM_CLOTHES_COLOR_DIMGRAY = 17;
     /**
-     *  白烟色
+     * 白烟色
      */
-    public static final int					EM_CLOTHES_COLOR_WHITESMOKE = 18;
+    public static final int EM_CLOTHES_COLOR_WHITESMOKE = 18;
     /**
-     *  浅玫瑰色
+     * 浅玫瑰色
      */
-    public static final int					EM_CLOTHES_COLOR_MISTYROSE = 19;
+    public static final int EM_CLOTHES_COLOR_MISTYROSE = 19;
     /**
-     *  番茄红色
+     * 番茄红色
      */
-    public static final int					EM_CLOTHES_COLOR_TOMATO = 20;
+    public static final int EM_CLOTHES_COLOR_TOMATO = 20;
     /**
-     *  橄榄色
+     * 橄榄色
      */
-    public static final int					EM_CLOTHES_COLOR_OLIVE = 21;
+    public static final int EM_CLOTHES_COLOR_OLIVE = 21;
     /**
-     *  金色
+     * 金色
      */
-    public static final int					EM_CLOTHES_COLOR_GLOD = 22;
+    public static final int EM_CLOTHES_COLOR_GLOD = 22;
     /**
-     *  暗橄榄绿色
+     * 暗橄榄绿色
      */
-    public static final int					EM_CLOTHES_COLOR_DARKOLIVEGREEN = 23;
+    public static final int EM_CLOTHES_COLOR_DARKOLIVEGREEN = 23;
     /**
-     *  黄绿色
+     * 黄绿色
      */
-    public static final int					EM_CLOTHES_COLOR_CHARTREUSE = 24;
+    public static final int EM_CLOTHES_COLOR_CHARTREUSE = 24;
     /**
-     *  绿黄色
+     * 绿黄色
      */
-    public static final int					EM_CLOTHES_COLOR_GREENYELLOW = 25;
+    public static final int EM_CLOTHES_COLOR_GREENYELLOW = 25;
     /**
-     *  森林绿色
+     * 森林绿色
      */
-    public static final int					EM_CLOTHES_COLOR_FORESTGREEN = 26;
+    public static final int EM_CLOTHES_COLOR_FORESTGREEN = 26;
     /**
-     *  海洋绿色
+     * 海洋绿色
      */
-    public static final int					EM_CLOTHES_COLOR_SEAGREEN = 27;
+    public static final int EM_CLOTHES_COLOR_SEAGREEN = 27;
     /**
-     *  深天蓝色
+     * 深天蓝色
      */
-    public static final int					EM_CLOTHES_COLOR_DEEPSKYBLUE = 28;
+    public static final int EM_CLOTHES_COLOR_DEEPSKYBLUE = 28;
     /**
-     *  青色
+     * 青色
      */
-    public static final int					EM_CLOTHES_COLOR_CYAN = 29;
+    public static final int EM_CLOTHES_COLOR_CYAN = 29;
     /**
-     *  浅绿色
+     * 浅绿色
      */
-    public static final int					EM_CLOTHES_COLOR_LIGHTGREEN = 30;
+    public static final int EM_CLOTHES_COLOR_LIGHTGREEN = 30;
 }

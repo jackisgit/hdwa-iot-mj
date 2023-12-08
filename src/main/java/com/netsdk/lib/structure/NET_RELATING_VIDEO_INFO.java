@@ -8,15 +8,15 @@ import com.netsdk.lib.NetSDKLib;
  * @date 2022/06/16 10:26:31
  */
 public class NET_RELATING_VIDEO_INFO extends NetSDKLib.SdkStructure {
-	/**
-	 * 违章关联视频FTP上传路径
-	 */
-	public byte[] szVideoPath = new byte[256];
-	/**
-	 * 保留字节
-	 */
-	public byte[] szReserved = new byte[128];
+    /**
+     * 违章关联视频FTP上传路径
+     */
+    public byte[] szVideoPath = new byte[256];
+    /**
+     * 保留字节
+     */
+    public byte[] szReserved = new byte[128];
 
-	public NET_RELATING_VIDEO_INFO() {
-	}
+    public NET_RELATING_VIDEO_INFO() {
+    }
 }

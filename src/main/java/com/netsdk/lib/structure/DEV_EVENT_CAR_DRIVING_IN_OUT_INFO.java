@@ -67,13 +67,13 @@ public class DEV_EVENT_CAR_DRIVING_IN_OUT_INFO extends NetSDKLib.SdkStructure {
     /**
      * 图片信息数组
      */
-    public NET_IMAGE_INFO_EX2   stuImageInfo[] = (NET_IMAGE_INFO_EX2[])new NET_IMAGE_INFO_EX2().toArray(32);
+    public NET_IMAGE_INFO_EX2 stuImageInfo[] = (NET_IMAGE_INFO_EX2[]) new NET_IMAGE_INFO_EX2().toArray(32);
     /**
      * 图片信息个数
      */
-    public int                  nImageInfoNum;
+    public int nImageInfoNum;
     /**
      * 预留字节
      */
-    public byte                 byReserved[] = new byte[1024];
+    public byte byReserved[] = new byte[1024];
 }

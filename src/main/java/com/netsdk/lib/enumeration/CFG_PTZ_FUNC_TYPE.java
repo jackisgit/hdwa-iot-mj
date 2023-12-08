@@ -13,33 +13,26 @@ public enum CFG_PTZ_FUNC_TYPE {
     /**
      * 巡航
      */
-    FUNC_TYPE_TOUR (0,"巡航") ,
+    FUNC_TYPE_TOUR(0, "巡航"),
     /**
      * 自动巡迹
      */
-    FUNC_TYPE_PATTERN (1,"自动巡迹") ,
+    FUNC_TYPE_PATTERN(1, "自动巡迹"),
     /**
      * 预置点
      */
-    FUNC_TYPE_PRE(2,"预置点")	   ,
+    FUNC_TYPE_PRE(2, "预置点"),
 
-    FUNC_TYPE_SCAN(3,"自动线扫"),
+    FUNC_TYPE_SCAN(3, "自动线扫"),
 
-    FUNC_TYPE_MAX(4,"最大值");
+    FUNC_TYPE_MAX(4, "最大值");
 
-   private int id;
+    private int id;
     private String desc;
 
     CFG_PTZ_FUNC_TYPE(int id, String desc) {
         this.id = id;
         this.desc = desc;
-    }
-    public int getId() {
-        return id;
-    }
-
-    public String getDesc() {
-        return desc;
     }
 
     public static String getDescById(int id) {
@@ -58,5 +51,13 @@ public enum CFG_PTZ_FUNC_TYPE {
             }
         }
         return -1;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getDesc() {
+        return desc;
     }
 }

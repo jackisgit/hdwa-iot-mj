@@ -33,14 +33,6 @@ public enum TALK_CODING_TYPE {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (TALK_CODING_TYPE enumType : TALK_CODING_TYPE.values()) {
             if (givenValue == enumType.getValue()) {
@@ -65,5 +57,13 @@ public enum TALK_CODING_TYPE {
                 return e;
         }
         return TALK_CODING_TYPE.NET_TALK_DEFAULT;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

@@ -28,14 +28,6 @@ public enum EM_ACROSS_PARKING {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_ACROSS_PARKING enumType : EM_ACROSS_PARKING.values()) {
             if (givenValue == enumType.getValue()) {
@@ -60,5 +52,13 @@ public enum EM_ACROSS_PARKING {
                 return e;
         }
         return EM_ACROSS_PARKING.EM_ACROSS_PARKING_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

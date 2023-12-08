@@ -33,64 +33,8 @@ public class CollectionFingerPrint extends JDialog {
     private int packageLen;
     private boolean bcollectionResult = false;
     private boolean isListen;
-
-    public byte[] getPackageData() {
-        return packageData;
-    }
-
-    public void setPackageData(byte[] packageData) {
-        this.packageData = packageData;
-
-    }
-
-    public void setLabelResult(byte[] packageData) {
-        collectionResult.setText(Base64.getEncoder().encodeToString(packageData));
-    }
-
-    public int getPackageLen() {
-        return packageLen;
-    }
-
-    public void setPackageLen(int packageLen) {
-        this.packageLen = packageLen;
-    }
-
-    public boolean isCollectionResult() {
-        return bcollectionResult;
-    }
-
-    public void setCollectionResult(boolean bcollectionResult) {
-        this.bcollectionResult = bcollectionResult;
-        //显示结果
-        collectionResult.setText(this.bcollectionResult ? "success" : "failed");
-    }
-
-    public void stopListen() {
-        //获取到指纹,停止监听
-        if (loginHandler != null && loginHandler.longValue() != 0) {
-            stopListen(loginHandler);
-        }
-        //获取按钮使能
-        btnCollection.setEnabled(true);
-        //设置监听状态
-        isListen = false;
-    }
-
     private NetSDKLib.LLong loginHandler;
     private NetSDKLib.NET_DEVICEINFO_Ex deviceinfoEx = new NetSDKLib.NET_DEVICEINFO_Ex();
-
-    /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        try {
-            CollectionFingerPrint dialog = new CollectionFingerPrint();
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setVisible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Create the dialog.
@@ -102,13 +46,13 @@ public class CollectionFingerPrint extends JDialog {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         } catch (InstantiationException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
         getContentPane().setLayout(new BorderLayout());
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -260,8 +204,8 @@ public class CollectionFingerPrint extends JDialog {
                         btnLogout.setEnabled(false);
                         btnCollection.setEnabled(false);
                         //清除指纹数据
-                        bcollectionResult=false;
-                        packageData=null;
+                        bcollectionResult = false;
+                        packageData = null;
                         //清除label显示
                         collectionResult.setText(Res.string().getCollectionResult());
                     }
@@ -287,6 +231,61 @@ public class CollectionFingerPrint extends JDialog {
 
             }
         }
+    }
+
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) {
+        try {
+            CollectionFingerPrint dialog = new CollectionFingerPrint();
+            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            dialog.setVisible(true);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    public byte[] getPackageData() {
+        return packageData;
+    }
+
+    public void setPackageData(byte[] packageData) {
+        this.packageData = packageData;
+
+    }
+
+    public void setLabelResult(byte[] packageData) {
+        collectionResult.setText(Base64.getEncoder().encodeToString(packageData));
+    }
+
+    public int getPackageLen() {
+        return packageLen;
+    }
+
+    public void setPackageLen(int packageLen) {
+        this.packageLen = packageLen;
+    }
+
+    public boolean isCollectionResult() {
+        return bcollectionResult;
+    }
+
+    public void setCollectionResult(boolean bcollectionResult) {
+        this.bcollectionResult = bcollectionResult;
+        //显示结果
+        collectionResult.setText(this.bcollectionResult ? "success" : "failed");
+    }
+
+    public void stopListen() {
+        //获取到指纹,停止监听
+        if (loginHandler != null && loginHandler.longValue() != 0) {
+            stopListen(loginHandler);
+        }
+        //获取按钮使能
+        btnCollection.setEnabled(true);
+        //设置监听状态
+        isListen = false;
     }
 
     /**
@@ -396,7 +395,7 @@ public class CollectionFingerPrint extends JDialog {
 
     public boolean stopListen(NetSDKLib.LLong loginHandler) {
         if (!LoginModule.netsdk.CLIENT_StopListen(loginHandler)) {
-            JOptionPane.showMessageDialog(null, Res.string().getStopListenFailed()+","+ ToolKits.getErrorCodeShow(),
+            JOptionPane.showMessageDialog(null, Res.string().getStopListenFailed() + "," + ToolKits.getErrorCodeShow(),
                     Res.string().getErrorMessage(), JOptionPane.ERROR_MESSAGE);
             return false;
         } else {

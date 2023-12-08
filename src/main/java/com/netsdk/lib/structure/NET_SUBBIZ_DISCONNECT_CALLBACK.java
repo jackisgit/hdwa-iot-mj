@@ -9,19 +9,19 @@ import com.sun.jna.Pointer;
  * @date 2022/11/03 10:09:28
  */
 public class NET_SUBBIZ_DISCONNECT_CALLBACK extends NetSDKLib.SdkStructure {
-	/**
-	 * 设备网络信息
-	 */
-	public NET_DEV_NETWORK_INFO stuDevNetInfo = new NET_DEV_NETWORK_INFO();
-	/**
-	 * 用户数据
-	 */
-	public Pointer dwUserData;
-	/**
-	 * 保留字节
-	 */
-	public byte[] szReserved = new byte[1024];
+    /**
+     * 设备网络信息
+     */
+    public NET_DEV_NETWORK_INFO stuDevNetInfo = new NET_DEV_NETWORK_INFO();
+    /**
+     * 用户数据
+     */
+    public Pointer dwUserData;
+    /**
+     * 保留字节
+     */
+    public byte[] szReserved = new byte[1024];
 
-	public NET_SUBBIZ_DISCONNECT_CALLBACK() {
-	}
+    public NET_SUBBIZ_DISCONNECT_CALLBACK() {
+    }
 }

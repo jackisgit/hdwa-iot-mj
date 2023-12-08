@@ -13,7 +13,7 @@ public enum EM_CFG_CAP_CMD {
      */
     CFG_CAP_CMD_RECORDFINDER("RecordFinder.getCaps"),
     /**
-     *获取视频诊断进行状态(CFG_VIDEODIAGNOSIS_STATE_INFO)
+     * 获取视频诊断进行状态(CFG_VIDEODIAGNOSIS_STATE_INFO)
      */
     CFG_CMD_VIDEODIAGNOSIS_GETSTATE("videoDiagnosisServer.getState"),
     /**
@@ -23,10 +23,11 @@ public enum EM_CFG_CAP_CMD {
     /**
      * 获取门禁能力集,对应结构体CFG_CAP_ACCESSCONTROL
      */
-    public static final String CFG_CAP_CMD_ACCESSCONTROLMANAGER="accessControlManager.getCaps";
+    public static final String CFG_CAP_CMD_ACCESSCONTROLMANAGER = "accessControlManager.getCaps";
     private String cmd;
-    EM_CFG_CAP_CMD(String cmd){
-        this.cmd=cmd;
+
+    EM_CFG_CAP_CMD(String cmd) {
+        this.cmd = cmd;
     }
 
     public String getCmd() {

@@ -56,9 +56,9 @@ public class DEV_EVENT_TUMBLE_DETECTION_INFO extends NetSDKLib.SdkStructure {
     public int nObjectID;
 
     /**
-     *  物体类型,支持以下:"Unknown", "Human", "Vehicle", "Fire", "Smoke", "Plate", "HumanFace",
-     * 	"Container", "Animal", "TrafficLight", "PastePaper", "HumanHead", "BulletHole", "Entity"
-     *  #define DH_COMMON_STRING_16  16  // 通用字符串长度16
+     * 物体类型,支持以下:"Unknown", "Human", "Vehicle", "Fire", "Smoke", "Plate", "HumanFace",
+     * "Container", "Animal", "TrafficLight", "PastePaper", "HumanHead", "BulletHole", "Entity"
+     * #define DH_COMMON_STRING_16  16  // 通用字符串长度16
      */
     public byte[] szObjectType = new byte[16];
 
@@ -66,35 +66,35 @@ public class DEV_EVENT_TUMBLE_DETECTION_INFO extends NetSDKLib.SdkStructure {
      * 物体包围盒
      */
     public NetSDKLib.NET_RECT stuBoundingBox;
-    
+
     /**
      * 智能物体全局唯一物体标识
      * 有效数据位21位，包含’\0’
      * 前2位%d%d:01-视频片段, 02-图片, 03-文件, 99-其他
      * 中间14位YYYYMMDDhhmmss:年月日时分秒
-     * 	后5位%u%u%u%u%u：物体ID，如00001
+     * 后5位%u%u%u%u%u：物体ID，如00001
      */
     public byte[] szSerialUUID = new byte[22];
-    
+
     /**
      * 全景广角图
      */
-    public NetSDKLib.SCENE_IMAGE_INFO  stuSceneImage;
-    
+    public NetSDKLib.SCENE_IMAGE_INFO stuSceneImage;
+
     /**
-     * 图片信息数组,结构体NET_IMAGE_INFO_EX2数组指针        
+     * 图片信息数组,结构体NET_IMAGE_INFO_EX2数组指针
      */
-    public Pointer  pstuImageInfo;		
-	
-	/**
+    public Pointer pstuImageInfo;
+
+    /**
      * 图片信息个数
      */
-    public int	nImageInfoNum;
-    
+    public int nImageInfoNum;
+
     /**
      * 事件公共扩展字段结构体
      */
-    public NET_EVENT_INFO_EXTEND   stuEventInfoEx = new NET_EVENT_INFO_EXTEND();
+    public NET_EVENT_INFO_EXTEND stuEventInfoEx = new NET_EVENT_INFO_EXTEND();
 
     /**
      * 保留字节

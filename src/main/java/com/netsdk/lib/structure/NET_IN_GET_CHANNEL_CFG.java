@@ -10,14 +10,14 @@ import com.netsdk.lib.NetSDKLib;
  */
 public class NET_IN_GET_CHANNEL_CFG extends NetSDKLib.SdkStructure {
 
-	// 结构体大小
-	public int dwSize;
-	
-	// 检测通道
-	public int nChannelNo;
+    // 结构体大小
+    public int dwSize;
+
+    // 检测通道
+    public int nChannelNo;
 
 
-	public NET_IN_GET_CHANNEL_CFG() {
-		this.dwSize = this.size();
-	}
+    public NET_IN_GET_CHANNEL_CFG() {
+        this.dwSize = this.size();
+    }
 }

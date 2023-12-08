@@ -49,15 +49,15 @@ public enum STREAM_RATE_TYPE {
         this.rate = rate;
     }
 
-    public int getRate() {
-        return rate;
-    }
-
     public static STREAM_RATE_TYPE getEnum(int value) {
         for (STREAM_RATE_TYPE e : STREAM_RATE_TYPE.values()) {
             if (e.getRate() == value)
                 return e;
         }
         return STREAM_RATE_TYPE.RATE_512;
+    }
+
+    public int getRate() {
+        return rate;
     }
 }

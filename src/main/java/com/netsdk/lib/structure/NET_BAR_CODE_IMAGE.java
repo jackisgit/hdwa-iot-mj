@@ -8,19 +8,19 @@ import com.netsdk.lib.NetSDKLib;
  * @date 2022/10/31 09:30:19
  */
 public class NET_BAR_CODE_IMAGE extends NetSDKLib.SdkStructure {
-	/**
-	 * 在二进制数据块中的偏移
-	 */
-	public int nOffset;
-	/**
-	 * 图片大小,单位：字节
-	 */
-	public int nLength;
-	/**
-	 * 保留字节
-	 */
-	public byte[] szResvered = new byte[248];
+    /**
+     * 在二进制数据块中的偏移
+     */
+    public int nOffset;
+    /**
+     * 图片大小,单位：字节
+     */
+    public int nLength;
+    /**
+     * 保留字节
+     */
+    public byte[] szResvered = new byte[248];
 
-	public NET_BAR_CODE_IMAGE() {
-	}
+    public NET_BAR_CODE_IMAGE() {
+    }
 }

@@ -64,7 +64,7 @@ public class EM_PLATE_TYPE extends NetSDKLib.SdkStructure {
      */
     public static final int EM_PLATE_HONGKONG_MACAO_CAR = 12;
     /**
-     * 
+     *
      */
     public static final int EM_PLATE_WJPOLICE_CAR = 13;
     /**

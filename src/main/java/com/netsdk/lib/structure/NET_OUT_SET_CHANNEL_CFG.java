@@ -10,11 +10,11 @@ import com.netsdk.lib.NetSDKLib;
  */
 public class NET_OUT_SET_CHANNEL_CFG extends NetSDKLib.SdkStructure {
 
-	// 结构体大小
-	public int dwSize;
+    // 结构体大小
+    public int dwSize;
 
-	public NET_OUT_SET_CHANNEL_CFG() {
-		this.dwSize = this.size();
-	}
+    public NET_OUT_SET_CHANNEL_CFG() {
+        this.dwSize = this.size();
+    }
 
 }

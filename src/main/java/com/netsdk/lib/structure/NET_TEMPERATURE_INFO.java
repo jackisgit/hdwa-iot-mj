@@ -13,22 +13,22 @@ import static com.netsdk.lib.NetSDKLib.NET_DEVICE_NAME_LEN;
  * @version v1.0
  */
 
-public class NET_TEMPERATURE_INFO  extends NetSDKLib.SdkStructure {
+public class NET_TEMPERATURE_INFO extends NetSDKLib.SdkStructure {
     /**
      * dwSize;
      */
     public int dwSize;
     /**
-     *  传感器名称
+     * 传感器名称
      */
     public byte[] szName = new byte[NET_DEVICE_NAME_LEN];
 
     /**
-     *  温度
+     * 温度
      */
     public float fTemperature;
 
-    public NET_TEMPERATURE_INFO(){
+    public NET_TEMPERATURE_INFO() {
         this.dwSize = this.size();
     }
 }

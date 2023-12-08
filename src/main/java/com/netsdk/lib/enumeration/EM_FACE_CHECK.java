@@ -1,10 +1,10 @@
 package com.netsdk.lib.enumeration;
 
 public enum EM_FACE_CHECK {
-    EM_FACE_CHECK_UNKNOWN (-1,"未知"),		// 未知
-    EM_FACE_CHECK_NODATA(0,"该人员无人脸数据"),			// 该人员无人脸数据
-    EM_FACE_CHECK_CONSISTENT(1,"刷卡和人脸人员一致"),		// 刷卡和人脸人员一致
-    EM_FACE_CHECK_NOT_CONSISTENT(2,"刷卡和人脸人员不一致");	// 刷卡和人脸人员不一致
+    EM_FACE_CHECK_UNKNOWN(-1, "未知"),        // 未知
+    EM_FACE_CHECK_NODATA(0, "该人员无人脸数据"),            // 该人员无人脸数据
+    EM_FACE_CHECK_CONSISTENT(1, "刷卡和人脸人员一致"),        // 刷卡和人脸人员一致
+    EM_FACE_CHECK_NOT_CONSISTENT(2, "刷卡和人脸人员不一致");    // 刷卡和人脸人员不一致
 
     private final int value;
     private final String note;
@@ -12,14 +12,6 @@ public enum EM_FACE_CHECK {
     EM_FACE_CHECK(int givenValue, String note) {
         this.value = givenValue;
         this.note = note;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
     }
 
     public static String getNoteByValue(int givenValue) {
@@ -46,5 +38,13 @@ public enum EM_FACE_CHECK {
                 return e;
         }
         return EM_EVENT_LEVEL.EM_EVENT_LEVEL_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

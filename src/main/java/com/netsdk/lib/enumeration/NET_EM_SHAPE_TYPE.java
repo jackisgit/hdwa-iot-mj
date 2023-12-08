@@ -28,14 +28,6 @@ public enum NET_EM_SHAPE_TYPE {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (NET_EM_SHAPE_TYPE enumType : NET_EM_SHAPE_TYPE.values()) {
             if (givenValue == enumType.getValue()) {
@@ -60,5 +52,13 @@ public enum NET_EM_SHAPE_TYPE {
                 return e;
         }
         return NET_EM_SHAPE_TYPE.NET_EM_SHAPE_TYPE_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

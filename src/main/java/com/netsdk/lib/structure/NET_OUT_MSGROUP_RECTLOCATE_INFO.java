@@ -8,16 +8,16 @@ import com.netsdk.lib.NetSDKLib;
  * @date 2022/09/14 14:06:16
  */
 public class NET_OUT_MSGROUP_RECTLOCATE_INFO extends NetSDKLib.SdkStructure {
-	/**
-	 * 结构体大小
-	 */
-	public int dwSize;
-	/**
-	 * 联动到球机上的绝对坐标
-	 */
-	public int[] nPTZ = new int[3];
+    /**
+     * 结构体大小
+     */
+    public int dwSize;
+    /**
+     * 联动到球机上的绝对坐标
+     */
+    public int[] nPTZ = new int[3];
 
-	public NET_OUT_MSGROUP_RECTLOCATE_INFO() {
-		this.dwSize = this.size();
-	}
+    public NET_OUT_MSGROUP_RECTLOCATE_INFO() {
+        this.dwSize = this.size();
+    }
 }

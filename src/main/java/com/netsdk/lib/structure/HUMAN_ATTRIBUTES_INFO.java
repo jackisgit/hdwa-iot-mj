@@ -5,172 +5,172 @@ import com.netsdk.lib.NetSDKLib;
 
 /**
  * 是否与其他目标关联
- * 
+ *
  * @author ： 260611
  * @since ： Created in 2021/10/19 19:35
  */
 public class HUMAN_ATTRIBUTES_INFO extends NetSDKLib.SdkStructure {
 
     /**
-     *  上衣颜色
+     * 上衣颜色
      */
-    public int					emCoatColor;
+    public int emCoatColor;
 
     /**
-     *  上衣类型
+     * 上衣类型
      */
-    public int					emCoatType;
+    public int emCoatType;
 
     /**
-     *  裤子颜色
+     * 裤子颜色
      */
-    public int					emTrousersColor;
+    public int emTrousersColor;
 
     /**
-     *  裤子类型
+     * 裤子类型
      */
-    public int					emTrousersType;
+    public int emTrousersType;
 
     /**
-     *  是否戴帽子
+     * 是否戴帽子
      */
-    public int					emHasHat;
+    public int emHasHat;
 
     /**
-     *  是否带包
+     * 是否带包
      */
-    public int					emHasBag;
+    public int emHasBag;
 
     /**
-     *  包围盒(8192坐标系)
+     * 包围盒(8192坐标系)
      */
-    public NET_RECT					stuBoundingBox = new NET_RECT();
+    public NET_RECT stuBoundingBox = new NET_RECT();
 
     /**
-     *  年龄
+     * 年龄
      */
-    public int					nAge;
+    public int nAge;
     /**
-     *  性别
+     * 性别
      */
-    public int					emSex;
+    public int emSex;
 
     /**
-     *  角度
+     * 角度
      */
-    public int					emAngle;
+    public int emAngle;
 
     /**
-     *  是否打伞
+     * 是否打伞
      */
-    public int					emHasUmbrella;
+    public int emHasUmbrella;
 
     /**
-     *  包类型
+     * 包类型
      */
-    public int					emBag;
+    public int emBag;
 
     /**
-     *  上半身衣服图案
+     * 上半身衣服图案
      */
-    public int					emUpperPattern;
+    public int emUpperPattern;
 
     /**
-     *  头发样式
+     * 头发样式
      */
-    public int					emHairStyle;
+    public int emHairStyle;
 
     /**
-     *  帽类型
+     * 帽类型
      */
-    public int					emCap;
+    public int emCap;
 
     /**
-     *  人体型心(不是包围盒中心), 0-8191相对坐标, 相对于大图
+     * 人体型心(不是包围盒中心), 0-8191相对坐标, 相对于大图
      */
     public NetSDKLib.NET_POINT stuHumanCenter = new NetSDKLib.NET_POINT();
 
     /**
-     *  是否有反光背心;
+     * 是否有反光背心;
      */
-    public int					emHasVest;
+    public int emHasVest;
 
     /**
-     *  是否佩戴工牌
+     * 是否佩戴工牌
      */
-    public int					emHasBadge;
+    public int emHasBadge;
 
     /**
-     *  是否推婴儿车
+     * 是否推婴儿车
      */
-    public int					emHasBabyCarriage;
+    public int emHasBabyCarriage;
 
     /**
-     *  是否虚检（背景误检，仅头，仅下半身都会判定为虚检）
+     * 是否虚检（背景误检，仅头，仅下半身都会判定为虚检）
      */
-    public int					emIsErrorDetect;
+    public int emIsErrorDetect;
 
     /**
-     *  人体部位是否有头
+     * 人体部位是否有头
      */
-    public int					emHasHead;
+    public int emHasHead;
 
     /**
-     *  人体部位是否有下半身
+     * 人体部位是否有下半身
      */
-    public int					emHasDownBody;
+    public int emHasDownBody;
 
     /**
-     *  姿态置信度，质量评估总分0到100
+     * 姿态置信度，质量评估总分0到100
      */
-    public int					nAngleConf;
+    public int nAngleConf;
     /**
-     *  上衣颜色置信度，质量评估总分0到100
+     * 上衣颜色置信度，质量评估总分0到100
      */
-    public int					nUpColorConf;
+    public int nUpColorConf;
     /**
-     *  下衣颜色置信度，质量评估总分0到100
+     * 下衣颜色置信度，质量评估总分0到100
      */
-    public int					nDownColorConf;
+    public int nDownColorConf;
     /**
-     *  性别置信度，质量评估总分0到100
+     * 性别置信度，质量评估总分0到100
      */
-    public int					nGenderConf;
+    public int nGenderConf;
     /**
-     *  年龄段置信度，质量评估总分0到100
+     * 年龄段置信度，质量评估总分0到100
      */
-    public int					nAgeConf;
+    public int nAgeConf;
     /**
-     *  帽子类型置信度，质量评估总分0到100
+     * 帽子类型置信度，质量评估总分0到100
      */
-    public int					nHatTypeConf;
+    public int nHatTypeConf;
     /**
-     *  上衣种类置信度，质量评估总分0到100
+     * 上衣种类置信度，质量评估总分0到100
      */
-    public int					nUpTypeConf;
+    public int nUpTypeConf;
     /**
-     *  下衣种类置信度，质量评估总分0到100
+     * 下衣种类置信度，质量评估总分0到100
      */
-    public int					nDownTypeConf;
+    public int nDownTypeConf;
     /**
-     *  发型种类置信度，质量评估总分0到100
+     * 发型种类置信度，质量评估总分0到100
      */
-    public int					nHairTypeConf;
+    public int nHairTypeConf;
     /**
-     *  人体部位是否有头的置信度，质量评估总分0到100
+     * 人体部位是否有头的置信度，质量评估总分0到100
      */
-    public int					nHasHeadConf;
+    public int nHasHeadConf;
     /**
-     *  人体部位是否有下半身置信度，质量评估总分0到100
+     * 人体部位是否有下半身置信度，质量评估总分0到100
      */
-    public int					nHasDownBodyConf;
+    public int nHasDownBodyConf;
     /**
-     *  制服类型置信度，质量评估总分0到100
+     * 制服类型置信度，质量评估总分0到100
      */
-    public int					nUniformStyleConf;
+    public int nUniformStyleConf;
     /**
-     *  预留字节
+     * 预留字节
      */
-    public byte					byReserved[] = new byte[4];
+    public byte byReserved[] = new byte[4];
 
 }

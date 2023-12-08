@@ -28,14 +28,6 @@ public enum NET_EM_VIDEO_COMPRESSION {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (NET_EM_VIDEO_COMPRESSION enumType : NET_EM_VIDEO_COMPRESSION.values()) {
             if (givenValue == enumType.getValue()) {
@@ -60,5 +52,13 @@ public enum NET_EM_VIDEO_COMPRESSION {
                 return e;
         }
         return NET_EM_VIDEO_COMPRESSION.EM_VIDEO_FORMAT_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

@@ -11,27 +11,19 @@ public enum NET_EM_OVER_FLOW_STATE {
     /**
      * 状态未知
      */
-    EM_OVER_FLOW_STATE_UNKNOWN(0,"状态未知"),
+    EM_OVER_FLOW_STATE_UNKNOWN(0, "状态未知"),
     /**
      * 未溢出
      */
-    EM_OVER_FLOW_STATE_NOT_OVERFLOW(1,"未溢出"),
+    EM_OVER_FLOW_STATE_NOT_OVERFLOW(1, "未溢出"),
     /**
      * 溢出
      */
-    EM_OVER_FLOW_STATE_OVERFLOW(2,"溢出");
+    EM_OVER_FLOW_STATE_OVERFLOW(2, "溢出");
 
     private int value;
 
     private String note;
-
-    public String getNote() {
-             return note;
-         }
-
-    public int getValue() {
-             return value;
-         }
 
     NET_EM_OVER_FLOW_STATE(int givenValue, String note) {
         this.value = givenValue;
@@ -62,6 +54,14 @@ public enum NET_EM_OVER_FLOW_STATE {
                 return e;
         }
         return NET_EM_OVER_FLOW_STATE.EM_OVER_FLOW_STATE_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

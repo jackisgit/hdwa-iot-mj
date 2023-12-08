@@ -32,14 +32,6 @@ public enum EM_NUMBER_STAT_TYPE {
 
     private String note;
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     EM_NUMBER_STAT_TYPE(int givenValue, String note) {
         this.value = givenValue;
         this.note = note;
@@ -69,6 +61,14 @@ public enum EM_NUMBER_STAT_TYPE {
                 return e;
         }
         return EM_NUMBER_STAT_TYPE.EM_NUMBERSTAT_TYPE_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

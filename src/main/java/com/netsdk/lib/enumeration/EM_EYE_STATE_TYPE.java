@@ -5,26 +5,26 @@ import com.netsdk.lib.NetSDKLib;
 
 /**
  * 眼睛状态
- * 
+ *
  * @author ： 260611
  * @since ： Created in 2021/10/19 20:21
  */
 public class EM_EYE_STATE_TYPE extends NetSDKLib.SdkStructure {
 
     /**
-     *  未知
+     * 未知
      */
-    public static final int					EM_EYE_STATE_UNKNOWN = 0;
+    public static final int EM_EYE_STATE_UNKNOWN = 0;
     /**
-     *  未识别
+     * 未识别
      */
-    public static final int					EM_EYE_STATE_NODISTI = 1;
+    public static final int EM_EYE_STATE_NODISTI = 1;
     /**
-     *  闭眼
+     * 闭眼
      */
-    public static final int					EM_EYE_STATE_CLOSE = 2;
+    public static final int EM_EYE_STATE_CLOSE = 2;
     /**
-     *  睁眼
+     * 睁眼
      */
-    public static final int					EM_EYE_STATE_OPEN = 3;
+    public static final int EM_EYE_STATE_OPEN = 3;
 }

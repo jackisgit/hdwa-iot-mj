@@ -27,14 +27,6 @@ public enum NET_EM_FORMAT_TYPE {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (TALK_CODING_TYPE enumType : TALK_CODING_TYPE.values()) {
             if (givenValue == enumType.getValue()) {
@@ -59,5 +51,13 @@ public enum NET_EM_FORMAT_TYPE {
                 return e;
         }
         return NET_EM_FORMAT_TYPE.EM_FORMAT_TYPE_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

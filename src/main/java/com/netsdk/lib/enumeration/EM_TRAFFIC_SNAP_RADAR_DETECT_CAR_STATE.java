@@ -6,45 +6,45 @@ package com.netsdk.lib.enumeration;
  * @date 2020/12/14
  */
 public enum EM_TRAFFIC_SNAP_RADAR_DETECT_CAR_STATE {
-	// 未知
-	EM_TRAFFIC_SNAP_RADAR_DETECT_CAR_STATE_UNKNOWN(-1, "未知"),
-	// 无车
-	EM_TRAFFIC_SNAP_RADAR_DETECT_CAR_STATE_NO_CAR(0, "无车"),
-	// 有车
-	EM_TRAFFIC_SNAP_RADAR_DETECT_CAR_STATE_CAR(1, "有车");
+    // 未知
+    EM_TRAFFIC_SNAP_RADAR_DETECT_CAR_STATE_UNKNOWN(-1, "未知"),
+    // 无车
+    EM_TRAFFIC_SNAP_RADAR_DETECT_CAR_STATE_NO_CAR(0, "无车"),
+    // 有车
+    EM_TRAFFIC_SNAP_RADAR_DETECT_CAR_STATE_CAR(1, "有车");
 
-	private int value;
-	private String note;
+    private int value;
+    private String note;
 
-	private EM_TRAFFIC_SNAP_RADAR_DETECT_CAR_STATE(int givenValue, String note) {
-		this.value = givenValue;
-		this.note = note;
-	}
+    private EM_TRAFFIC_SNAP_RADAR_DETECT_CAR_STATE(int givenValue, String note) {
+        this.value = givenValue;
+        this.note = note;
+    }
 
-	public String getNote() {
-		return note;
-	}
+    public static String getNoteByValue(int givenValue) {
+        for (EM_TRAFFIC_SNAP_RADAR_DETECT_CAR_STATE enumType : EM_TRAFFIC_SNAP_RADAR_DETECT_CAR_STATE.values()) {
+            if (givenValue == enumType.getValue()) {
+                return enumType.getNote();
+            }
+        }
+        return null;
+    }
 
-	public int getValue() {
-		return value;
-	}
+    public static int getValueByNote(String givenNote) {
+        for (EM_TRAFFIC_SNAP_RADAR_DETECT_CAR_STATE enumType : EM_TRAFFIC_SNAP_RADAR_DETECT_CAR_STATE.values()) {
+            if (givenNote.equals(enumType.getNote())) {
+                return enumType.getValue();
+            }
+        }
+        return -2;
+    }
 
-	public static String getNoteByValue(int givenValue) {
-		for (EM_TRAFFIC_SNAP_RADAR_DETECT_CAR_STATE enumType : EM_TRAFFIC_SNAP_RADAR_DETECT_CAR_STATE.values()) {
-			if (givenValue == enumType.getValue()) {
-				return enumType.getNote();
-			}
-		}
-		return null;
-	}
+    public String getNote() {
+        return note;
+    }
 
-	public static int getValueByNote(String givenNote) {
-		for (EM_TRAFFIC_SNAP_RADAR_DETECT_CAR_STATE enumType : EM_TRAFFIC_SNAP_RADAR_DETECT_CAR_STATE.values()) {
-			if (givenNote.equals(enumType.getNote())) {
-				return enumType.getValue();
-			}
-		}
-		return -2;
-	}
+    public int getValue() {
+        return value;
+    }
 
 }

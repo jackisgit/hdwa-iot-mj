@@ -40,14 +40,6 @@ public enum EM_MAIN_PAGE_STATE {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_MAIN_PAGE_STATE enumType : EM_MAIN_PAGE_STATE.values()) {
             if (givenValue == enumType.getValue()) {
@@ -72,5 +64,13 @@ public enum EM_MAIN_PAGE_STATE {
                 return e;
         }
         return EM_MAIN_PAGE_STATE.EM_MAIN_PAGE_STATE_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

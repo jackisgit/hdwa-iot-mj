@@ -80,14 +80,6 @@ public enum EM_TOLLS_VEHICLE_TYPE {
 
     private String note;
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     EM_TOLLS_VEHICLE_TYPE(int givenValue, String note) {
         this.value = givenValue;
         this.note = note;
@@ -117,6 +109,14 @@ public enum EM_TOLLS_VEHICLE_TYPE {
                 return e;
         }
         return EM_TOLLS_VEHICLE_TYPE.EM_TOLLS_VEHICLE_TYPE_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

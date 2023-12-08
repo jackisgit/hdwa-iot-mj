@@ -10,7 +10,7 @@ import com.netsdk.lib.NetSDKLib;
  */
 public class NET_IN_TRAFFIC_RADAR_GET_OBJECT_INFO extends NetSDKLib.SdkStructure {
     public int dwSize;
-    public int nChannel;				// 通道号
+    public int nChannel;                // 通道号
 
     public NET_IN_TRAFFIC_RADAR_GET_OBJECT_INFO() {
         this.dwSize = this.size();

@@ -24,13 +24,22 @@ public enum EM_PLAY_WITH_MODE {
      */
     EM_PLAY_WITH_MODE_MAIN_INTERFACE(3, "主界面");
 
+    private int mode;
+    private String desc;
+
     private EM_PLAY_WITH_MODE(int mode, String desc) {
         this.mode = mode;
         this.desc = desc;
     }
 
-    private int mode;
-    private String desc;
+    public static EM_PLAY_WITH_MODE getPlayMode(int mode) {
+        for (EM_PLAY_WITH_MODE playMode : EM_PLAY_WITH_MODE.values()) {
+            if (playMode.getMode() == mode) {
+                return playMode;
+            }
+        }
+        return null;
+    }
 
     public int getMode() {
         return mode;
@@ -46,14 +55,5 @@ public enum EM_PLAY_WITH_MODE {
 
     public void setDesc(String desc) {
         this.desc = desc;
-    }
-
-    public static EM_PLAY_WITH_MODE getPlayMode(int mode) {
-        for (EM_PLAY_WITH_MODE playMode : EM_PLAY_WITH_MODE.values()) {
-            if (playMode.getMode() == mode) {
-                return playMode;
-            }
-        }
-        return null;
     }
 }

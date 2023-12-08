@@ -86,14 +86,6 @@ public enum EM_IPC_TYPE {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_IPC_TYPE enumType : EM_IPC_TYPE.values()) {
             if (givenValue == enumType.getValue()) {
@@ -118,5 +110,13 @@ public enum EM_IPC_TYPE {
                 return e;
         }
         return EM_IPC_TYPE.NET_IPC_PRIVATE;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

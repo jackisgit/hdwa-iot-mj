@@ -17,16 +17,16 @@ public class NET_MEMORY_INFO extends NetSDKLib.SdkStructure {
      */
     public int dwSize;
     /**
-     *  总内存, M
+     * 总内存, M
      */
     public int dwTotal;
 
     /**
-     *  剩余内存, M
+     * 剩余内存, M
      */
     public int dwFree;
 
-    public NET_MEMORY_INFO(){
+    public NET_MEMORY_INFO() {
         this.dwSize = this.size();
     }
 }

@@ -8,26 +8,26 @@ package com.netsdk.lib.structure;
 import com.netsdk.lib.NetSDKLib.EM_FOG_LEVEL;
 import com.netsdk.lib.NetSDKLib.SdkStructure;
 
-public class NET_FOG_DETECTION_RULE_INFO extends SdkStructure{
-	/**
-	 * 报警阈值。当雾情达到什么程度时，进行报警
-	 * {@link EM_FOG_LEVEL}
-	 */
-	public	int				emAlarmFogLevel;	
-	/**
-	 * 报警时间间隔,单位秒，取值范围为[60，86400]
-	 */
-	public	int						nAlarmInterval;	
-	/**
-	 * 是否上报实时数据
-	 */
-	public	int						bRealDataUpload;	
-	/**
-	 * 实时数据上报间隔,单位秒，取值范围为[60，86400]
-	 */
-	public	int						nRealUpdateInterval;	
-	/**
-	 *  保留字节
-	 */
-	public	byte[]                        byReserved=new byte[4096];                      
+public class NET_FOG_DETECTION_RULE_INFO extends SdkStructure {
+    /**
+     * 报警阈值。当雾情达到什么程度时，进行报警
+     * {@link EM_FOG_LEVEL}
+     */
+    public int emAlarmFogLevel;
+    /**
+     * 报警时间间隔,单位秒，取值范围为[60，86400]
+     */
+    public int nAlarmInterval;
+    /**
+     * 是否上报实时数据
+     */
+    public int bRealDataUpload;
+    /**
+     * 实时数据上报间隔,单位秒，取值范围为[60，86400]
+     */
+    public int nRealUpdateInterval;
+    /**
+     * 保留字节
+     */
+    public byte[] byReserved = new byte[4096];
 }

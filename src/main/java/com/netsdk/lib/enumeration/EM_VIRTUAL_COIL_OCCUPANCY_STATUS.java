@@ -10,15 +10,15 @@ public enum EM_VIRTUAL_COIL_OCCUPANCY_STATUS {
     /**
      * 未知
      */
-    EM_VIRTUAL_COIL_OCCUPANCY_STATUS_UNKNOWN(-1,"未知"),
+    EM_VIRTUAL_COIL_OCCUPANCY_STATUS_UNKNOWN(-1, "未知"),
     /**
      * 未占用
      */
-    EM_VIRTUAL_COIL_OCCUPANCY_STATUS_UNOCCUPY(0,"未占用"),
+    EM_VIRTUAL_COIL_OCCUPANCY_STATUS_UNOCCUPY(0, "未占用"),
     /**
      * 占用
      */
-    EM_VIRTUAL_COIL_OCCUPANCY_STATUS_OCCUPY(1,"占用");
+    EM_VIRTUAL_COIL_OCCUPANCY_STATUS_OCCUPY(1, "占用");
 
     private final int value;
     private final String note;
@@ -26,14 +26,6 @@ public enum EM_VIRTUAL_COIL_OCCUPANCY_STATUS {
     EM_VIRTUAL_COIL_OCCUPANCY_STATUS(int givenValue, String note) {
         this.value = givenValue;
         this.note = note;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
     }
 
     public static String getNoteByValue(int givenValue) {
@@ -60,5 +52,13 @@ public enum EM_VIRTUAL_COIL_OCCUPANCY_STATUS {
                 return e;
         }
         return EM_VIRTUAL_COIL_OCCUPANCY_STATUS.EM_VIRTUAL_COIL_OCCUPANCY_STATUS_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

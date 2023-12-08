@@ -25,14 +25,6 @@ public enum EM_VEHICLE_POSITION {
 
     private String note;
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     EM_VEHICLE_POSITION(int givenValue, String note) {
         this.value = givenValue;
         this.note = note;
@@ -62,6 +54,14 @@ public enum EM_VEHICLE_POSITION {
                 return e;
         }
         return EM_VEHICLE_POSITION.EM_VEHICLE_POSITION_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

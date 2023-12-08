@@ -8,23 +8,15 @@ package com.netsdk.lib.enumeration;
  */
 public enum EM_SMART_KITCHEN_CLOTHES_STATE {
 
-    EM_SMART_KITCHEN_CLOTHES_STATE_UNKNOWN(0,"未知"),                     // 未知
-	EM_SMART_KITCHEN_CLOTHES_STATE_LACK(1,"没有"),                     	// 没有
-    EM_SMART_KITCHEN_CLOTHES_STATE_HAS(2,"有");                         // 有
+    EM_SMART_KITCHEN_CLOTHES_STATE_UNKNOWN(0, "未知"),                     // 未知
+    EM_SMART_KITCHEN_CLOTHES_STATE_LACK(1, "没有"),                        // 没有
+    EM_SMART_KITCHEN_CLOTHES_STATE_HAS(2, "有");                         // 有
     private final int value;
     private final String note;
 
     EM_SMART_KITCHEN_CLOTHES_STATE(int givenValue, String note) {
         this.value = givenValue;
         this.note = note;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
     }
 
     public static String getNoteByValue(int givenValue) {
@@ -51,6 +43,14 @@ public enum EM_SMART_KITCHEN_CLOTHES_STATE {
                 return e;
         }
         return EM_SMART_KITCHEN_CLOTHES_STATE.EM_SMART_KITCHEN_CLOTHES_STATE_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

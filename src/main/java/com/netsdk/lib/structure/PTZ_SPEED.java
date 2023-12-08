@@ -3,15 +3,15 @@ package com.netsdk.lib.structure;
 
 import com.netsdk.lib.NetSDKLib;
 
-/** 
-* @author 251823
-* @description  云台控制坐标单元 
-* @date 2022/07/21 15:09:08
-*/
+/**
+ * @author 251823
+ * @description 云台控制坐标单元
+ * @date 2022/07/21 15:09:08
+ */
 public class PTZ_SPEED extends NetSDKLib.SdkStructure {
-	/**
-	 * 云台水平方向速率,归一化到-1~1
-	 */
+    /**
+     * 云台水平方向速率,归一化到-1~1
+     */
     public float fPositionX;
     /**
      * 云台垂直方向速率,归一化到-1~1

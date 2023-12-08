@@ -1,25 +1,18 @@
 package com.netsdk.lib.enumeration;
+
 /**
  * @author ： 291189
  * @description ： 进出方向
  * @since ： Created in 2022/05/26
  */
 public enum EM_USER_PASS_TYPE {
-    EM_USER_PASS_TYPE_UNKNOWN(0,"未知"),
-    EM_USER_PASS_TYPE_ENTRY(1,"进门"),                              // 进门
-    EM_USER_PASS_TYPE_EXIT(2,"出门");                               // 出门
+    EM_USER_PASS_TYPE_UNKNOWN(0, "未知"),
+    EM_USER_PASS_TYPE_ENTRY(1, "进门"),                              // 进门
+    EM_USER_PASS_TYPE_EXIT(2, "出门");                               // 出门
 
     private int value;
 
     private String note;
-
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
 
     EM_USER_PASS_TYPE(int givenValue, String note) {
         this.value = givenValue;
@@ -50,5 +43,13 @@ public enum EM_USER_PASS_TYPE {
                 return e;
         }
         return EM_USER_PASS_TYPE.EM_USER_PASS_TYPE_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

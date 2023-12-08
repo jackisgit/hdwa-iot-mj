@@ -5,8 +5,7 @@ import com.netsdk.lib.NetSDKLib;
 /**
  * @author 47081
  * @version 1.0
- * @description
- * \if ENGLISH_LANG
+ * @description \if ENGLISH_LANG
  * solarcell system history info
  * \else
  * 太阳能系统历史数据信息

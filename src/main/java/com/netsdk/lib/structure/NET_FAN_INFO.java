@@ -19,16 +19,16 @@ public class NET_FAN_INFO extends NetSDKLib.SdkStructure {
      */
     public int dwSize;
     /**
-     *  名称
+     * 名称
      */
     public byte[] szName = new byte[NET_DEVICE_NAME_LEN];
 
     /**
-     *  速度
+     * 速度
      */
     public int nSpeed;
 
-    public NET_FAN_INFO(){
+    public NET_FAN_INFO() {
         this.dwSize = this.size();
     }
 }

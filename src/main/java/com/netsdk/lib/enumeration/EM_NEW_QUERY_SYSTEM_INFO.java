@@ -206,11 +206,11 @@ public enum EM_NEW_QUERY_SYSTEM_INFO {
      */
     CFG_CAP_CMD_CUSTOM("OSDManager.getCustomCaps");
 
+    private String value;
+
     private EM_NEW_QUERY_SYSTEM_INFO(String value) {
         this.value = value;
     }
-
-    private String value;
 
     public String getValue() {
         return value;

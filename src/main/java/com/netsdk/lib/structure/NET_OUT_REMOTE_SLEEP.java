@@ -8,9 +8,10 @@ import com.netsdk.lib.NetSDKLib;
  * @description CLIENT_RemoteSleep 输出接口参数
  * @date 2022/3/24 14:00
  */
-public class NET_OUT_REMOTE_SLEEP extends NetSDKLib.SdkStructure{
-public int dwSize;                    // 结构体大小
-public NET_OUT_REMOTE_SLEEP(){
-        this.dwSize=this.size();
-        }
+public class NET_OUT_REMOTE_SLEEP extends NetSDKLib.SdkStructure {
+    public int dwSize;                    // 结构体大小
+
+    public NET_OUT_REMOTE_SLEEP() {
+        this.dwSize = this.size();
+    }
 }

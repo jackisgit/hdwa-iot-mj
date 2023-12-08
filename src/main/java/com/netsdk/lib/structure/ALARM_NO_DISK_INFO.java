@@ -21,7 +21,7 @@ public class ALARM_NO_DISK_INFO extends NetSDKLib.SdkStructure {
     /**
      * 事件公共扩展字段结构体
      */
-    public NET_EVENT_INFO_EXTEND   stuEventInfoEx = new NET_EVENT_INFO_EXTEND();
+    public NET_EVENT_INFO_EXTEND stuEventInfoEx = new NET_EVENT_INFO_EXTEND();
 
     public ALARM_NO_DISK_INFO() {
         this.dwSize = this.size();

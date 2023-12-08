@@ -28,14 +28,6 @@ public enum EM_PARKINGSPACE_DIRECTION {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_PARKINGSPACE_DIRECTION enumType : EM_PARKINGSPACE_DIRECTION.values()) {
             if (givenValue == enumType.getValue()) {
@@ -60,5 +52,13 @@ public enum EM_PARKINGSPACE_DIRECTION {
                 return e;
         }
         return EM_PARKINGSPACE_DIRECTION.EM_PARKINGSPACE_DIRECTION_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

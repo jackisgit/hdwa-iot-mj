@@ -8,27 +8,27 @@ import com.netsdk.lib.NetSDKLib.fPTZStatusProcCallBack;
  * @description 订阅云台元数据接口输入参数
  * @date 2021/02/26
  */
-public class NET_IN_PTZ_STATUS_PROC extends NetSDKLib.SdkStructure{
-	 /**
+public class NET_IN_PTZ_STATUS_PROC extends NetSDKLib.SdkStructure {
+    /**
      * dwSize;
      */
     public int dwSize;
     /**
-     *  云台通道
+     * 云台通道
      */
     public int nChannel;
 
     /**
-     *  状态回调函数
+     * 状态回调函数
      */
     public fPTZStatusProcCallBack cbPTZStatusProc;
 
     /**
-     *  用户数据
+     * 用户数据
      */
     public long dwUser;
 
-    public NET_IN_PTZ_STATUS_PROC(){
+    public NET_IN_PTZ_STATUS_PROC() {
         this.dwSize = this.size();
     }
 

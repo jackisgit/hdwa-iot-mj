@@ -9,21 +9,21 @@ import com.sun.jna.Pointer;
  * @description {@link NetSDKLib#CLIENT_GetHeatMapsDirectly}的输出参数
  * @date 2020/11/10
  */
-public class NET_OUT_GET_HEATMAPS_INFO extends NetSDKLib.SdkStructure{
+public class NET_OUT_GET_HEATMAPS_INFO extends NetSDKLib.SdkStructure {
 
     public int dwSize;
 
     /**
-     *  元数据
+     * 元数据
      */
     public NetSDKLib.NET_RADIOMETRY_METADATA stMetaData;
 
     /**
-     *  热图数据缓存区 pbDataBuf 的大小, 由用户指定
+     * 热图数据缓存区 pbDataBuf 的大小, 由用户指定
      */
     public int dwMaxDataBufLen;
     /**
-     *  热图数据缓冲区(压缩过的数据,里面是每个像素点的温度数据,可以使用元数据信息解压),需要用户分配空间
+     * 热图数据缓冲区(压缩过的数据,里面是每个像素点的温度数据,可以使用元数据信息解压),需要用户分配空间
      */
     public Pointer pbDataBuf;
     /**
@@ -31,7 +31,7 @@ public class NET_OUT_GET_HEATMAPS_INFO extends NetSDKLib.SdkStructure{
      */
     public int dwRetDataBufLen;
     /**
-     *  字节对齐
+     * 字节对齐
      */
     public byte[] byReserved = new byte[4];
 

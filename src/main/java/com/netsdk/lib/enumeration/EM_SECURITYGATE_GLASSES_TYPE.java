@@ -7,10 +7,10 @@ package com.netsdk.lib.enumeration;
  */
 public enum EM_SECURITYGATE_GLASSES_TYPE {
 
-    EM_SECURITYGATE_GLASSES_UNKNOWN(-1,"未知"),					// 未知
-    EM_SECURITYGATE_GLASSES_UNDEFINE(0,"未识别"),						// 未识别
-    EM_SECURITYGATE_WITHOUT_GLASSES(1,"未戴眼镜"),						// 未戴眼镜
-    EM_SECURITYGATE_WITH_GLASSES(2,"戴眼镜");							// 戴眼镜
+    EM_SECURITYGATE_GLASSES_UNKNOWN(-1, "未知"),                    // 未知
+    EM_SECURITYGATE_GLASSES_UNDEFINE(0, "未识别"),                        // 未识别
+    EM_SECURITYGATE_WITHOUT_GLASSES(1, "未戴眼镜"),                        // 未戴眼镜
+    EM_SECURITYGATE_WITH_GLASSES(2, "戴眼镜");                            // 戴眼镜
 
     private final int value;
     private final String note;
@@ -18,14 +18,6 @@ public enum EM_SECURITYGATE_GLASSES_TYPE {
     EM_SECURITYGATE_GLASSES_TYPE(int givenValue, String note) {
         this.value = givenValue;
         this.note = note;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
     }
 
     public static String getNoteByValue(int givenValue) {
@@ -52,5 +44,13 @@ public enum EM_SECURITYGATE_GLASSES_TYPE {
                 return e;
         }
         return EM_SECURITYGATE_GLASSES_TYPE.EM_SECURITYGATE_GLASSES_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

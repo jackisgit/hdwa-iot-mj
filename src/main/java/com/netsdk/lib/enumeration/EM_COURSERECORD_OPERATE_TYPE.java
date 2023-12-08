@@ -42,14 +42,6 @@ public enum EM_COURSERECORD_OPERATE_TYPE {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_COURSERECORD_OPERATE_TYPE enumType : EM_COURSERECORD_OPERATE_TYPE.values()) {
             if (givenValue == enumType.getValue()) {
@@ -74,5 +66,13 @@ public enum EM_COURSERECORD_OPERATE_TYPE {
                 return e;
         }
         return EM_COURSERECORD_OPERATE_TYPE.EM_COURSERECORDE_TYPE_GET_INFO;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

@@ -14,11 +14,11 @@ public class NET_VIDEO_DIAGNOSIS_RECORD_INFO extends NetSDKLib.SdkStructure {
     /**
      * 录像保存的位置,对应枚举{@link EM_SOURCE_VIDEO_LOCATION}
      */
-    public int    emSourceLocation;
+    public int emSourceLocation;
     /**
      * 视频诊断录像类型,对应枚举{@link EM_VIDEO_TYPE}
      */
-    public int               emRecordType;
+    public int emRecordType;
     /**
      * 视频诊断录像开始时间
      */
@@ -26,10 +26,10 @@ public class NET_VIDEO_DIAGNOSIS_RECORD_INFO extends NetSDKLib.SdkStructure {
     /**
      * 视频诊断录像开始时间为当前实际检测时间的前PreSeconds秒（当该字段与StartTime同时存在时，以该字段优先）
      */
-    public int                         nPreSeconds;
+    public int nPreSeconds;
     /**
      * 录像文件地址
      */
-    public byte[] szLocalRecordFilePath = new byte[256];	
-    
+    public byte[] szLocalRecordFilePath = new byte[256];
+
 }

@@ -6,60 +6,60 @@ package com.netsdk.lib.enumeration;
  * @date 2022/07/21 15:30:00
  */
 public enum EM_SHAPE_TYPE {
-	/**
-	 * 无效的类型
-	 */
-	EM_SHAPE_TYPE_INVALID(0, "无效的类型"),
-	/**
-	 * 矩形
-	 */
-	EM_SHAPE_TYPE_RECT(1, "矩形"),
-	/**
-	 * 多边形
-	 */
-	EM_SHAPE_TYPE_POLYGON(2, "多边形");
+    /**
+     * 无效的类型
+     */
+    EM_SHAPE_TYPE_INVALID(0, "无效的类型"),
+    /**
+     * 矩形
+     */
+    EM_SHAPE_TYPE_RECT(1, "矩形"),
+    /**
+     * 多边形
+     */
+    EM_SHAPE_TYPE_POLYGON(2, "多边形");
 
-	private int value;
+    private int value;
 
-	private String note;
+    private String note;
 
-	public String getNote() {
-		return note;
-	}
+    EM_SHAPE_TYPE(int givenValue, String note) {
+        this.value = givenValue;
+        this.note = note;
+    }
 
-	public int getValue() {
-		return value;
-	}
+    public static String getNoteByValue(int givenValue) {
+        for (EM_SHAPE_TYPE enumType : EM_SHAPE_TYPE.values()) {
+            if (givenValue == enumType.getValue()) {
+                return enumType.getNote();
+            }
+        }
+        return null;
+    }
 
-	EM_SHAPE_TYPE(int givenValue, String note) {
-		this.value = givenValue;
-		this.note = note;
-	}
+    public static int getValueByNote(String givenNote) {
+        for (EM_SHAPE_TYPE enumType : EM_SHAPE_TYPE.values()) {
+            if (givenNote.equals(enumType.getNote())) {
+                return enumType.getValue();
+            }
+        }
+        return -1;
+    }
 
-	public static String getNoteByValue(int givenValue) {
-		for (EM_SHAPE_TYPE enumType : EM_SHAPE_TYPE.values()) {
-			if (givenValue == enumType.getValue()) {
-				return enumType.getNote();
-			}
-		}
-		return null;
-	}
+    public static EM_SHAPE_TYPE getEnum(int value) {
+        for (EM_SHAPE_TYPE e : EM_SHAPE_TYPE.values()) {
+            if (e.getValue() == value)
+                return e;
+        }
+        return EM_SHAPE_TYPE.EM_SHAPE_TYPE_INVALID;
+    }
 
-	public static int getValueByNote(String givenNote) {
-		for (EM_SHAPE_TYPE enumType : EM_SHAPE_TYPE.values()) {
-			if (givenNote.equals(enumType.getNote())) {
-				return enumType.getValue();
-			}
-		}
-		return -1;
-	}
+    public String getNote() {
+        return note;
+    }
 
-	public static EM_SHAPE_TYPE getEnum(int value) {
-		for (EM_SHAPE_TYPE e : EM_SHAPE_TYPE.values()) {
-			if (e.getValue() == value)
-				return e;
-		}
-		return EM_SHAPE_TYPE.EM_SHAPE_TYPE_INVALID;
-	}
+    public int getValue() {
+        return value;
+    }
 
 }

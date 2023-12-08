@@ -111,7 +111,7 @@ public class ALARM_CITIZEN_PICTURE_COMPARE_INFO extends SdkStructure {
     public int nScore;
 
     /**
-     *  物理证件号（证件序列号）
+     * 物理证件号（证件序列号）
      */
     public byte[] szIDPhysicalNumber = new byte[20];
 

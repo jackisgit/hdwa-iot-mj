@@ -20,35 +20,36 @@ public class NET_POWER_STATUS extends NetSDKLib.SdkStructure {
      */
     public int dwSize;
     /**
-     *  查询是否成功
+     * 查询是否成功
      */
     public int bEnable;
 
     /**
-     *  电源数量
+     * 电源数量
      */
     public int nCount;
 
     /**
-     *  电源状态
+     * 电源状态
      */
     public NET_POWER_INFO[] stuPowers = (NET_POWER_INFO[]) new NET_POWER_INFO().toArray(NET_MAX_POWER_NUM);
     /**
-     *  电池数量
+     * 电池数量
      */
     public int nBatteryNum;
 
     /**
-     *  电池状态
+     * 电池状态
      */
     public NET_BATTERY_INFO[] stuBatteries = (NET_BATTERY_INFO[]) new NET_BATTERY_INFO().toArray(NET_MAX_BATTERY_NUM);
-    public NET_POWER_STATUS(){
+
+    public NET_POWER_STATUS() {
         this.dwSize = this.size();
         for (int i = 0; i < stuBatteries.length; i++) {
-        	stuBatteries[i] = new NET_BATTERY_INFO();
-		}
+            stuBatteries[i] = new NET_BATTERY_INFO();
+        }
         for (int i = 0; i < stuPowers.length; i++) {
-        	stuPowers[i] = new NET_POWER_INFO();
-		}
+            stuPowers[i] = new NET_POWER_INFO();
+        }
     }
 }

@@ -28,14 +28,6 @@ public enum EM_PARKING_TRIGGER_TYPE {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_PARKING_TRIGGER_TYPE enumType : EM_PARKING_TRIGGER_TYPE.values()) {
             if (givenValue == enumType.getValue()) {
@@ -60,6 +52,14 @@ public enum EM_PARKING_TRIGGER_TYPE {
                 return e;
         }
         return EM_PARKING_TRIGGER_TYPE.EM_PARKING_TRIGGER_TYPE_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

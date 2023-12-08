@@ -24,14 +24,6 @@ public enum EM_ATTACH_TOPICS {
 
     private String note;
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     EM_ATTACH_TOPICS(int givenValue, String note) {
         this.value = givenValue;
         this.note = note;
@@ -61,6 +53,14 @@ public enum EM_ATTACH_TOPICS {
                 return e;
         }
         return EM_ATTACH_TOPICS.EM_ATTACH_TOPICS_ALL;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

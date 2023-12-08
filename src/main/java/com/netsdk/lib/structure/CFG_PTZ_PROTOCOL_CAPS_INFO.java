@@ -296,17 +296,17 @@ public class CFG_PTZ_PROTOCOL_CAPS_INFO extends NetSDKLib.SdkStructure {
      * 云台连续运动能力
      */
     public CFG_PTZ_MOVE_CONTINUOUSLY_CAPS stuMoveContinuously;
-    
+
     /**
      * 云台不支持的转动方向个数
      */
     public int nUnSupportDirections;
-    
+
     /**
      * 云台不支持的转动方向,参考枚举{ @link EM_PTZ_UNSUPPORT_DIRECTION}
      */
     public int[] emUnSupportDirections = new int[10];
-    
+
     /**
      * 是否支持电子云台联动
      */

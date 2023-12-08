@@ -8,6 +8,6 @@ import com.netsdk.lib.NetSDKLib;
  * @description
  * @date 2022/7/4 19:28
  */
-public class Byte64Arr extends  NetSDKLib.SdkStructure{
-    public  byte[]  arr=new byte[64];
+public class Byte64Arr extends NetSDKLib.SdkStructure {
+    public byte[] arr = new byte[64];
 }

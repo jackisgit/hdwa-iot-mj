@@ -11,27 +11,19 @@ public enum NET_EM_RADAR_RFIDCARD_ACTION {
     /**
      * 未知
      */
-    EM_RADAR_RFIDCARD_ACTION_UNKNOWN(0,"未知"),
+    EM_RADAR_RFIDCARD_ACTION_UNKNOWN(0, "未知"),
     /**
      * 卡片离开
      */
-    EM_RADAR_RFIDCARD_ACTION_LEAVE(1,"卡片离开"),
+    EM_RADAR_RFIDCARD_ACTION_LEAVE(1, "卡片离开"),
     /**
      * 卡片进入
      */
-    EM_RADAR_RFIDCARD_ACTION_ENTER(2,"卡片进入");
+    EM_RADAR_RFIDCARD_ACTION_ENTER(2, "卡片进入");
 
     private int value;
 
     private String note;
-
-    public String getNote() {
-             return note;
-         }
-
-    public int getValue() {
-             return value;
-         }
 
     NET_EM_RADAR_RFIDCARD_ACTION(int givenValue, String note) {
         this.value = givenValue;
@@ -62,6 +54,14 @@ public enum NET_EM_RADAR_RFIDCARD_ACTION {
                 return e;
         }
         return NET_EM_RADAR_RFIDCARD_ACTION.EM_RADAR_RFIDCARD_ACTION_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

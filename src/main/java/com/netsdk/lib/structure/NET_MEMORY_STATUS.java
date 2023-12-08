@@ -11,22 +11,22 @@ import com.netsdk.lib.NetSDKLib;
  * @version v1.0
  */
 
-public class NET_MEMORY_STATUS  extends NetSDKLib.SdkStructure {
+public class NET_MEMORY_STATUS extends NetSDKLib.SdkStructure {
     /**
      * dwSize;
      */
     public int dwSize;
     /**
-     *  查询是否成功
+     * 查询是否成功
      */
     public int bEnable;
 
     /**
-     *  内存信息
+     * 内存信息
      */
     public NET_MEMORY_INFO stuMemory;
 
-    public NET_MEMORY_STATUS (){
+    public NET_MEMORY_STATUS() {
         this.dwSize = this.size();
     }
 }

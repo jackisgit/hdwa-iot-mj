@@ -9,88 +9,88 @@ import java.util.Vector;
 
 @Slf4j
 public class CaseMenu {
-	
-	public static class Item {
-		private Object object;
-		private String itemName;
-		private String methodName;
-		
-		public Item(Object object, String itemName, String methodName) {
-			super();
-			this.object = object;
-			this.itemName = itemName;
-			this.methodName = methodName;
-		}
 
-		public Object getObject() {
-			return object;
-		}
+    private Vector<Item> items;
 
-		public String getItemName() {
-			return itemName;
-		}
+    public CaseMenu() {
+        super();
+        items = new Vector<Item>();
+    }
 
-		public String getMethodName() {
-			return methodName;
-		}
-	}
-	
-	private Vector<Item> items;
+    public void addItem(Item item) {
+        items.add(item);
+    }
 
-	public CaseMenu() {
-		super();
-		items = new Vector<Item>();
-	}
-	
-	public void addItem(Item item) {
-		items.add(item);
-	}
-	
-	private void showItem() {
-		final String format = "%2d\t%-20s\n";
-		int index = 0; 
-		log.info(format, index++, "exit App");
-		for (Item item : items) {
-			log.info(format, index++, item.getItemName());
-		}
-		log.info("Please input a item index to invoke the method:");
-	}
-	
-	public void run() {
-		Scanner scanner = new Scanner(System.in);
-		while(true) {			
-			showItem();			
-			try {		
-				int input = Integer.parseInt(scanner.nextLine());
+    private void showItem() {
+        final String format = "%2d\t%-20s\n";
+        int index = 0;
+        log.info(format, index++, "exit App");
+        for (Item item : items) {
+            log.info(format, index++, item.getItemName());
+        }
+        log.info("Please input a item index to invoke the method:");
+    }
 
-				if (input <= 0 ) {
-					log.error("input <= 0 || scanner.nextLine() == null");
+    public void run() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            showItem();
+            try {
+                int input = Integer.parseInt(scanner.nextLine());
+
+                if (input <= 0) {
+                    log.error("input <= 0 || scanner.nextLine() == null");
 //					scanner.close();
 //					System.exit(0);
-					break;
-				}
-					
-				if (input < 0 || input > items.size()) {
-					log.error("Input Error Item Index.");
-					continue;
-				}
-				
-				Item item = items.get(input - 1);
-				Class<?> itemClass = item.getObject().getClass();
-				Method method = itemClass.getMethod(item.getMethodName());
-				method.invoke(item.getObject());
-			} catch (NoSuchElementException e) {
+                    break;
+                }
+
+                if (input < 0 || input > items.size()) {
+                    log.error("Input Error Item Index.");
+                    continue;
+                }
+
+                Item item = items.get(input - 1);
+                Class<?> itemClass = item.getObject().getClass();
+                Method method = itemClass.getMethod(item.getMethodName());
+                method.invoke(item.getObject());
+            } catch (NoSuchElementException e) {
 //				scanner.close();
 //				System.exit(0);
-				break;
-			} catch (NumberFormatException e) {
-				log.error("Input Error NumberFormat.");
-				continue;
-			} catch (Exception e) {
-				e.printStackTrace();
-			} 
-		}
-		
-		scanner.close();
-	}
+                break;
+            } catch (NumberFormatException e) {
+                log.error("Input Error NumberFormat.");
+                continue;
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+            }
+        }
+
+        scanner.close();
+    }
+
+    public static class Item {
+        private Object object;
+        private String itemName;
+        private String methodName;
+
+        public Item(Object object, String itemName, String methodName) {
+            super();
+            this.object = object;
+            this.itemName = itemName;
+            this.methodName = methodName;
+        }
+
+        public Object getObject() {
+            return object;
+        }
+
+        public String getItemName() {
+            return itemName;
+        }
+
+        public String getMethodName() {
+            return methodName;
+        }
+    }
 }

@@ -20,14 +20,6 @@ public enum ENUM_RECORDBACKUP_FILE_TYPE {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (ENUM_RECORDBACKUP_FILE_TYPE enumType : ENUM_RECORDBACKUP_FILE_TYPE.values()) {
             if (givenValue == enumType.getValue()) {
@@ -52,6 +44,14 @@ public enum ENUM_RECORDBACKUP_FILE_TYPE {
                 return e;
         }
         return ENUM_RECORDBACKUP_FILE_TYPE.ENUM_RECORDBACKUP_FILE_COMMON;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

@@ -19,14 +19,6 @@ public enum EM_DOWNLOAD_DATA_TYPE {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_DOWNLOAD_DATA_TYPE enumType : EM_DOWNLOAD_DATA_TYPE.values()) {
             if (givenValue == enumType.getValue()) {
@@ -51,6 +43,14 @@ public enum EM_DOWNLOAD_DATA_TYPE {
                 return e;
         }
         return EM_DOWNLOAD_DATA_TYPE.EM_DOWNLOAD_DATA_RECORD;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

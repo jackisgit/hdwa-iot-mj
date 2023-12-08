@@ -42,23 +42,6 @@ public class OperateManager extends JDialog {
     };
 
     /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    OperateManager dialogManager = new OperateManager();
-                    dialogManager.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                    dialogManager.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
      * Create the frame.
      */
     public OperateManager() {
@@ -67,13 +50,13 @@ public class OperateManager extends JDialog {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         } catch (InstantiationException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
         setBounds(100, 100, 547, 414);
         contentPane = new JPanel();
@@ -211,6 +194,23 @@ public class OperateManager extends JDialog {
                 clear();
                 //更新卡数据显示
                 search();
+            }
+        });
+    }
+
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    OperateManager dialogManager = new OperateManager();
+                    dialogManager.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    dialogManager.setVisible(true);
+                } catch (Exception e) {
+                    log.error(e.getMessage(), e);
+                }
             }
         });
     }

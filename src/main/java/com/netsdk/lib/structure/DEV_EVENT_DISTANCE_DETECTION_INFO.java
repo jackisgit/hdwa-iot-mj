@@ -68,17 +68,17 @@ public class DEV_EVENT_DISTANCE_DETECTION_INFO extends NetSDKLib.SdkStructure {
     public byte[] szSourceID = new byte[32];
 
     /**
-     * 图片信息数组 ,结构体NET_IMAGE_INFO_EX2数组指针  
+     * 图片信息数组 ,结构体NET_IMAGE_INFO_EX2数组指针
      */
-	public Pointer                pstuImageInfo;	
+    public Pointer pstuImageInfo;
     /**
      * 图片信息个数
      */
-	public int				      nImageInfoNum;
-	/**
-	 * 事件公共扩展字段结构体
-	 */
-	public NET_EVENT_INFO_EXTEND  stuEventInfoEx = new NET_EVENT_INFO_EXTEND();
+    public int nImageInfoNum;
+    /**
+     * 事件公共扩展字段结构体
+     */
+    public NET_EVENT_INFO_EXTEND stuEventInfoEx = new NET_EVENT_INFO_EXTEND();
     /**
      * 保留字节
      */

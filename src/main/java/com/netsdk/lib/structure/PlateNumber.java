@@ -9,5 +9,5 @@ import com.netsdk.lib.NetSDKLib;
  * @date 2021/2/22
  */
 public class PlateNumber extends NetSDKLib.SdkStructure {
-    public byte[] plateNumber=new byte[32];
+    public byte[] plateNumber = new byte[32];
 }

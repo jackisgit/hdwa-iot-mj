@@ -8,15 +8,15 @@ import com.netsdk.lib.NetSDKLib;
  * @date 2022/05/11 11:33:24
  */
 public class NET_XRAY_INSIDE_ONJECT_TYPE extends NetSDKLib.SdkStructure {
-	/**
-	 * 物体类型
-	 */
-	public byte[] szObjType = new byte[32];
-	/**
-	 * 保留字节
-	 */
-	public byte[] byReserved = new byte[256];
+    /**
+     * 物体类型
+     */
+    public byte[] szObjType = new byte[32];
+    /**
+     * 保留字节
+     */
+    public byte[] byReserved = new byte[256];
 
-	public NET_XRAY_INSIDE_ONJECT_TYPE() {
-	}
+    public NET_XRAY_INSIDE_ONJECT_TYPE() {
+    }
 }

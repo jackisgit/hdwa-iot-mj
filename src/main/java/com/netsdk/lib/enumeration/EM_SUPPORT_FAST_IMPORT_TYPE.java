@@ -16,9 +16,10 @@ public enum EM_SUPPORT_FAST_IMPORT_TYPE {
     private int type;
 
     EM_SUPPORT_FAST_IMPORT_TYPE(int type) {
-        this.type=type;
+        this.type = type;
     }
-    public int getType(){
+
+    public int getType() {
         return type;
     }
 }

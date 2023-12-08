@@ -8,20 +8,20 @@ import com.netsdk.lib.NetSDKLib;
  * @date 2022/06/02 10:15:21
  */
 public class NET_CFG_CUSTOMER_DEV_SETTING_INFO extends NetSDKLib.SdkStructure {
-	/**
-	 * 结构体大小
-	 */
-	public int dwSize;
-	/**
-	 * 开门方式 {@link com.netsdk.lib.enumeration.EM_CUSTOMER_DEV_SETTING_DOOR_METHOD}
-	 */
-	public int emDoorMethod;
-	/**
-	 * 国密加密算法密钥：加密密钥的密文及校验码，字符串
-	 */
-	public byte[] szEnckeycipher = new byte[1024];
+    /**
+     * 结构体大小
+     */
+    public int dwSize;
+    /**
+     * 开门方式 {@link com.netsdk.lib.enumeration.EM_CUSTOMER_DEV_SETTING_DOOR_METHOD}
+     */
+    public int emDoorMethod;
+    /**
+     * 国密加密算法密钥：加密密钥的密文及校验码，字符串
+     */
+    public byte[] szEnckeycipher = new byte[1024];
 
-	public NET_CFG_CUSTOMER_DEV_SETTING_INFO() {
-		this.dwSize = this.size();
-	}
+    public NET_CFG_CUSTOMER_DEV_SETTING_INFO() {
+        this.dwSize = this.size();
+    }
 }

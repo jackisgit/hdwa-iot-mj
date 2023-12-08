@@ -79,8 +79,8 @@ public class DEV_EVENT_TRAFFIC_REAREND_ACCIDENT_INFO extends NetSDKLib.SdkStruct
     public byte[] byResersed = new byte[1020];
 
     public DEV_EVENT_TRAFFIC_REAREND_ACCIDENT_INFO() {
-       for (int i = 0; i < stuObjects.length; i++) {
-           stuObjects[i] = new NetSDKLib.NET_MSG_OBJECT();
-       }
+        for (int i = 0; i < stuObjects.length; i++) {
+            stuObjects[i] = new NetSDKLib.NET_MSG_OBJECT();
+        }
     }
 }

@@ -11,31 +11,23 @@ public enum NET_TRAFFIC_JAM_STATUS {
     /**
      * 未知
      */
-    JAM_STATUS_UNKNOW(0,"未知"),
+    JAM_STATUS_UNKNOW(0, "未知"),
     /**
      * 通畅
      */
-    JAM_STATUS_CLEAR(1,"通畅"),
+    JAM_STATUS_CLEAR(1, "通畅"),
     /**
      * 拥堵
      */
-    JAM_STATUS_JAMMED(2,"拥堵"),
+    JAM_STATUS_JAMMED(2, "拥堵"),
     /**
      * 拥堵
      */
-    JAM_STATUS_SLOWED(3,"拥堵");
+    JAM_STATUS_SLOWED(3, "拥堵");
 
     private int value;
 
     private String note;
-
-    public String getNote() {
-             return note;
-         }
-
-    public int getValue() {
-             return value;
-         }
 
     NET_TRAFFIC_JAM_STATUS(int givenValue, String note) {
         this.value = givenValue;
@@ -66,6 +58,14 @@ public enum NET_TRAFFIC_JAM_STATUS {
                 return e;
         }
         return NET_TRAFFIC_JAM_STATUS.JAM_STATUS_UNKNOW;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

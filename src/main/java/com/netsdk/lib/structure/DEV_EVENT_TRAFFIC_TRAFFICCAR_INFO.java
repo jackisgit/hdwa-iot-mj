@@ -158,7 +158,7 @@ public class DEV_EVENT_TRAFFIC_TRAFFICCAR_INFO extends NetSDKLib.SdkStructure {
      * 记录编号
      */
     public int nRecNo;
-    
+
     /**
      * 自定义车位号（停车场用）
      */

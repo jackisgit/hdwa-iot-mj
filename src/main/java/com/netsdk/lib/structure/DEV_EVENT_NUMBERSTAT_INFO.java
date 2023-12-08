@@ -105,7 +105,7 @@ public class DEV_EVENT_NUMBERSTAT_INFO extends NetSDKLib.SdkStructure {
     /**
      * 事件公共扩展字段结构体
      */
-    public NET_EVENT_INFO_EXTEND   stuEventInfoEx = new NET_EVENT_INFO_EXTEND();
+    public NET_EVENT_INFO_EXTEND stuEventInfoEx = new NET_EVENT_INFO_EXTEND();
     /**
      * 保留字节,留待扩展.
      */

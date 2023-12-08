@@ -12,29 +12,29 @@ import com.netsdk.lib.NetSDKLib;
 public class NET_INSIDE_OBJECT extends NetSDKLib.SdkStructure {
 
     /**
-     *  物品危险等级
+     * 物品危险等级
      */
-    public int					emDangerGrade;
+    public int emDangerGrade;
 
     /**
-     *  物品类型
+     * 物品类型
      */
-    public int					emObjType;
+    public int emObjType;
 
     /**
-     *  相似度
+     * 相似度
      */
-    public int					nSimilarity;
+    public int nSimilarity;
 
     /**
-     *  包围盒
+     * 包围盒
      */
     public NetSDKLib.NET_RECT stuBoundingBox = new NetSDKLib.NET_RECT();
 
     /**
-     *  保留字节,留待扩展
+     * 保留字节,留待扩展
      */
-    public byte					byReserved[] = new byte[108];
+    public byte byReserved[] = new byte[108];
 
     @Override
     public String toString() {

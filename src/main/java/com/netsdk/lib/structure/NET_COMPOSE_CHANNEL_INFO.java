@@ -18,7 +18,8 @@ public class NET_COMPOSE_CHANNEL_INFO extends NetSDKLib.SdkStructure {
             SDKStructureFieldLenth.CFG_MAX_VIDEO_CHANNEL_NUM];
     // 分割窗口数量
     public int nChannelCount;
-    public NET_COMPOSE_CHANNEL_INFO(){
-        this.dwSize=size();
+
+    public NET_COMPOSE_CHANNEL_INFO() {
+        this.dwSize = size();
     }
 }

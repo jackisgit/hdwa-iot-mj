@@ -8,20 +8,20 @@ import com.netsdk.lib.NetSDKLib;
  * @date 2022/07/21 17:13:49
  */
 public class NET_IN_SET_PRIVACY_MASKING_ENABLE extends NetSDKLib.SdkStructure {
-	/**
-	 * 结构体大小
-	 */
-	public int dwSize;
-	/**
-	 * 通道号
-	 */
-	public int nChannel;
-	/**
-	 * true 使能所有隐私遮挡块 false 关闭所有隐私遮挡块
-	 */
-	public int bEnable;
+    /**
+     * 结构体大小
+     */
+    public int dwSize;
+    /**
+     * 通道号
+     */
+    public int nChannel;
+    /**
+     * true 使能所有隐私遮挡块 false 关闭所有隐私遮挡块
+     */
+    public int bEnable;
 
-	public NET_IN_SET_PRIVACY_MASKING_ENABLE() {
-		this.dwSize = this.size();
-	}
+    public NET_IN_SET_PRIVACY_MASKING_ENABLE() {
+        this.dwSize = this.size();
+    }
 }

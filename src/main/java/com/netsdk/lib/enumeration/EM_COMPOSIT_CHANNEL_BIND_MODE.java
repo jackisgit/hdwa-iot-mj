@@ -32,14 +32,6 @@ public enum EM_COMPOSIT_CHANNEL_BIND_MODE {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_COMPOSIT_CHANNEL_BIND_MODE enumType : EM_COMPOSIT_CHANNEL_BIND_MODE.values()) {
             if (givenValue == enumType.getValue()) {
@@ -64,5 +56,13 @@ public enum EM_COMPOSIT_CHANNEL_BIND_MODE {
                 return e;
         }
         return EM_COMPOSIT_CHANNEL_BIND_MODE.EM_COMPOSIT_CHANNEL_BIND_MODE_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

@@ -8,6 +8,7 @@ import com.netsdk.lib.ToolKits;
 import com.netsdk.module.LoginModule;
 import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import static com.netsdk.lib.NetSDKLib.CtrlType.CTRLTYPE_CTRL_RECORDSET_INSERTEX;
 import static com.netsdk.lib.NetSDKLib.CtrlType.CTRLTYPE_CTRL_RECORDSET_UPDATEEX;
 
+@Slf4j
 public class OperateInfo extends JDialog {
 
     private final JPanel contentPanel = new JPanel();
@@ -42,69 +44,6 @@ public class OperateInfo extends JDialog {
     private String cardNo;
     private String fingerPrintData;
 
-    public void setCardNoTextFieldEditEnable(boolean enable) {
-        this.cardNoTextField.setEditable(enable);
-    }
-    public void setRoomNoTextFieldEditEnable(boolean enable){
-        this.roomNoTextField.setEditable(enable);
-    }
-    public void syncData(String userId, String cardNo, String fingerPrintData) {
-        this.userId = userId;
-        this.cardNo = cardNo;
-        this.fingerPrintData = fingerPrintData;
-        if (fingerPrintData == null || fingerPrintData.trim().equals("")) {
-            needFingerCheckBox.setSelected(false);
-        } else {
-            needFingerCheckBox.setSelected(true);
-        }
-        cardNoTextField.setText(cardNo);
-        roomNoTextField.setText(userId);
-
-    }
-
-    public int getInfoType() {
-        return infoType;
-    }
-
-    public void setInfoType(int infoType) {
-        this.infoType = infoType;
-    }
-
-    public void receiveData(int infoType, String userId, String cardNo, String fingerPrintData) {
-        this.infoType = infoType;
-        //新增卡
-        if (infoType == 0) {
-            this.userId = "";
-            this.cardNo = "";
-            this.fingerPrintData = "";
-        } else if (infoType == 1) {
-            //修改卡
-            this.userId = userId;
-            this.cardNo = cardNo;
-            this.fingerPrintData = fingerPrintData;
-        }
-        this.cardNoTextField.setText(this.cardNo);
-        this.roomNoTextField.setText(this.userId);
-        if (!this.fingerPrintData.trim().equals("")) {
-            needFingerCheckBox.setSelected(true);
-        } else {
-            needFingerCheckBox.setSelected(false);
-        }
-    }
-
-    /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        try {
-            OperateInfo dialog = new OperateInfo();
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setVisible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     /**
      * Create the dialog.
      */
@@ -114,13 +53,13 @@ public class OperateInfo extends JDialog {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         } catch (InstantiationException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
         setBounds(100, 100, 476, 294);
         getContentPane().setLayout(new BorderLayout());
@@ -234,7 +173,7 @@ public class OperateInfo extends JDialog {
                                 memory = ToolKits.readPictureFile(picPath);
                             } catch (IOException e) {
                                 // TODO Auto-generated catch block
-                                e.printStackTrace();
+                                log.error(e.getMessage(), e);
                             }
                         }
 
@@ -307,6 +246,71 @@ public class OperateInfo extends JDialog {
                     }
                 }
             });
+        }
+    }
+
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) {
+        try {
+            OperateInfo dialog = new OperateInfo();
+            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            dialog.setVisible(true);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    public void setCardNoTextFieldEditEnable(boolean enable) {
+        this.cardNoTextField.setEditable(enable);
+    }
+
+    public void setRoomNoTextFieldEditEnable(boolean enable) {
+        this.roomNoTextField.setEditable(enable);
+    }
+
+    public void syncData(String userId, String cardNo, String fingerPrintData) {
+        this.userId = userId;
+        this.cardNo = cardNo;
+        this.fingerPrintData = fingerPrintData;
+        if (fingerPrintData == null || fingerPrintData.trim().equals("")) {
+            needFingerCheckBox.setSelected(false);
+        } else {
+            needFingerCheckBox.setSelected(true);
+        }
+        cardNoTextField.setText(cardNo);
+        roomNoTextField.setText(userId);
+
+    }
+
+    public int getInfoType() {
+        return infoType;
+    }
+
+    public void setInfoType(int infoType) {
+        this.infoType = infoType;
+    }
+
+    public void receiveData(int infoType, String userId, String cardNo, String fingerPrintData) {
+        this.infoType = infoType;
+        //新增卡
+        if (infoType == 0) {
+            this.userId = "";
+            this.cardNo = "";
+            this.fingerPrintData = "";
+        } else if (infoType == 1) {
+            //修改卡
+            this.userId = userId;
+            this.cardNo = cardNo;
+            this.fingerPrintData = fingerPrintData;
+        }
+        this.cardNoTextField.setText(this.cardNo);
+        this.roomNoTextField.setText(this.userId);
+        if (!this.fingerPrintData.trim().equals("")) {
+            needFingerCheckBox.setSelected(true);
+        } else {
+            needFingerCheckBox.setSelected(false);
         }
     }
 
@@ -472,9 +476,9 @@ public class OperateInfo extends JDialog {
     /**
      * 修改卡信息
      *
-     * @param cardNo 卡号
-     * @param userID 房间号
-     * @param enableFinger 是否使用指纹
+     * @param cardNo          卡号
+     * @param userID          房间号
+     * @param enableFinger    是否使用指纹
      * @param fingerPrintData 指纹数据,Base64编码字符串
      */
     public boolean modifyCard(byte[] cardNo, byte[] userID, int enableFinger, String fingerPrintData) {
@@ -536,7 +540,7 @@ public class OperateInfo extends JDialog {
             ToolKits.SetStructDataToPointer(outUpdateFaceInfo, outUpdateParam, 0);
             boolean result = LoginModule.netsdk.CLIENT_FaceInfoOpreate(LoginModule.m_hLoginHandle, NetSDKLib.EM_FACEINFO_OPREATE_TYPE.EM_FACEINFO_OPREATE_UPDATE, inUpdateParam, outUpdateParam, 5000);
             if (!result) {
-                JOptionPane.showMessageDialog(null, Res.string().getFailedModifyCard() +","+ ToolKits.getErrorCodeShow(),
+                JOptionPane.showMessageDialog(null, Res.string().getFailedModifyCard() + "," + ToolKits.getErrorCodeShow(),
                         Res.string().getErrorMessage(), JOptionPane.ERROR_MESSAGE);
                 return result;
             }

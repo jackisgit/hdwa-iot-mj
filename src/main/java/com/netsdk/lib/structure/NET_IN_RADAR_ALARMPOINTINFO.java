@@ -11,24 +11,24 @@ import com.sun.jna.Pointer;
  * @since ： Created in 2021/2/03 13:56
  */
 public class NET_IN_RADAR_ALARMPOINTINFO extends NetSDKLib.SdkStructure {
-	/**
-	 * 结构体大小
-	 */
-	public int                       dwSize;    
-	/**
-	 * 雷达报警点信息回调
-	 */
-	public fRadarAlarmPointInfoCallBack    cbAlarmPointInfo;    
-	/**
-	 * 用户数据
-	 */
-	public Pointer                      dwUser; 
-	/**
-	 * 通道号
-	 */
-	public int							nChannel;				
-	
-	  public NET_IN_RADAR_ALARMPOINTINFO() {
-          this.dwSize = this.size();
-      }
+    /**
+     * 结构体大小
+     */
+    public int dwSize;
+    /**
+     * 雷达报警点信息回调
+     */
+    public fRadarAlarmPointInfoCallBack cbAlarmPointInfo;
+    /**
+     * 用户数据
+     */
+    public Pointer dwUser;
+    /**
+     * 通道号
+     */
+    public int nChannel;
+
+    public NET_IN_RADAR_ALARMPOINTINFO() {
+        this.dwSize = this.size();
+    }
 }

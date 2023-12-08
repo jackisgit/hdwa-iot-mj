@@ -12,16 +12,17 @@ public class NET_OUT_PRE_UPLOAD_REMOTE_FILE extends NetSDKLib.SdkStructure {
     /**
      * 结构体大小
      */
-    public int               dwSize;
+    public int dwSize;
     /**
      * 标志是否继续上传该文件, true:上传 false:不上传
      */
-    public boolean           bContinue2Upload;
+    public boolean bContinue2Upload;
     /**
      * 错误原因, 当bContinue2Upload为false时emType有效,错误原因请参考{@link com.netsdk.lib.enumeration.EM_REASON_TYPE}
      */
-    public int               emType;
-    public NET_OUT_PRE_UPLOAD_REMOTE_FILE(){
-        this.dwSize=this.size();
+    public int emType;
+
+    public NET_OUT_PRE_UPLOAD_REMOTE_FILE() {
+        this.dwSize = this.size();
     }
 }

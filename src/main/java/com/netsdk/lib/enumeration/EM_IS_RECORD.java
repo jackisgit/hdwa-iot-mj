@@ -28,14 +28,6 @@ public enum EM_IS_RECORD {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_IS_RECORD enumType : EM_IS_RECORD.values()) {
             if (givenValue == enumType.getValue()) {
@@ -60,5 +52,13 @@ public enum EM_IS_RECORD {
                 return e;
         }
         return EM_IS_RECORD.EM_IS_RECORD_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

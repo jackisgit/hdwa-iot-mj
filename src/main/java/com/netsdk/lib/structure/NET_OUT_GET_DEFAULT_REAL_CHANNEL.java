@@ -24,7 +24,7 @@ public class NET_OUT_GET_DEFAULT_REAL_CHANNEL extends NetSDKLib.SdkStructure {
      */
     public int[] nChannel = new int[MAX_PREVIEW_CHANNEL_NUM];
 
-    public NET_OUT_GET_DEFAULT_REAL_CHANNEL(){
+    public NET_OUT_GET_DEFAULT_REAL_CHANNEL() {
         dwSize = this.size();
     }
 }

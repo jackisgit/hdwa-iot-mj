@@ -10,10 +10,10 @@ import com.netsdk.lib.NetSDKLib;
  **/
 
 
-public class NET_IN_GET_HEATMAPS_INFO extends NetSDKLib.SdkStructure{
+public class NET_IN_GET_HEATMAPS_INFO extends NetSDKLib.SdkStructure {
     /**
-     *     DWORD dwSize;
-     *     int  nChannel;
+     * DWORD dwSize;
+     * int  nChannel;
      */
     public int dwSize;
     public int nChannel;                           // 通道号, 通道号要与订阅时一致, -1除外

@@ -61,32 +61,32 @@ public class NET_IN_ADAPTIVE_DOWNLOAD_BY_TIME extends NetSDKLib.SdkStructure {
      * 加密录像密码，密码长度不小于8
      */
     public byte[] szEncryptPasswd = new byte[64];
-    
-	/**
-	 * 为TRUE表示仅下发stuStartTimeRealUTC和stuEndTimeRealUTC(不下发stStartTime, stStopTime),
-	 * 为FALSE表示仅下发stStartTime, stStopTime(不下发stuStartTimeRealUTC和stuEndTimeRealUTC)
-	 */
-	public int bOnlySupportRealUTC;
-	/**
-	 * 录像的起始UTC时间(标准UTC时间)
-	 */
-	public NET_TIME stuStartTimeRealUTC = new NET_TIME();
-	/**
-	 * 录像的结束UTC时间(标准UTC时间)
-	 */
-	public NET_TIME stuEndTimeRealUTC = new NET_TIME();
-	/**
-	 * 进度回调的扩展(若使用标准UTC时间进行下载，则使用该回调)
-	 */
-	public NetSDKLib.fTimeDownLoadPosCallBackEx cbDownLoadPosEx;
-	/**
-	 * VK信息回调
-	 */
-	public NetSDKLib.fVKInfoCallBack pVKInfoCallBack;
-	/**
-	 * VK信息回调用户信息
-	 */
-	public Pointer dwVKInfoUser;
+
+    /**
+     * 为TRUE表示仅下发stuStartTimeRealUTC和stuEndTimeRealUTC(不下发stStartTime, stStopTime),
+     * 为FALSE表示仅下发stStartTime, stStopTime(不下发stuStartTimeRealUTC和stuEndTimeRealUTC)
+     */
+    public int bOnlySupportRealUTC;
+    /**
+     * 录像的起始UTC时间(标准UTC时间)
+     */
+    public NET_TIME stuStartTimeRealUTC = new NET_TIME();
+    /**
+     * 录像的结束UTC时间(标准UTC时间)
+     */
+    public NET_TIME stuEndTimeRealUTC = new NET_TIME();
+    /**
+     * 进度回调的扩展(若使用标准UTC时间进行下载，则使用该回调)
+     */
+    public NetSDKLib.fTimeDownLoadPosCallBackEx cbDownLoadPosEx;
+    /**
+     * VK信息回调
+     */
+    public NetSDKLib.fVKInfoCallBack pVKInfoCallBack;
+    /**
+     * VK信息回调用户信息
+     */
+    public Pointer dwVKInfoUser;
 
     public NET_IN_ADAPTIVE_DOWNLOAD_BY_TIME() {
         dwSize = this.size();

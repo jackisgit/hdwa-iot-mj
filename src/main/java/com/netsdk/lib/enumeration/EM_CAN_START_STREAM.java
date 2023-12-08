@@ -31,14 +31,6 @@ public enum EM_CAN_START_STREAM {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_CAN_START_STREAM enumType : EM_CAN_START_STREAM.values()) {
             if (givenValue == enumType.getValue()) {
@@ -63,5 +55,13 @@ public enum EM_CAN_START_STREAM {
                 return e;
         }
         return EM_CAN_START_STREAM.EM_CAN_START_STREAM_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

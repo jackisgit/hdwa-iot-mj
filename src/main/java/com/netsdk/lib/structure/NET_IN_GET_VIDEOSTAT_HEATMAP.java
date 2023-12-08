@@ -29,7 +29,8 @@ public class NET_IN_GET_VIDEOSTAT_HEATMAP extends NetSDKLib.SdkStructure {
      * Ai热度图类型,枚举值类型{@link com.netsdk.lib.enumeration.EM_HEATMAP_TYPE}
      */
     public int emHeatMapType;
-    public NET_IN_GET_VIDEOSTAT_HEATMAP(){
-        this.dwSize=size();
+
+    public NET_IN_GET_VIDEOSTAT_HEATMAP() {
+        this.dwSize = size();
     }
 }

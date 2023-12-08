@@ -17,11 +17,11 @@ public class NET_CPU_INFO extends NetSDKLib.SdkStructure {
      */
     public int dwSize;
     /**
-     *  CPU利用率
+     * CPU利用率
      */
     public int nUsage;
 
-    public NET_CPU_INFO(){
+    public NET_CPU_INFO() {
         this.dwSize = this.size();
     }
 }

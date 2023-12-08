@@ -44,14 +44,6 @@ public enum EM_VEHICLEINOUT_CAR_TYPE {
         this.note = note;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
     public static String getNoteByValue(int givenValue) {
         for (EM_VEHICLEINOUT_CAR_TYPE enumType : EM_VEHICLEINOUT_CAR_TYPE.values()) {
             if (givenValue == enumType.getValue()) {
@@ -76,6 +68,14 @@ public enum EM_VEHICLEINOUT_CAR_TYPE {
                 return e;
         }
         return EM_VEHICLEINOUT_CAR_TYPE.EM_VEHICLEINOUT_CAR_TYPE_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }

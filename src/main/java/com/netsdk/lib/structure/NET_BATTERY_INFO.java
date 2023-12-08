@@ -17,36 +17,36 @@ public class NET_BATTERY_INFO extends NetSDKLib.SdkStructure {
      */
     public int dwSize;
     /**
-     *  电池容量百分比
+     * 电池容量百分比
      */
     public int nPercent;
 
     /**
-     *  是否正在充电
+     * 是否正在充电
      */
     public int bCharging;
 
     /**
-     *  电池在位状态
+     * 电池在位状态
      */
     public int emExistState;
 
     /**
-     *  电池电量状态
+     * 电池电量状态
      */
     public int emState;
 
     /**
-     *  电池电压
+     * 电池电压
      */
     public float fVoltage;
-    
+
     /**
-     *  电池温度状态,参考枚举{ @link EM_BATTERY_TEMPER_STATE}
+     * 电池温度状态,参考枚举{ @link EM_BATTERY_TEMPER_STATE}
      */
     public int emTemperState;
 
-    public NET_BATTERY_INFO(){
+    public NET_BATTERY_INFO() {
         this.dwSize = this.size();
     }
 }

@@ -8,16 +8,16 @@ import com.netsdk.lib.NetSDKLib;
  * @date 2022/09/14 13:56:26
  */
 public class NET_OUT_MSGROUP_LOCATE_INTO extends NetSDKLib.SdkStructure {
-	/**
-	 * 结构体大小
-	 */
-	public int dwSize;
-	/**
-	 * 联动到球机上的绝对坐标
-	 */
-	public short[] snPTZ = new short[3];
+    /**
+     * 结构体大小
+     */
+    public int dwSize;
+    /**
+     * 联动到球机上的绝对坐标
+     */
+    public short[] snPTZ = new short[3];
 
-	public NET_OUT_MSGROUP_LOCATE_INTO() {
-		this.dwSize = this.size();
-	}
+    public NET_OUT_MSGROUP_LOCATE_INTO() {
+        this.dwSize = this.size();
+    }
 }

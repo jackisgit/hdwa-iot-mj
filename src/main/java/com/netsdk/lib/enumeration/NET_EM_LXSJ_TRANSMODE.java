@@ -1,24 +1,22 @@
 package com.netsdk.lib.enumeration;
 
 public enum NET_EM_LXSJ_TRANSMODE {
-    /**未知*/
-    NET_EM_LXSJ_TRANSMODE_UNKNOWN(-1,"未知"),
-    /**TCP方式*/
-    NET_EM_LXSJ_TRANSMODE_TCP(0,"TCP方式"),
-    /**UDP方式*/
-    NET_EM_LXSJ_TRANSMODE_UD(1,"UDP方式");
+    /**
+     * 未知
+     */
+    NET_EM_LXSJ_TRANSMODE_UNKNOWN(-1, "未知"),
+    /**
+     * TCP方式
+     */
+    NET_EM_LXSJ_TRANSMODE_TCP(0, "TCP方式"),
+    /**
+     * UDP方式
+     */
+    NET_EM_LXSJ_TRANSMODE_UD(1, "UDP方式");
 
     private int value;
 
     private String note;
-
-    public String getNote() {
-        return note;
-    }
-
-    public int getValue() {
-        return value;
-    }
 
     NET_EM_LXSJ_TRANSMODE(int givenValue, String note) {
         this.value = givenValue;
@@ -49,6 +47,14 @@ public enum NET_EM_LXSJ_TRANSMODE {
                 return e;
         }
         return NET_EM_LXSJ_TRANSMODE.NET_EM_LXSJ_TRANSMODE_UNKNOWN;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getValue() {
+        return value;
     }
 
 }
