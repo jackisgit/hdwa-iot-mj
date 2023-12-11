@@ -63,7 +63,7 @@ public class DeviceHandler extends BaseDevice {
 
     @Scheduled(cron = "0/10 * * * * ?")
     public void sendHeartMessage() {
-        if (channel.isActive()) {
+        if (channel != null && channel.isActive()) {
             channel.writeAndFlush(queryAll);
         }
     }
