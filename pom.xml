@@ -17,23 +17,20 @@
             <artifactId>iot_epc_common</artifactId>
             <version>${iot_epc_common.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+        </dependency>
 
         <dependency>
-            <groupId>com.hikvision.ga</groupId>
-            <artifactId>artemis-http-client</artifactId>
-            <version>${artemis-http-client.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.httpcomponents</groupId>
-                    <artifactId>httpclient</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
     </dependencies>
 
 
     <build>
-        <finalName>iot_epc_mj_ping_${version}</finalName>
+        <finalName>iot_epc_mj_laiji_TCP_${version}</finalName>
     </build>
 
 </project>

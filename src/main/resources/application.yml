@@ -11,14 +11,14 @@ mqtt:
 
 spring:
   profiles:
-    active: wuxi_huishan
+    active: yichang_yidu
   redis:
-    host: 10.25.16.52
+    host: 127.0.0.1
     port: 16379
     password:
 
 server:
   port: 18800
 
-beanName: statusDevice
+beanName: deviceHandler
 

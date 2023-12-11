@@ -1,0 +1,9 @@
+epc:
+  gatewayId: MJ
+  gcId: 4205810012
+  subsystem: mjgl/
+  threadNum: 5
+tcp:
+  serverIP: 172.16.10.17
+  port: 60006
+
