@@ -381,6 +381,13 @@ public class HikVisionDoorDevice extends BaseDevice {
             intByReference.setValue(errCode);
             String errMsg = hCNetSDK.NET_DVR_GetErrorMsg(intByReference);
             log.info("错误信息：" + errMsg);
+            List<DeviceMessage> deviceMessageList = deviceParamListMap.get(sDeviceIP.concat("_onlineStatus"));
+            if (!CollectionUtils.isEmpty(deviceMessageList)) {
+                deviceMessageList.forEach(deviceMessage -> {
+                    deviceMessage.setValue("0");
+                    sendMessage(deviceMessage);
+                });
+            }
         } else {
             log.info("注册成功,设备IP:" + sDeviceIP + " 端口：" + iPort + "用户ID" + lUserID);
             ipMap.put(lUserID, sDeviceIP);
