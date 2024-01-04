@@ -93,6 +93,9 @@ public class DeviceHandler extends BaseDevice {
                 return;
             }
             redisUtil.set(outParamId, "0", 5);
+            if ("0.0".equals(value)) {
+                return;
+            }
             try {
                 String[] split = outParamId.split("_");
                 //分区

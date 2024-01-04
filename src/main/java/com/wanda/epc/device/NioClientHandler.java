@@ -28,7 +28,7 @@ public class NioClientHandler extends SimpleChannelInboundHandler<String> {
         String str2 = "N3000 -user abc -password 123  -GetAllDoorStatus\n" +
                 "iRet=1, OK\n" +
                 "DoorStatus:\n" +
-                "1F-10A#楼梯1#门禁,关闭,2\n" +
+                "1F-10A#楼梯1#门禁,关闭,0\n" +
                 "1F-10A#楼梯2#门禁,打开,1\n" +
                 "1F-10A#楼梯5#门禁,关闭,2";
         final String[] split = str2.split("\n");
@@ -37,7 +37,18 @@ public class NioClientHandler extends SimpleChannelInboundHandler<String> {
             if (data.length != 3) {
                 continue;
             }
-            log.info(String.valueOf(data.length));
+            //故障状态
+            String gzzt = "0";
+            //在线状态
+            String zxzt = "1";
+            //开关状态
+            String kgzt = "0";
+            if ("0".equals(data[2])) {
+                gzzt = "1";
+            } else if ("1".equals(data[2])) {
+                kgzt = "1";
+            }
+            log.info("在线状态:{},故障状态:{},开关状态,{},判断值:{}", zxzt, gzzt, kgzt, data[2]);
         }
     }
 
@@ -58,28 +69,29 @@ public class NioClientHandler extends SimpleChannelInboundHandler<String> {
                 String zxzt = "1";
                 //开关状态
                 String kgzt = "0";
-                if (data[2] == "0") {
+                String data0 = data[0].replace(" ", "").replace("\r", "");
+                String data2 = data[2].replace(" ", "").replace("\r", "");
+                if ("0".equals(data2)) {
                     gzzt = "1";
-                } else if (data[2] == "1") {
+                } else if ("1".equals(data2)) {
                     kgzt = "1";
-                } else if (data[2] == "2") {
-                    kgzt = "0";
                 }
-                List<DeviceMessage> onlienStautsList = deviceHandler.deviceParamListMap.get(data[0] + "_onlineStatus");
+                log.info("在线状态:{},故障状态:{},开关状态:{},判断值:{}", zxzt, gzzt, kgzt, data2);
+                List<DeviceMessage> onlienStautsList = deviceHandler.deviceParamListMap.get(data0 + "_onlineStatus");
                 if (!CollectionUtils.isEmpty(onlienStautsList)) {
                     for (DeviceMessage deviceMessage : onlienStautsList) {
                         deviceMessage.setValue(zxzt);
                         deviceHandler.sendMessage(deviceMessage);
                     }
                 }
-                List<DeviceMessage> faultStatusList = deviceHandler.deviceParamListMap.get(data[0] + "_faultStatus");
+                List<DeviceMessage> faultStatusList = deviceHandler.deviceParamListMap.get(data0 + "_faultStatus");
                 if (!CollectionUtils.isEmpty(faultStatusList)) {
                     for (DeviceMessage deviceMessage : faultStatusList) {
                         deviceMessage.setValue(gzzt);
                         deviceHandler.sendMessage(deviceMessage);
                     }
                 }
-                List<DeviceMessage> openStatusList = deviceHandler.deviceParamListMap.get(data[0] + "_openStatus");
+                List<DeviceMessage> openStatusList = deviceHandler.deviceParamListMap.get(data0 + "_openStatus");
                 if (!CollectionUtils.isEmpty(openStatusList)) {
                     for (DeviceMessage deviceMessage : openStatusList) {
                         deviceMessage.setValue(kgzt);
