@@ -20,13 +20,33 @@ import java.util.List;
 @Component
 public class NioClientHandler extends SimpleChannelInboundHandler<String> {
 
+    public static void main(String[] args) {
+        String str = "#楼梯5#门禁,关闭,2\n" +
+                "1F-9C#楼梯6#门禁,关闭,2\n" +
+                "1F-w1#楼梯1#门禁,关闭,2\n" +
+                "1F-w1#楼梯2#门禁,关闭,2";
+        String str2 = "N3000 -user abc -password 123  -GetAllDoorStatus\n" +
+                "iRet=1, OK\n" +
+                "DoorStatus:\n" +
+                "1F-10A#楼梯1#门禁,关闭,2\n" +
+                "1F-10A#楼梯2#门禁,打开,1\n" +
+                "1F-10A#楼梯5#门禁,关闭,2";
+        final String[] split = str2.split("\n");
+        for (String string : split) {
+            final String[] data = string.split(",");
+            if (data.length != 3) {
+                continue;
+            }
+            log.info(String.valueOf(data.length));
+        }
+    }
+
     @Override
     public void channelRead0(ChannelHandlerContext ctx, String msg) {
         log.info("接收服务器消息:{}", msg);
         try {
             final DeviceHandler deviceHandler = SpringUtil.getBean(DeviceHandler.class);
-            final String[] strings = msg.split(":\n");
-            final String[] split = strings[1].split("\n");
+            final String[] split = msg.split("\n");
             for (String string : split) {
                 final String[] data = string.split(",");
                 if (data.length != 3) {
