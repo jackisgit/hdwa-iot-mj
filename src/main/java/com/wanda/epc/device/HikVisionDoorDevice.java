@@ -187,27 +187,20 @@ public class HikVisionDoorDevice extends BaseDevice {
         Map<Integer, Boolean> online = isOnline();
         //门禁在离线状态
         online.entrySet().forEach(key -> {
-            log.info("用户ID：{},在线状态：{}，paramId:{}", key.getKey(), key.getValue(), ipMap.get(key.getKey()).concat("_onlineStatus"));
-            List<DeviceMessage> deviceMessageList = deviceParamListMap.get(ipMap.get(key.getKey()).concat("_onlineStatus"));
-            log.info("获取数据：{}", JSON.toJSONString(deviceMessageList));
-            if (!CollectionUtils.isEmpty(deviceMessageList)) {
+            String outParamId = ipMap.get(key.getKey()).concat("_onlineStatus");
+            log.info("用户ID：{},在线状态：{}，outParamId:{}", key.getKey(), key.getValue(), outParamId);
+            List<DeviceMessage> deviceMessageList = deviceParamListMap.get(outParamId);
+            log.info("获取数据,数据长度为：{}", deviceMessageList.size());
+            if (CollectionUtils.isEmpty(deviceMessageList)) {
                 return;
             }
             deviceMessageList.forEach(deviceMessage -> {
-                if (key.getValue()) {
-                    if (Objects.isNull(deviceMessage)) {
-                        return;
-                    }
-                    deviceMessage.setValue("1");
-                    sendMessage(deviceMessage);
-                } else {
-                    if (Objects.isNull(deviceMessage)) {
-                        return;
-                    }
-                    deviceMessage.setValue("0");
-                    log.info("发送门禁设备离线数据==={}", deviceMessage.getOutParamId(), JSON.toJSONString(deviceMessage));
-                    sendMessage(deviceMessage);
+                String value = "1";
+                if (!key.getValue()) {
+                    value = "0";
                 }
+                deviceMessage.setValue(value);
+                sendMessage(deviceMessage);
             });
         });
         //门禁开关状态
