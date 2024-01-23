@@ -18,7 +18,7 @@ public class CommonTask {
     @Autowired
     private DaHuaDoorDevice device;
 
-    @Scheduled(cron = "${epc.cron}")
+    @Scheduled(cron = "${epc.cron:0 0/1 * * * ?}")
     public boolean processData() throws Exception {
         return device.processData();
     }

@@ -40,6 +40,7 @@ import java.util.*;
 public class DaHuaDoorDevice extends BaseDevice {
 
 
+    public static final String ONLINE_STATUS = "_onlineStatus";
     @Autowired
     RedisTemplate redisTemplate;
     List<NetSDKLib.LLong> LoginHandleList = new ArrayList<>();
@@ -210,19 +211,13 @@ public class DaHuaDoorDevice extends BaseDevice {
             String stateType[] = {"未知", "门打开", "门关闭", "门异常打开"};
             NetSDKLib.LLong myKey = new NetSDKLib.LLong(handle.longValue());
             log.info("查询门禁状态用户ID：{},门禁状态：{}，param:{}", handle, stateType[doorStatus.emStateType], loginMap.get(myKey) + "_" + doorStatus.nChannel + "_openStatus");
-            List<DeviceMessage> deviceMessageList = deviceParamListMap.get(loginMap.get(myKey) + "_" + doorStatus.nChannel + "_openStatus");
-            if (!CollectionUtils.isEmpty(deviceMessageList)) {
-                deviceMessageList.forEach(deviceMessage -> {
-                    if ("门打开".equals(stateType[doorStatus.emStateType])) {
-                        String value = "1";
-                    } else if ("门关闭".equals(stateType[doorStatus.emStateType])) {
-                        String value = "0";
-
-                    }
-                    deviceMessage.setValue("0");
-                    sendMessage(deviceMessage);
-                });
+            String value = null;
+            if ("门打开".equals(stateType[doorStatus.emStateType])) {
+                value = "1";
+            } else if ("门关闭".equals(stateType[doorStatus.emStateType])) {
+                value = "0";
             }
+            sendMsg(loginMap.get(myKey) + "_" + doorStatus.nChannel + "_openStatus", value);
         });
     }
 
@@ -298,13 +293,7 @@ public class DaHuaDoorDevice extends BaseDevice {
             List<String> ipList = Arrays.asList(ipsOK.split(","));
             log.info("门禁在线状态数量：{}", ipList.size());
             ipList.forEach(ip -> {
-                List<DeviceMessage> deviceMessageList = deviceParamListMap.get(ip.concat("_onlineStatus"));
-                if (!CollectionUtils.isEmpty(deviceMessageList)) {
-                    deviceMessageList.forEach(deviceMessage -> {
-                        deviceMessage.setValue("1");
-                        sendMessage(deviceMessage);
-                    });
-                }
+                sendMsg(ip.concat(ONLINE_STATUS), "1");
             });
         }
         if (StringUtils.isNotBlank(ipsNo)) {
@@ -335,28 +324,16 @@ public class DaHuaDoorDevice extends BaseDevice {
             List<String> ipList = Arrays.asList(ipsOK.split(","));
             log.info("重试在线状态数量：{}", ipList.size());
             ipList.forEach(ip -> {
-                log.info("重试离线param:{}", ip.concat("_onlineStatus"));
-                List<DeviceMessage> deviceMessageList = deviceParamListMap.get(ip.concat("_onlineStatus"));
-                if (!CollectionUtils.isEmpty(deviceMessageList)) {
-                    deviceMessageList.forEach(deviceMessage -> {
-                        deviceMessage.setValue("1");
-                        sendMessage(deviceMessage);
-                    });
-                }
+                log.info("重试离线param:{}", ip.concat(ONLINE_STATUS));
+                sendMsg(ip.concat(ONLINE_STATUS), "1");
             });
         }
         if (StringUtils.isNotBlank(ipsNo)) {
             List<String> ipList = Arrays.asList(ipsNo.split(","));
             log.info("重试离线状态数量：{}", ipList.size());
             ipList.forEach(ip -> {
-                log.info("重试离线param:{}", ip.concat("_onlineStatus"));
-                List<DeviceMessage> deviceMessageList = deviceParamListMap.get(ip.concat("_onlineStatus"));
-                if (!CollectionUtils.isEmpty(deviceMessageList)) {
-                    deviceMessageList.forEach(deviceMessage -> {
-                        deviceMessage.setValue("0");
-                        sendMessage(deviceMessage);
-                    });
-                }
+                log.info("重试离线param:{}", ip.concat(ONLINE_STATUS));
+                sendMsg(ip.concat(ONLINE_STATUS), "0");
             });
         }
     }
