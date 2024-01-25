@@ -30,13 +30,18 @@ import java.util.Map;
 @Slf4j
 @Service
 public class MjDevice extends BaseDevice {
+    public static final String ONLINE_STATUS = "_onlineStatus";
+    public static final String W_D_OPEN_DOOR_OVER_TIME_ALARM = "_wD_openDoorOverTimeAlarm";
+    public static final String W_D_ILLEGAL_OPEN_ALARM = "_wD_IllegalOpenAlarm";
+    public static final String OPEN_STATUS = "_openStatus";
+    public static final String EQUIP_SWITCH_SET = "equipSwitchSet";
     @Resource
     RedisUtil redisUtil;
     @Autowired
     private CommonDevice commonDevice;
     @Autowired
     private JdbcTemplate sqlServerJdbcTemple;
-    @Value("${AcssDoorOpenUrl}")
+    @Value("${epc.AcssDoorOpenUrl}")
     private String AcssDoorOpenUrl;
 
     @Override
@@ -69,57 +74,26 @@ public class MjDevice extends BaseDevice {
                 String opened = ObjectUtils.isEmpty(map.get("Opened")) ? null : map.get("Opened").toString();
                 //点位编号
                 String pointNumber = controllerNo.concat("_").concat(doorNo);
-                //1.连接状态 - 在离线  1在线0离线
-                List<DeviceMessage> connectStatus = deviceParamListMap.get(pointNumber.concat("_onlineStatus"));
-                if (!CollectionUtils.isEmpty(connectStatus) && StringUtils.isNotEmpty(connected)) {
-                    String value = "0";
-                    if (connected.equals("1")) {
-                        value = "1";
-                    }
-                    for (DeviceMessage deviceMessage : connectStatus) {
-                        deviceMessage.setValue(value);
-                        sendMessage(deviceMessage);
-                    }
+                String onlineStatusValue = "0";
+                if (connected.equals("1")) {
+                    onlineStatusValue = "1";
                 }
-
-                //2.门超时报警 1报警0正常
-                List<DeviceMessage> openDoorOverTimeAlarms = deviceParamListMap.get(pointNumber.concat("_wD_openDoorOverTimeAlarm"));
-                if (!CollectionUtils.isEmpty(openDoorOverTimeAlarms) && StringUtils.isNotEmpty(openedTimeout)) {
-                    String value = "0";
-                    if (openedTimeout.equals("1")) {
-                        value = "1";
-                    }
-                    for (DeviceMessage deviceMessage : openDoorOverTimeAlarms) {
-                        deviceMessage.setValue(value);
-                        sendMessage(deviceMessage);
-                    }
+                sendMsg(pointNumber.concat(ONLINE_STATUS), onlineStatusValue);
+                String wdOpenDoorOverTimeAlarmvalue = "0";
+                if (openedTimeout.equals("1")) {
+                    wdOpenDoorOverTimeAlarmvalue = "1";
                 }
-
-                //3.非法开门 1报警0正常
-                List<DeviceMessage> illegalOpenAlarms = deviceParamListMap.get(pointNumber.concat("_wD_IllegalOpenAlarm"));
-                if (!CollectionUtils.isEmpty(illegalOpenAlarms) && StringUtils.isNotEmpty(broken)) {
-                    String value = "0";
-                    if (broken.equals("1")) {
-                        value = "1";
-                    }
-                    for (DeviceMessage deviceMessage : illegalOpenAlarms) {
-                        deviceMessage.setValue(value);
-                        sendMessage(deviceMessage);
-                    }
+                sendMsg(pointNumber.concat(W_D_OPEN_DOOR_OVER_TIME_ALARM), wdOpenDoorOverTimeAlarmvalue);
+                String wdIllegalOpenAlarmValue = "0";
+                if (broken.equals("1")) {
+                    wdIllegalOpenAlarmValue = "1";
                 }
-
-                //4.开关状态 1开0关
-                List<DeviceMessage> openStatus = deviceParamListMap.get(pointNumber.concat("_openStatus"));
-                if (!CollectionUtils.isEmpty(openStatus) && StringUtils.isNotEmpty(opened)) {
-                    String value = "0";
-                    if (opened.equals("11") || opened.equals("12")) {
-                        value = "1";
-                    }
-                    for (DeviceMessage deviceMessage : openStatus) {
-                        deviceMessage.setValue(value);
-                        sendMessage(deviceMessage);
-                    }
+                sendMsg(pointNumber.concat(W_D_ILLEGAL_OPEN_ALARM), wdIllegalOpenAlarmValue);
+                String openStatusValue = "0";
+                if (opened.equals("11") || opened.equals("12")) {
+                    openStatusValue = "1";
                 }
+                sendMsg(pointNumber.concat(OPEN_STATUS), openStatusValue);
             }
         }
         return true;
@@ -131,7 +105,7 @@ public class MjDevice extends BaseDevice {
         commonDevice.feedback(message);
         DeviceMessage deviceMessage = controlParamMap.get(meter + "-" + funcid);
         if (ObjectUtils.isNotEmpty(deviceMessage) && StringUtils.isNotBlank(deviceMessage.getOutParamId())
-                && deviceMessage.getOutParamId().endsWith("equipSwitchSet")) {
+                && deviceMessage.getOutParamId().endsWith(EQUIP_SWITCH_SET)) {
             String outParamId = deviceMessage.getOutParamId();
             if (redisUtil.hasKey(outParamId)) {
                 return;

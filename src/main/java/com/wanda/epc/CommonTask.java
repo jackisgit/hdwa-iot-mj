@@ -18,7 +18,7 @@ public class CommonTask {
     @Autowired
     private MjDevice device;
 
-    @Scheduled(cron = "${jobs.cron:0/30 * * * * ?}")
+    @Scheduled(cron = "${epc.cron:0/30 * * * * ?}")
     public boolean processData() throws Exception {
         return device.processData();
     }
