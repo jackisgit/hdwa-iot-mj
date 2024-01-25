@@ -34,6 +34,10 @@ import java.util.Map;
 @Slf4j
 public class DeviceHandler extends BaseDevice {
 
+    public static final String EQUIP_SWITCH_SET = "_equipSwitchSet";
+    public static final String OPEN_STATUS = "_openStatus";
+    public static final String ONLINE_STATUS = "_onlineStatus";
+    public static final String ALARM_STATUS = "_alarmStatus";
     @Resource
     private CommonDevice commonDevice;
     private Map<String, String> header = new HashMap<>();
@@ -64,42 +68,37 @@ public class DeviceHandler extends BaseDevice {
     /**
      * 获取公钥URI
      */
-    private String publicKeyURI = "/evo-apigw/evo-oauth/{0}/oauth/public-key";
+    private final String publicKeyURI = "/evo-apigw/evo-oauth/{0}/oauth/public-key";
 
     /**
      * 认证（获取token）URI
      */
-    private String tokenURI = "/evo-apigw/evo-oauth/{0}/oauth/extend/token";
+    private final String tokenURI = "/evo-apigw/evo-oauth/{0}/oauth/extend/token";
 
     /**
      * 设备树搜索URI（获取在线状态）
      */
-    private String treeSearchURI = "/evo-apigw/evo-accesscontrol/{0}/resource/tree/search";
+    private final String treeSearchURI = "/evo-apigw/evo-accesscontrol/{0}/resource/tree/search";
 
     /**
      * 门通道查询URI（获取门开关状态）
      */
-    private String channelsURI = "/evo-apigw/evo-accesscontrol/{0}/card/accessControl/channelControl/channels";
+    private final String channelsURI = "/evo-apigw/evo-accesscontrol/{0}/card/accessControl/channelControl/channels";
 
     /**
      * 门禁控制URI（开门）
      */
-    private String openDoorURI = "/evo-apigw/evo-accesscontrol/{0}/card/accessControl/channelControl/openDoor";
+    private final String openDoorURI = "/evo-apigw/evo-accesscontrol/{0}/card/accessControl/channelControl/openDoor";
     /**
      * 门禁控制URI（关门）
      */
-    private String closeDoorURI = "/evo-apigw/evo-accesscontrol/{0}/card/accessControl/channelControl/closeDoor";
+    private final String closeDoorURI = "/evo-apigw/evo-accesscontrol/{0}/card/accessControl/channelControl/closeDoor";
 
     // ========================================门禁========================================
     /**
      * 报警订阅事件URI（设置报警回调采集器的URL地址）
      */
-    private String mqinfoURI = "/evo-apigw/evo-event/{0}/subscribe/mqinfo";
-
-    public static void main(String[] args) {
-        String param = "{\"channelCodes\":[\"1002725$7$0$1\", \"1002726$7$0$1\"],\"allowSmartLock\":false}";
-        System.out.println(param);
-    }
+    private final String mqinfoURI = "/evo-apigw/evo-event/{0}/subscribe/mqinfo";
 
     public void getOnlineStatus() {
         String url = host + MessageFormat.format(treeSearchURI, version);
@@ -118,7 +117,7 @@ public class DeviceHandler extends BaseDevice {
             if (!"1".equals(searchDTO.getOnline())) {
                 value = "0";
             }
-            sendMsg(id + "_onlineStatus", value);
+            sendMsg(id + ONLINE_STATUS, value);
             idList.add(id);
         });
         getOpenStatus(idList);
@@ -144,7 +143,7 @@ public class DeviceHandler extends BaseDevice {
             if (!"1".equals(channelDTO.getStatus())) {
                 value = "0";
             }
-            sendMsg(id + "_openStatus", value);
+            sendMsg(id + OPEN_STATUS, value);
         });
     }
 
@@ -207,22 +206,6 @@ public class DeviceHandler extends BaseDevice {
     }
 
     /**
-     * 发送点位信息
-     *
-     * @param key
-     * @param value
-     */
-    private void sendMsg(String key, String value) {
-        final List<DeviceMessage> deviceMessages = deviceParamListMap.get(key);
-        if (!CollectionUtils.isEmpty(deviceMessages)) {
-            deviceMessages.forEach(deviceMessage -> {
-                deviceMessage.setValue(value);
-                sendMessage(deviceMessage);
-            });
-        }
-    }
-
-    /**
      * 收到报警
      *
      * @param alarmDTO
@@ -233,7 +216,7 @@ public class DeviceHandler extends BaseDevice {
         if (!"1".equals(alarmStat)) {
             alarmStat = "0";
         }
-        sendMsg(nodeCode + "_alarmStatus", alarmStat);
+        sendMsg(nodeCode + ALARM_STATUS, alarmStat);
     }
 
 
@@ -242,7 +225,7 @@ public class DeviceHandler extends BaseDevice {
         commonDevice.feedback(message);
         DeviceMessage deviceMessage = controlParamMap.get(meter + "-" + funcid);
         if (ObjectUtils.isNotEmpty(deviceMessage) && StringUtils.isNotBlank(deviceMessage.getOutParamId())
-                && deviceMessage.getOutParamId().endsWith("_deployWithdrawAlarmSet")) {
+                && deviceMessage.getOutParamId().endsWith(EQUIP_SWITCH_SET)) {
             String outParamId = deviceMessage.getOutParamId();
             if (redisUtil.hasKey(outParamId)) {
                 return;
@@ -268,7 +251,7 @@ public class DeviceHandler extends BaseDevice {
             log.info("接口:{},返回值:{}", url, result);
             Object read = JSONPath.read(result, "$.success");
             if (ObjectUtils.isNotEmpty(read) && !"false".equals(String.valueOf(read))) {
-                sendMsg(strings[0] + "_openStatus", value);
+                sendMsg(strings[0] + OPEN_STATUS, value);
             }
         }
     }
