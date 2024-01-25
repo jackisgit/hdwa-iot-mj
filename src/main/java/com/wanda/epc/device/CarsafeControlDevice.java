@@ -30,6 +30,12 @@ import java.util.Random;
 @Service
 public class CarsafeControlDevice extends BaseDevice {
 
+    public static final String FAULT_STATUS = "_faultStatus";
+    public static final String OPEN_STATUS = "_openStatus";
+    public static final String ONLINE_STATUS = "_onlineStatus";
+    public static final String TAMPER_ALARM = "_tamperAlarm";
+    public static final String OPEN_DOOR_OVER_TIME_ALARM = "_openDoorOverTimeAlarm";
+    public static final String EQUIP_SWITCH_SET = "equipSwitchSet";
     @Value("${access.secret}")
     private String privateKey;
 
@@ -65,15 +71,7 @@ public class CarsafeControlDevice extends BaseDevice {
      * @date 2023/7/28
      */
     public void olineStatus(DoorStateDto doorStateDto) {
-        List<DeviceMessage> deviceMessageList = deviceParamListMap.get(doorStateDto.getControllerno().concat("_").concat(doorStateDto.getDoorno()).concat("_onlineStatus"));
-        if (CollectionUtils.isEmpty(deviceMessageList)) {
-            return;
-        }
-        deviceMessageList.forEach(deviceMessage -> {
-            deviceMessage.setValue(doorStateDto.getConnected());
-            sendMessage(deviceMessage);
-            log.info("采集发送在离线状态数据：{}", JSON.toJSONString(deviceMessage));
-        });
+        sendMsg(doorStateDto.getControllerno().concat("_").concat(doorStateDto.getDoorno()).concat(ONLINE_STATUS), doorStateDto.getConnected());
     }
 
     /**
@@ -82,19 +80,13 @@ public class CarsafeControlDevice extends BaseDevice {
      * @date 2023/7/28
      */
     public void openStatus(DoorStateDto doorStateDto) {
-        List<DeviceMessage> deviceMessageList = deviceParamListMap.get(doorStateDto.getControllerno().concat("_").concat(doorStateDto.getDoorno()).concat("_openStatus"));
-        if (CollectionUtils.isEmpty(deviceMessageList)) {
-            return;
+        String value;
+        if (doorStateDto.getOpened().equals("1") || doorStateDto.getOpened().equals("2")) {
+            value = "1";
+        } else {
+            value = "0";
         }
-        deviceMessageList.forEach(deviceMessage -> {
-            if (doorStateDto.getOpened().equals("1") || doorStateDto.getOpened().equals("2")) {
-                deviceMessage.setValue("1");
-            } else {
-                deviceMessage.setValue("0");
-            }
-            sendMessage(deviceMessage);
-            log.info("采集发送在开关状态数据：{}", JSON.toJSONString(deviceMessage));
-        });
+        sendMsg(doorStateDto.getControllerno().concat("_").concat(doorStateDto.getDoorno()).concat(OPEN_STATUS), value);
     }
 
     /**
@@ -103,19 +95,13 @@ public class CarsafeControlDevice extends BaseDevice {
      * @date 2023/7/28
      */
     public void faultStatus(DoorStateDto doorStateDto) {
-        List<DeviceMessage> deviceMessageList = deviceParamListMap.get(doorStateDto.getControllerno().concat("_").concat(doorStateDto.getDoorno()).concat("_faultStatus"));
-        if (CollectionUtils.isEmpty(deviceMessageList)) {
-            return;
+        String value;
+        if (doorStateDto.getConnected().equals("0")) {
+            value = "1";
+        } else {
+            value = "0";
         }
-        deviceMessageList.forEach(deviceMessage -> {
-            if (doorStateDto.getConnected().equals("0")) {
-                deviceMessage.setValue("1");
-            } else {
-                deviceMessage.setValue("0");
-            }
-            sendMessage(deviceMessage);
-            log.info("采集发送故障状态数据：{}", JSON.toJSONString(deviceMessage));
-        });
+        sendMsg(doorStateDto.getControllerno().concat("_").concat(doorStateDto.getDoorno()).concat(FAULT_STATUS), value);
     }
 
     /**
@@ -124,19 +110,13 @@ public class CarsafeControlDevice extends BaseDevice {
      * @date 2023/7/28
      */
     public void tamperAlarm(DoorStateDto doorStateDto) {
-        List<DeviceMessage> deviceMessageList = deviceParamListMap.get(doorStateDto.getControllerno().concat("_").concat(doorStateDto.getDoorno()).concat("_tamperAlarm"));
-        if (CollectionUtils.isEmpty(deviceMessageList)) {
-            return;
+        String value;
+        if (doorStateDto.getBroken().equals("1")) {
+            value = "1";
+        } else {
+            value = "0";
         }
-        deviceMessageList.forEach(deviceMessage -> {
-            if (doorStateDto.getBroken().equals("1")) {
-                deviceMessage.setValue("1");
-            } else {
-                deviceMessage.setValue("0");
-            }
-            sendMessage(deviceMessage);
-            log.info("采集发送防拆报警数据：{}", JSON.toJSONString(deviceMessage));
-        });
+        sendMsg(doorStateDto.getControllerno().concat("_").concat(doorStateDto.getDoorno()).concat(TAMPER_ALARM), value);
     }
 
     /**
@@ -145,25 +125,20 @@ public class CarsafeControlDevice extends BaseDevice {
      * @date 2023/7/28
      */
     public void openDoorOverTimeAlarm(DoorStateDto doorStateDto) {
-        List<DeviceMessage> deviceMessageList = deviceParamListMap.get(doorStateDto.getControllerno().concat("_").concat(doorStateDto.getDoorno()).concat("_openDoorOverTimeAlarm"));
-        if (CollectionUtils.isEmpty(deviceMessageList)) {
-            return;
+        String value;
+        if (doorStateDto.getOpenedtimeout().equals("1")) {
+            value = "1";
+        } else {
+            value = "0";
         }
-        deviceMessageList.forEach(deviceMessage -> {
-            if (doorStateDto.getOpenedtimeout().equals("1")) {
-                deviceMessage.setValue("1");
-            } else {
-                deviceMessage.setValue("0");
-            }
-            sendMessage(deviceMessage);
-            log.info("采集发送超时未关门报警数据：{}", JSON.toJSONString(deviceMessage));
-        });
+        sendMsg(doorStateDto.getControllerno().concat("_").concat(doorStateDto.getDoorno()).concat(OPEN_DOOR_OVER_TIME_ALARM), value);
     }
 
     @Override
     public void dispatchCommand(String meter, Integer funcid, String value, String message) throws Exception {
+        commonDevice.feedback(message);
         DeviceMessage deviceMessage = controlParamMap.get(meter + "-" + funcid);
-        if (deviceMessage != null && deviceMessage.getOutParamId() != null && deviceMessage.getOutParamId().endsWith("equipSwitchSet")) {
+        if (deviceMessage != null && deviceMessage.getOutParamId() != null && deviceMessage.getOutParamId().endsWith(EQUIP_SWITCH_SET)) {
             //如果为开
             if (value.equals("1.0")) {
                 String outParamId = deviceMessage.getOutParamId();
@@ -175,18 +150,10 @@ public class CarsafeControlDevice extends BaseDevice {
                 log.info("控制板编号[{}], 读头编号{}]设备下发控制,返回结果为[{}]", controllerNo, doorNo, opened);
                 String openParamId = outParamId.replace("control", "openStatus");
                 if (opened) {
-                    List<DeviceMessage> deviceMessageList = deviceParamListMap.get(controllerNo.concat("_").concat(doorNo).concat("_openStatus"));
-                    deviceMessageList.forEach(deviceMessage1 -> {
-                        if (deviceMessage1 != null) {
-                            deviceMessage1.setValue("1");
-                            sendMessage(deviceMessage1);
-                            log.info("开门发送开关状态数据：{}", JSON.toJSONString(deviceMessage1));
-                        }
-                    });
+                    sendMsg(controllerNo.concat("_").concat(doorNo).concat(OPEN_STATUS),"1");
                 }
             }
         }
-        commonDevice.feedback(message);
     }
 
     @Override

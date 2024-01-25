@@ -18,7 +18,7 @@ public class CommonTask {
     @Autowired
     private CarsafeControlDevice carsafeControlDevice;
 
-    @Scheduled(cron = "0/60 * * * * ?")
+    @Scheduled(cron = "${epc.cron:0/60 * * * * ?}")
     public boolean processData() throws Exception {
         return carsafeControlDevice.processData();
     }

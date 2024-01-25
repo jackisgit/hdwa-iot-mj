@@ -12,8 +12,6 @@ mqtt:
   qos: 1
 
 spring:
-  profiles:
-    active: yantai_zhifu
     #redis配置
   redis:
     host: 127.0.0.1
@@ -22,3 +20,19 @@ spring:
 
 
 beanName: carsafeControlDevice
+
+#广场ID及GatewayId
+epc:
+  gatewayId: MJ
+  gcId: 3601130010
+  subsystem: mjgl/
+  threadNum: 5
+  cron: 0/60 * * * * ?
+#门禁请求子系统接口
+access:
+  #门禁开门
+  doorOpenUrl: http://192.168.40.100:9022/api.aspx/acss.door.open.directly
+  #门禁门状态列表
+  doorStatusUrl: http://192.168.40.100:9022/api.aspx/acss.door.state.list
+  #签名密钥
+  secret: 71cfa1c59773ddfa289994e6d505bba3
