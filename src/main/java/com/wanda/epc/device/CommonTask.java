@@ -18,7 +18,7 @@ public class CommonTask {
     @Autowired
     private HikVisionDoorDevice hikVisionDoorDevice;// opc
 
-    @Scheduled(cron = "0/60 * * * * ?")
+    @Scheduled(cron = "${epc.cron:0/30 * * * * ?}")
     public boolean processData() throws Exception {
         return hikVisionDoorDevice.processData();
     }

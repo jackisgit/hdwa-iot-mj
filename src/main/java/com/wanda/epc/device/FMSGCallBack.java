@@ -1,10 +1,7 @@
 package com.wanda.epc.device;
 
 import com.sun.jna.Pointer;
-import com.wanda.epc.device.NetSDKDemo.HCNetSDK;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
 
 
 /**

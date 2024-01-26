@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
-import com.wanda.epc.device.NetSDKDemo.HCNetSDK;
 import com.wanda.epc.param.DeviceMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -184,35 +183,30 @@ public class HikVisionDoorDevice extends BaseDevice {
 
     @Override
     public boolean processData() throws Exception {
-        Map<Integer, Boolean> online = isOnline();
-        //门禁在离线状态
-        online.entrySet().forEach(key -> {
-            String outParamId = ipMap.get(key.getKey()).concat("_onlineStatus");
-            log.info("用户ID：{},在线状态：{}，outParamId:{}", key.getKey(), key.getValue(), outParamId);
-            List<DeviceMessage> deviceMessageList = deviceParamListMap.get(outParamId);
-            log.info("获取数据,数据长度为：{}", deviceMessageList.size());
-            if (CollectionUtils.isEmpty(deviceMessageList)) {
-                return;
-            }
-            deviceMessageList.forEach(deviceMessage -> {
-                String value = "1";
-                if (!key.getValue()) {
-                    value = "0";
-                }
-                deviceMessage.setValue(value);
-                sendMessage(deviceMessage);
-            });
-        });
-        //门禁开关状态
+        onlineStatus();
         for (Integer userId : userIdList) {
-            openDoor(userId);
+            openStatus(userId);
         }
         illegalOpenAlarm();
         openDoorOverTimeAlarm();
         return true;
     }
 
-    public void openDoor(int lUserID) {
+    private void onlineStatus() {
+        Map<Integer, Boolean> online = isOnline();
+        //门禁在离线状态
+        online.entrySet().forEach(key -> {
+            String outParamId = ipMap.get(key.getKey()).concat("_onlineStatus");
+            log.info("用户ID：{},在线状态：{}，outParamId:{}", key.getKey(), key.getValue(), outParamId);
+            String value = "1";
+            if (!key.getValue()) {
+                value = "0";
+            }
+            sendMsg(outParamId, value);
+        });
+    }
+
+    private void openStatus(int lUserID) {
         // 获取门禁主机工作状态信息
         HCNetSDK.NET_DVR_ACS_WORK_STATUS_V50 acsWorkStatus = new HCNetSDK.NET_DVR_ACS_WORK_STATUS_V50();
         acsWorkStatus.dwSize = acsWorkStatus.size();
@@ -232,23 +226,11 @@ public class HikVisionDoorDevice extends BaseDevice {
             byte doorMagneticStatus = acsWorkStatus.byMagneticStatus[i];
             String ip = ipMap.get(lUserID);
             String paramId = ip.concat("_").concat(String.valueOf(i)).concat("_").concat("openStatus");
-            List<DeviceMessage> deviceMessageList = deviceParamListMap.get(paramId);
-            if (CollectionUtils.isEmpty(deviceMessageList)) {
-                continue;
+            String value = "0";
+            if (doorStatus == 2 || lockStatus == 1 || doorMagneticStatus == 1) {
+                value = "1";
             }
-            log.info("用户ID：{},序号：{},门状态：{},门开关状态：{},门的磁吸状态:{}", lUserID, i, doorStatus, lockStatus, doorMagneticStatus);
-            log.info("paramId:{},数据长度：{}", paramId, deviceMessageList.size());
-            deviceMessageList.forEach(deviceMessage -> {
-                if (Objects.nonNull(deviceMessage)) {
-                    if (doorStatus == 2 || lockStatus == 1 || doorMagneticStatus == 1) {
-                        deviceMessage.setValue("1");
-                    } else {
-                        deviceMessage.setValue("0");
-                    }
-                    log.info("发送门禁设备开关状态数据==={}", deviceMessage.getOutParamId(), JSON.toJSONString(deviceMessage));
-                    sendMessage(deviceMessage);
-                }
-            });
+            sendMsg(paramId, value);
         }
     }
 
@@ -258,12 +240,12 @@ public class HikVisionDoorDevice extends BaseDevice {
      * @date 2023/4/18
      */
 
-    public void illegalOpenAlarm() {
-        deviceParamListMap.entrySet().forEach(key -> {
-            if (!key.getKey().endsWith("_wD_IllegalOpenAlarm")) {
+    private void illegalOpenAlarm() {
+        deviceParamListMap.entrySet().forEach(deviceParam -> {
+            if (!deviceParam.getKey().endsWith("_wD_IllegalOpenAlarm")) {
                 return;
             }
-            List<DeviceMessage> deviceMessages = deviceParamListMap.get(key.getKey());
+            List<DeviceMessage> deviceMessages = deviceParam.getValue();
             if (CollectionUtils.isEmpty(deviceMessages)) {
                 return;
             }
@@ -279,12 +261,12 @@ public class HikVisionDoorDevice extends BaseDevice {
      * @author LianYanFei
      * @date 2023/4/18
      */
-    public void openDoorOverTimeAlarm() {
-        deviceParamListMap.entrySet().forEach(key -> {
-            if (!key.getKey().endsWith("_wD_openDoorOverTimeAlarm")) {
+    private void openDoorOverTimeAlarm() {
+        deviceParamListMap.entrySet().forEach(deviceParam -> {
+            if (!deviceParam.getKey().endsWith("_wD_openDoorOverTimeAlarm")) {
                 return;
             }
-            List<DeviceMessage> deviceMessages = deviceParamListMap.get(key.getKey());
+            List<DeviceMessage> deviceMessages = deviceParam.getValue();
             if (CollectionUtils.isEmpty(deviceMessages)) {
                 return;
             }

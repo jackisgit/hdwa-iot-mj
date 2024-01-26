@@ -1,4 +1,4 @@
-package com.wanda.epc.device.NetSDKDemo;
+package com.wanda.epc.device;
 
 import com.sun.jna.*;
 import com.sun.jna.examples.win32.W32API;
@@ -6,7 +6,6 @@ import com.sun.jna.examples.win32.W32API.HWND;
 import com.sun.jna.ptr.ByteByReference;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.ShortByReference;
-import com.wanda.epc.device.HIKSDKStructure;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10675,4 +10674,3 @@ interface USER32 extends W32API {
 
     int FillRect(HDC hDC, com.sun.jna.examples.win32.GDI32.RECT lprc, HANDLE hbr);
 }
-
