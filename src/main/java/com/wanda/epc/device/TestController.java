@@ -11,9 +11,11 @@ public class TestController {
 
     @Resource
     private DeviceHandler deviceHandler;
+    @Resource
+    private NioClientHandler nioClientHandler;
 
     @RequestMapping("/test")
-    public void test(){
-        deviceHandler.sendMsg("孙率众zzz");
+    public void test(String msg) {
+        deviceHandler.sendMsg(msg);
     }
 }

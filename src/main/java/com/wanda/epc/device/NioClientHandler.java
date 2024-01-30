@@ -1,17 +1,15 @@
 package com.wanda.epc.device;
 
 import com.wanda.epc.common.SpringUtil;
-import com.wanda.epc.param.DeviceMessage;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.net.InetSocketAddress;
-import java.util.List;
 
 /**
  * @author 孙率众
@@ -20,43 +18,17 @@ import java.util.List;
 @Component
 public class NioClientHandler extends SimpleChannelInboundHandler<String> {
 
-    public static void main(String[] args) {
-        String str = "#楼梯5#门禁,关闭,2\n" +
-                "1F-9C#楼梯6#门禁,关闭,2\n" +
-                "1F-w1#楼梯1#门禁,关闭,2\n" +
-                "1F-w1#楼梯2#门禁,关闭,2";
-        String str2 = "N3000 -user abc -password 123  -GetAllDoorStatus\n" +
-                "iRet=1, OK\n" +
-                "DoorStatus:\n" +
-                "1F-10A#楼梯1#门禁,关闭,0\n" +
-                "1F-10A#楼梯2#门禁,打开,1\n" +
-                "1F-10A#楼梯5#门禁,关闭,2";
-        final String[] split = str2.split("\n");
-        for (String string : split) {
-            final String[] data = string.split(",");
-            if (data.length != 3) {
-                continue;
-            }
-            //故障状态
-            String gzzt = "0";
-            //在线状态
-            String zxzt = "1";
-            //开关状态
-            String kgzt = "0";
-            if ("0".equals(data[2])) {
-                gzzt = "1";
-            } else if ("1".equals(data[2])) {
-                kgzt = "1";
-            }
-            log.info("在线状态:{},故障状态:{},开关状态,{},判断值:{}", zxzt, gzzt, kgzt, data[2]);
-        }
-    }
+    public static final String ONLINE_STATUS = "_onlineStatus";
+    public static final String FAULT_STATUS = "_faultStatus";
+    public static final String OPEN_STATUS = "_openStatus";
+
+    @Resource
+    DeviceHandler deviceHandler;
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, String msg) {
         log.info("接收服务器消息:{}", msg);
         try {
-            final DeviceHandler deviceHandler = SpringUtil.getBean(DeviceHandler.class);
             final String[] split = msg.split("\n");
             for (String string : split) {
                 final String[] data = string.split(",");
@@ -77,27 +49,9 @@ public class NioClientHandler extends SimpleChannelInboundHandler<String> {
                     kgzt = "1";
                 }
                 log.info("在线状态:{},故障状态:{},开关状态:{},判断值:{}", zxzt, gzzt, kgzt, data2);
-                List<DeviceMessage> onlienStautsList = deviceHandler.deviceParamListMap.get(data0 + "_onlineStatus");
-                if (!CollectionUtils.isEmpty(onlienStautsList)) {
-                    for (DeviceMessage deviceMessage : onlienStautsList) {
-                        deviceMessage.setValue(zxzt);
-                        deviceHandler.sendMessage(deviceMessage);
-                    }
-                }
-                List<DeviceMessage> faultStatusList = deviceHandler.deviceParamListMap.get(data0 + "_faultStatus");
-                if (!CollectionUtils.isEmpty(faultStatusList)) {
-                    for (DeviceMessage deviceMessage : faultStatusList) {
-                        deviceMessage.setValue(gzzt);
-                        deviceHandler.sendMessage(deviceMessage);
-                    }
-                }
-                List<DeviceMessage> openStatusList = deviceHandler.deviceParamListMap.get(data0 + "_openStatus");
-                if (!CollectionUtils.isEmpty(openStatusList)) {
-                    for (DeviceMessage deviceMessage : openStatusList) {
-                        deviceMessage.setValue(kgzt);
-                        deviceHandler.sendMessage(deviceMessage);
-                    }
-                }
+                deviceHandler.sendMsg(data0 + ONLINE_STATUS, zxzt);
+                deviceHandler.sendMsg(data0 + FAULT_STATUS, gzzt);
+                deviceHandler.sendMsg(data0 + OPEN_STATUS, kgzt);
             }
         } catch (Exception e) {
             log.error("客户端接收消息异常", e);
