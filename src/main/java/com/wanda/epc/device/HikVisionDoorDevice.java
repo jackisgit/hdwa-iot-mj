@@ -19,6 +19,9 @@ import java.util.*;
 @Component
 public class HikVisionDoorDevice extends BaseDevice {
 
+    public static final String ONLINE_STATUS = "_onlineStatus";
+    public static final String WD_OPEN_DOOR_OVER_TIME_ALARM = "_wD_openDoorOverTimeAlarm";
+    public static final String WD_ILLEGAL_OPEN_ALARM = "_wD_IllegalOpenAlarm";
     public static HCNetSDK.FMSGCallBack_V31 fMSFCallBack_V31;
     static List<Integer> lAlarmHandleList = new ArrayList<>();
     static HCNetSDK hCNetSDK;
@@ -196,7 +199,7 @@ public class HikVisionDoorDevice extends BaseDevice {
         Map<Integer, Boolean> online = isOnline();
         //门禁在离线状态
         online.entrySet().forEach(key -> {
-            String outParamId = ipMap.get(key.getKey()).concat("_onlineStatus");
+            String outParamId = ipMap.get(key.getKey()).concat(ONLINE_STATUS);
             log.info("用户ID：{},在线状态：{}，outParamId:{}", key.getKey(), key.getValue(), outParamId);
             String value = "1";
             if (!key.getValue()) {
@@ -242,7 +245,7 @@ public class HikVisionDoorDevice extends BaseDevice {
 
     private void illegalOpenAlarm() {
         deviceParamListMap.entrySet().forEach(deviceParam -> {
-            if (!deviceParam.getKey().endsWith("_wD_IllegalOpenAlarm")) {
+            if (!deviceParam.getKey().endsWith(WD_ILLEGAL_OPEN_ALARM)) {
                 return;
             }
             List<DeviceMessage> deviceMessages = deviceParam.getValue();
@@ -263,7 +266,7 @@ public class HikVisionDoorDevice extends BaseDevice {
      */
     private void openDoorOverTimeAlarm() {
         deviceParamListMap.entrySet().forEach(deviceParam -> {
-            if (!deviceParam.getKey().endsWith("_wD_openDoorOverTimeAlarm")) {
+            if (!deviceParam.getKey().endsWith(WD_OPEN_DOOR_OVER_TIME_ALARM)) {
                 return;
             }
             List<DeviceMessage> deviceMessages = deviceParam.getValue();
@@ -284,14 +287,7 @@ public class HikVisionDoorDevice extends BaseDevice {
      * @return
      */
     public void wD_openDoorOverTimeAlarm(String ip) {
-        List<DeviceMessage> deviceMessages = deviceParamListMap.get(ip.concat("_wD_openDoorOverTimeAlarm"));
-        if (CollectionUtils.isEmpty(deviceMessages)) {
-            return;
-        }
-        deviceMessages.forEach(deviceMessage -> {
-            deviceMessage.setValue("0");
-            sendMessage(deviceMessage);
-        });
+        sendMsg(ip.concat(WD_OPEN_DOOR_OVER_TIME_ALARM), "0");
     }
 
 
@@ -356,13 +352,7 @@ public class HikVisionDoorDevice extends BaseDevice {
             intByReference.setValue(errCode);
             String errMsg = hCNetSDK.NET_DVR_GetErrorMsg(intByReference);
             log.info("错误信息：" + errMsg);
-            List<DeviceMessage> deviceMessageList = deviceParamListMap.get(sDeviceIP.concat("_onlineStatus"));
-            if (!CollectionUtils.isEmpty(deviceMessageList)) {
-                deviceMessageList.forEach(deviceMessage -> {
-                    deviceMessage.setValue("0");
-                    sendMessage(deviceMessage);
-                });
-            }
+            sendMsg(sDeviceIP.concat(ONLINE_STATUS), "0");
         } else {
             log.info("注册成功,设备IP:" + sDeviceIP + " 端口：" + iPort + "用户ID" + lUserID);
             ipMap.put(lUserID, sDeviceIP);
