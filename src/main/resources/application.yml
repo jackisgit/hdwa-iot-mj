@@ -4,7 +4,7 @@ mqtt:
   hostUrl: tcp://127.0.0.1:1883
   username: admin
   password: wanda@1234
-  client-id: IOT-EPC-Pj${epc.gcId}-MJ
+  client-id: IOT-EPC-MJ
   cleanSession: true
   reconnect: true
   keepAlive: 100
@@ -12,12 +12,31 @@ mqtt:
   qos: 1
 
 spring:
-  profiles:
-    active: beijing_CBD
   redis:
     host: 127.0.0.1
     port: 16379
     password:
 
-
 beanName: hikVisionDoorDevice
+
+#广场ID及GatewayId
+epc:
+  gatewayId: MJ
+  gcId: 3412020020
+  subsystem: mjgl/
+  threadNum: 10
+  cron: 0/30 * * * * ?
+#变配电请求子系统接口
+access:
+  # 获取用户uuid
+  userInfoUrl: http://10.1.219.14/openapi/service/base/user/getDefaultUserUuid
+  # 分页获取门禁点
+  doorsUrl: http://10.1.219.14/openapi/service/acs/res/getDoors
+  # 获取门禁状态
+  doorStatusUrl: http://10.1.219.14/openapi/service/acs/status/getDoorStatusByUuids
+  # 获取门禁事件状态
+  doorEventsUrl: http://10.1.219.14/openapi/service/acs/event/getDoorEventsHistory
+  #同步反控门禁点
+  syncContolUrl: http://10.1.219.14/openapi/service/acs/control/synControl
+  appKey: 9b6ca981
+  secret: 532fd3a393444ab09093cecb6c7ba036

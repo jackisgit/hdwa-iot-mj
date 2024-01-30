@@ -10,7 +10,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +26,10 @@ import java.util.stream.Collectors;
 @Service
 public class AccessControlDevice extends BaseDevice {
 
+    public static final String TAMPER_ALARM = "_tamperAlarm";
+    public static final String OPEN_TIMEOUT_ALARM = "_openTimeoutAlarm";
+    public static final String ONLINE_STATUS = "_onlineStatus";
+    public static final String DOOR_STATUS = "_doorStatus";
     //设备防拆报警
     private static Integer tamperAlarm = 66305;
     //开门超时
@@ -62,38 +65,12 @@ public class AccessControlDevice extends BaseDevice {
             //3.获取门禁状态
             List<DeviceStatusDto> doorStatus = getDoorStatus(doorUuidList, userUid);
             doorStatus.forEach(deviceStatus -> {
-                String outParam = deviceStatus.getDoorUuid() + "_doorStatus";
-                List<DeviceMessage> deviceMessageList = deviceParamListMap.get(outParam);
-                if (!CollectionUtils.isEmpty(deviceMessageList)) {
-                    for (DeviceMessage deviceMessage : deviceMessageList) {
-                        if (deviceMessage != null && StringUtils.isNotEmpty(deviceStatus.getDoorStatus())) {
-                            if (deviceMessage.getParamName().equals("runStatus")) {
-                                String runStatus = deviceStatus.getDoorStatus().equals("2") ? "0" : "1";
-                                deviceMessage.setValue(runStatus);
-                                sendMessage(deviceMessage);
-                            } else {
-                                deviceMessage.setValue(deviceStatus.getDoorStatus());
-                                sendMessage(deviceMessage);
-                            }
-                        } else {
-                            log.info("门禁地址为空：{}", outParam);
-                        }
-                    }
-                }
+                String outParam = deviceStatus.getDoorUuid() + DOOR_STATUS;
+                sendMsg(outParam, deviceStatus.getDoorStatus());
                 //门禁在线状态
-                String outParamOnline = deviceStatus.getDoorUuid() + "_onlineStatus";
-                List<DeviceMessage> deviceMessageOnlineList = deviceParamListMap.get(outParamOnline);
-                if (!CollectionUtils.isEmpty(deviceMessageOnlineList)) {
-                    for (DeviceMessage deviceMessageOnline : deviceMessageOnlineList) {
-                        if (deviceMessageOnline != null) {
-                            deviceMessageOnline.setValue("1");
-                            sendMessage(deviceMessageOnline);
-                            log.info("在线态采集：{}", outParam);
-                        }
-                    }
-                }
+                String outParamOnline = deviceStatus.getDoorUuid() + ONLINE_STATUS;
+                sendMsg(outParamOnline, "1");
             });
-//            log.info("门禁对象信息：{}", doorStatus);
         });
 
         //4.获取历史事件
@@ -101,47 +78,22 @@ public class AccessControlDevice extends BaseDevice {
         for (DoorEventDto doorEventDto : doorEvents) {
             //设备防拆报警
             if (doorEventDto.getDeviceType().equals(tamperAlarm)) {
-                String outParamOnline = doorEventDto.getDoorUuid() + "_tamperAlarm";
-                List<DeviceMessage> deviceMessageOnlines = deviceParamListMap.get(outParamOnline);
-                if (!CollectionUtils.isEmpty(deviceMessageOnlines)) {
-                    deviceMessageOnlines.forEach(deviceMessage -> {
-                        deviceMessage.setValue("1");
-                        sendMessage(deviceMessage);
-                    });
-                }
+                String outParamOnline = doorEventDto.getDoorUuid() + TAMPER_ALARM;
+                sendMsg(outParamOnline, "1");
                 //删除报警的设备
                 doorUuid.remove(doorEventDto.getDoorUuid());
 
             }
             //开门超时报警
             if (doorEventDto.getDeviceType().equals(openTimeoutAlarm)) {
-                String outParamOnline = doorEventDto.getDoorUuid() + "_openTimeoutAlarm";
-                List<DeviceMessage> deviceMessageOnlines = deviceParamListMap.get(outParamOnline);
-                if (!CollectionUtils.isEmpty(deviceMessageOnlines)) {
-                    deviceMessageOnlines.forEach(deviceMessage -> {
-                        deviceMessage.setValue("1");
-                        sendMessage(deviceMessage);
-                    });
-
-                }
+                String outParamOnline = doorEventDto.getDoorUuid() + OPEN_TIMEOUT_ALARM;
+                sendMsg(outParamOnline, "1");
                 doorUuid.remove(doorEventDto.getDoorUuid());
             }
         }
         for (String uuid : doorUuid) {
-            List<DeviceMessage> deviceMessageTampers = deviceParamListMap.get(uuid + "_tamperAlarm");
-            if (!CollectionUtils.isEmpty(deviceMessageTampers)) {
-                deviceMessageTampers.forEach(deviceMessage -> {
-                    deviceMessage.setValue("0");
-                    sendMessage(deviceMessage);
-                });
-            }
-            List<DeviceMessage> deviceMessageTimeouts = deviceParamListMap.get(uuid + "_openTimeoutAlarm");
-            if (!CollectionUtils.isEmpty(deviceMessageTimeouts)) {
-                deviceMessageTimeouts.forEach(deviceMessage -> {
-                    deviceMessage.setValue("0");
-                    sendMessage(deviceMessage);
-                });
-            }
+            sendMsg(uuid + TAMPER_ALARM, "0");
+            sendMsg(uuid + OPEN_TIMEOUT_ALARM, "0");
         }
         return true;
     }
@@ -157,6 +109,7 @@ public class AccessControlDevice extends BaseDevice {
      */
     @Override
     public void dispatchCommand(String meter, Integer funcid, String value, String message) throws InterruptedException {
+        commonDevice.feedback(message);
         //同步反控门禁点
         DeviceMessage deviceMessage = controlParamMap.get(meter + "-" + funcid);
         log.info("收到{}的控制请求{}", meter + "-" + funcid, deviceMessage);
@@ -178,7 +131,6 @@ public class AccessControlDevice extends BaseDevice {
             log.info("获取token：【" + token + "】");
             String result = HttpClientUtil.postJson(syncContolUrl + "?token=" + token, null, null, params);
             log.info("控制门禁：【" + uuid + "设备结果：" + result + "】");
-            commonDevice.feedback(message);
             processSingleDoorStatus(uuid, userUid);
         }
     }
@@ -310,14 +262,8 @@ public class AccessControlDevice extends BaseDevice {
         JSONArray list = (JSONArray) JSONPath.eval(result, "$.data");
         List<DeviceStatusDto> deviceStatusList = list.toJavaList(DeviceStatusDto.class);
         deviceStatusList.forEach(deviceStatus -> {
-            String outParam = deviceStatus.getDoorUuid() + "_doorStatus";
-            List<DeviceMessage> deviceMessages = deviceParamListMap.get(outParam);
-            if (!CollectionUtils.isEmpty(deviceMessages) && StringUtils.isNotEmpty(deviceStatus.getDoorStatus())) {
-                deviceMessages.forEach(deviceMessage -> {
-                    deviceMessage.setValue(deviceStatus.getDoorStatus());
-                    sendMessage(deviceMessage);
-                });
-            }
+            String outParam = deviceStatus.getDoorUuid() + DOOR_STATUS;
+            sendMsg(outParam, deviceStatus.getDoorStatus());
         });
         return deviceStatusList;
     }

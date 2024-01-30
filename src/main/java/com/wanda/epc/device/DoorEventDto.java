@@ -16,7 +16,7 @@ public class DoorEventDto {
     private String doorName;
 
     /**
-     *门禁点UUID
+     * 门禁点UUID
      */
     private String doorUuid;
 
@@ -46,7 +46,7 @@ public class DoorEventDto {
     private Integer deviceType;
 
     /**
-     *卡号
+     * 卡号
      */
     private String cardNo;
 

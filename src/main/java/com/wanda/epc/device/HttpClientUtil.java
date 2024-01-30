@@ -18,21 +18,21 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 @Slf4j
 public class HttpClientUtil {
 
-    private final static Logger logger = LoggerFactory.getLogger(HttpClientUtil.class);
-    private static final Charset UTF_8 = Charset.forName("UTF-8");
     public static final String POST = "POST";
     public static final String GET = "GET";
     public static final int TIMEOUT = 30000;
     public static final int FILE_TIMEOUT = 300000;
-
     /**
      * boundary就是request头和上传文件内容的分隔符
      */
     public static final String BOUNDARY = "---------------------------123821742118716";
     public static final String RESULT_FILE = "attachment";
+    private final static Logger logger = LoggerFactory.getLogger(HttpClientUtil.class);
+    private static final Charset UTF_8 = Charset.forName("UTF-8");
 
     // Http Get请求
     //////////////////////////////////////////////////////////////////
+
     /**
      * * 发送HTTP请求
      *
@@ -139,6 +139,7 @@ public class HttpClientUtil {
 
     // HTTP POST请求
     ///////////////////////////////////////////////////////////////////////////////////
+
     /**
      * POST 请求
      *
@@ -258,6 +259,7 @@ public class HttpClientUtil {
 
     // HTTP 推送JSON格式
     ///////////////////////////////////////////
+
     /**
      * Post 请求 格式为 application/json
      *
@@ -695,6 +697,7 @@ public class HttpClientUtil {
 
     // 通用
     // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     /**
      * * 是否是文件
      *

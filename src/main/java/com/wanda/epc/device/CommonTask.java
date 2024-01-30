@@ -18,7 +18,7 @@ public class CommonTask {
     @Autowired
     private AccessControlDevice accessControlDevice;
 
-    @Scheduled(cron = "0/30 * * * * ?")
+    @Scheduled(cron = "${epc.cron:0/30 * * * * ?}")
     public boolean processData() throws Exception {
         return accessControlDevice.processData();
     }

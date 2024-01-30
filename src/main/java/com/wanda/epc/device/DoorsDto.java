@@ -42,7 +42,7 @@ public class DoorsDto {
     private String deviceUuid;
 
     /**
-     *门禁设备名称
+     * 门禁设备名称
      */
     private String deviceName;
 
