@@ -10,8 +10,6 @@ mqtt:
   qos: 1
 
 spring:
-  profiles:
-    active: yichang_yidu
   redis:
     host: 127.0.0.1
     port: 6379
@@ -28,5 +26,5 @@ epc:
   subsystem: mjgl/
   threadNum: 5
 tcp:
-  serverIP: 172.16.10.17
-  port: 60006
+  serverIP: 127.0.0.1
+  port: 60000

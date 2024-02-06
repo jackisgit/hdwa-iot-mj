@@ -22,14 +22,12 @@ public class NioClientHandler extends SimpleChannelInboundHandler<String> {
     public static final String FAULT_STATUS = "_faultStatus";
     public static final String OPEN_STATUS = "_openStatus";
 
-    @Resource
-    DeviceHandler deviceHandler;
-
     @Override
     public void channelRead0(ChannelHandlerContext ctx, String msg) {
         log.info("接收服务器消息:{}", msg);
         try {
             final String[] split = msg.split("\n");
+            DeviceHandler deviceHandler = SpringUtil.getBean(DeviceHandler.class);
             for (String string : split) {
                 final String[] data = string.split(",");
                 if (data.length != 3) {
