@@ -22,6 +22,7 @@ public class HikVisionDoorDevice extends BaseDevice {
     public static final String ONLINE_STATUS = "_onlineStatus";
     public static final String WD_OPEN_DOOR_OVER_TIME_ALARM = "_wD_openDoorOverTimeAlarm";
     public static final String WD_ILLEGAL_OPEN_ALARM = "_wD_IllegalOpenAlarm";
+    public static final String OPEN_STATUS = "_openStatus";
     public static HCNetSDK.FMSGCallBack_V31 fMSFCallBack_V31;
     static List<Integer> lAlarmHandleList = new ArrayList<>();
     static HCNetSDK hCNetSDK;
@@ -228,7 +229,7 @@ public class HikVisionDoorDevice extends BaseDevice {
             //门的磁吸状态，开 闭等   门磁状态，0-正常关，1-正常开，2-短路报警，3-断路报警，4-异常报警
             byte doorMagneticStatus = acsWorkStatus.byMagneticStatus[i];
             String ip = ipMap.get(lUserID);
-            String paramId = ip.concat("_").concat(String.valueOf(i)).concat("_").concat("openStatus");
+            String paramId = ip.concat("_").concat(String.valueOf(i)).concat(OPEN_STATUS);
             String value = "0";
             if (doorStatus == 2 || lockStatus == 1 || doorMagneticStatus == 1) {
                 value = "1";
