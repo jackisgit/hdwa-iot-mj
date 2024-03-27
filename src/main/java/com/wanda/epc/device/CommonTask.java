@@ -17,12 +17,7 @@ public class CommonTask {
 
     @Scheduled(cron = "${cron.cron:0/30 * * * * ?}")
     public void getOnlineStatus() throws Exception {
-        deviceHandler.getOnlineStatus();
-    }
-
-    @Scheduled(cron = "40 10 * * * ?")
-    public void getToken() throws Exception {
-        deviceHandler.init();
+        deviceHandler.processData();
     }
 
 }
