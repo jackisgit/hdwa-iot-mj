@@ -36,7 +36,7 @@ public class DeviceHandler extends BaseDevice {
      * 门禁控制URI（开门）
      */
     private final String deviceControl = "/api/E8Door/man-device-info/device-control";
-
+    List<Integer> list = new ArrayList<>();
     @Value("${epc.host}")
     private String host;
     @Value("${epc.key}")
@@ -46,7 +46,6 @@ public class DeviceHandler extends BaseDevice {
 
     @PostConstruct
     public void init() {
-        List<Integer> list = new ArrayList<>();
         deviceParamListMap.entrySet().forEach(entry -> {
             list.add(Integer.valueOf(entry.getKey().split("_")[0]));
         });
@@ -73,7 +72,16 @@ public class DeviceHandler extends BaseDevice {
     }
 
     @Override
-    public boolean processData() throws Exception {
+    public boolean processData() {
+        String url = host + getDeviceRealStatus;
+        long currentTimeMillis = System.currentTimeMillis();
+        String sign = getSign(url, currentTimeMillis);
+        Map<String, String> header = buildHeader(currentTimeMillis, sign);
+        String result = HttpRequest.post(url).body(Base64.encode(JSONObject.toJSONString(list))).addHeaders(header).timeout(2000).execute().body();
+        log.info("接口:{},返回值:{}", url, result);
+        Object read = JSONPath.read(result, "$.success");
+        if (ObjectUtils.isNotEmpty(read) && !"false".equals(String.valueOf(read))) {
+        }
         return true;
     }
 
@@ -93,15 +101,15 @@ public class DeviceHandler extends BaseDevice {
             ControlDTO controlDTO = new ControlDTO();
             controlDTO.setDeviceId(strings[0]);
             controlDTO.setDoorId(strings[0]);
-            String url = host + deviceControl;
+            Integer type = 0;
             String result;
             if ("1.0".equals(value)) {
-                controlDoorDTO.setType(1);
-            } else {
-                controlDoorDTO.setType(0);
+                type = 1;
             }
+            controlDoorDTO.setType(type);
+            String url = host + deviceControl;
             long currentTimeMillis = System.currentTimeMillis();
-            String sign = getSign(url, currentTimeMillis);
+            String sign = getSign(url + "type=" + type, currentTimeMillis);
             Map<String, String> header = buildHeader(currentTimeMillis, sign);
             result = HttpRequest.post(url).body(Base64.encode(JSONObject.toJSONString(controlDoorDTO))).addHeaders(header).timeout(2000).execute().body();
             log.info("接口:{},返回值:{}", url, result);
