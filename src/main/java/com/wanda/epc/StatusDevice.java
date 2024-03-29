@@ -1,16 +1,13 @@
 package com.wanda.epc;
 
-import com.alibaba.fastjson.JSON;
 import com.wanda.epc.device.BaseDevice;
 import com.wanda.epc.device.CommonDevice;
 import com.wanda.epc.param.DeviceMessage;
-import com.wanda.epc.util.ConvertUtil;
 import com.wanda.epc.util.PingUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
@@ -24,7 +21,6 @@ import java.util.*;
 @Slf4j
 @Service
 public class StatusDevice extends BaseDevice {
-
 
 
     @Autowired
@@ -82,18 +78,7 @@ public class StatusDevice extends BaseDevice {
             List<String> ipList = Arrays.asList(ipsOK.split(","));
             log.info("在线状态数量：{}", ipList.size());
             ipList.forEach(ip -> {
-                List<DeviceMessage> deviceMessageList = deviceParamListMap.get(ip.concat("_onlineStatus"));
-                if (!CollectionUtils.isEmpty(deviceMessageList)) {
-                    deviceMessageList.forEach(deviceMessage -> {
-                        if (deviceMessage != null) {
-                            deviceMessage.setValue("1");
-                            deviceMessage.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
-                            log.info("设备采集发送在线状态数据：{}", JSON.toJSONString(deviceMessage));
-                            sendMessage(deviceMessage);
-                            log.info("设备在线状态为在线" + "ip为" + ip);
-                        }
-                    });
-                }
+                sendMsg(ip.concat("_onlineStatus"), "1");
             });
         }
         if (StringUtils.isNotBlank(ipsNo)) {
@@ -124,36 +109,14 @@ public class StatusDevice extends BaseDevice {
             List<String> ipList = Arrays.asList(ipsOK.split(","));
             log.info("重试在线状态数量：{}", ipList.size());
             ipList.forEach(ip -> {
-                List<DeviceMessage> deviceMessageList = deviceParamListMap.get(ip.concat("_onlineStatus"));
-                if (!CollectionUtils.isEmpty(deviceMessageList)) {
-                    deviceMessageList.forEach(deviceMessage -> {
-                        if (deviceMessage != null) {
-                            deviceMessage.setValue("1");
-                            deviceMessage.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
-                            log.info("重试设备采集发送在线状态数据：{}", JSON.toJSONString(deviceMessage));
-                            sendMessage(deviceMessage);
-                            log.info("重试设备在线状态为在线" + "ip为" + ip);
-                        }
-                    });
-                }
+                sendMsg(ip.concat("_onlineStatus"), "1");
             });
         }
         if (StringUtils.isNotBlank(ipsNo)) {
             List<String> ipList = Arrays.asList(ipsNo.split(","));
             log.info("重试离线状态数量：{}", ipList.size());
             ipList.forEach(ip -> {
-                List<DeviceMessage> deviceMessageList = deviceParamListMap.get(ip.concat("_onlineStatus"));
-                if (!CollectionUtils.isEmpty(deviceMessageList)) {
-                    deviceMessageList.forEach(deviceMessage -> {
-                        if (deviceMessage != null) {
-                            deviceMessage.setValue("0");
-                            deviceMessage.setUpdateTime(ConvertUtil.getNowDateTime("yyyyMMddHHmmss"));
-                            log.info("重试设备采集发送离线状态数据：{}", JSON.toJSONString(deviceMessage));
-                            sendMessage(deviceMessage);
-                            log.info("重试设备在线状态为离线" + "ip为" + ip);
-                        }
-                    });
-                }
+                sendMsg(ip.concat("_onlineStatus"), "0");
             });
         }
     }

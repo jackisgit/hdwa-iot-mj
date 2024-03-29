@@ -1,7 +1,0 @@
-#广场ID及GatewayId
-epc:
-  gatewayId: MJ
-  gcId: 3202060020
-  subsystem: mjgl/
-  threadNum: 5
-

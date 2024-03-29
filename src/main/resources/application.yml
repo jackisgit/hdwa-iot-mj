@@ -1,3 +1,5 @@
+server:
+  port: 18800
 mqtt:
   hostUrl: tcp://127.0.0.1:1883
   username: admin
@@ -10,15 +12,18 @@ mqtt:
   qos: 1
 
 spring:
-  profiles:
-    active: wuxi_huishan
   redis:
-    host: 10.25.16.52
+    host: 127.0.0.1
     port: 16379
     password:
 
-server:
-  port: 18800
-
 beanName: statusDevice
+
+#广场ID及GatewayId
+epc:
+  gatewayId: MJ
+  gcId: 3202060020
+  subsystem: mjgl/
+  threadNum: 5
+  cron: 0/30 * * * * ?
 

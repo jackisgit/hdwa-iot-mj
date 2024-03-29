@@ -19,7 +19,7 @@ public class CommonTask {
     @Autowired
     private StatusDevice statusDevice;
 
-    @Scheduled(cron = "0 */2 * * * ?")
+    @Scheduled(cron = "${epc.cron:0/30 * * * * ?}")
     public boolean processData() throws Exception {
         return statusDevice.processData();
     }
