@@ -8,6 +8,6 @@ public class ControlDoorDTO {
 
     private Integer reason;
     private Integer type;
-    private List<ControlDTO> controlDTOs;
+    private List<ControlDTO> controlList;
 
 }

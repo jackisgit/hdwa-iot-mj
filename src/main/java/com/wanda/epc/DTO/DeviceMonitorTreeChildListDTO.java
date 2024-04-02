@@ -1,7 +1,8 @@
 /**
-  * Copyright 2024 json.cn
-  */
+ * Copyright 2024 json.cn
+ */
 package com.wanda.epc.DTO;
+
 import lombok.Data;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class DeviceMonitorTreeChildListDTO {
     private Integer nodeType;
     private Integer onlineStatus;
     private String iconType;
-    private List<String> childList;
+    private List<DeviceMonitorTreeChildListDTO> childList;
     private Integer doorNo;
     private Integer manDeviceNo;
     private Integer doorStatus;

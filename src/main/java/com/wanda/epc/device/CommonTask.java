@@ -15,9 +15,9 @@ public class CommonTask {
     @Autowired
     private DeviceHandler deviceHandler;
 
-    //@Scheduled(cron = "${cron.cron:0/30 * * * * ?}")
-    //public void getOnlineStatus() throws Exception {
-    //    deviceHandler.processData();
-    //}
+    @Scheduled(cron = "${cron.cron:0/30 * * * * ?}")
+    public void getOnlineStatus() throws Exception {
+        deviceHandler.processData();
+    }
 
 }

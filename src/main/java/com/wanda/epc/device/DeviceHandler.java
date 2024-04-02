@@ -62,12 +62,16 @@ public class DeviceHandler extends BaseDevice {
      * @param sign
      * @return
      */
-    private Map<String, String> buildHeader(Long timestamp, String sign) {
+    private Map<String, String> buildHeader(Long timestamp, String sign, boolean paramstr) {
         Map<String, String> header = new HashMap<>();
         header.put("key", key);
         header.put("timestamp", String.valueOf(timestamp));
         header.put("sign", sign);
-        header.put("paramstr", "123");
+        if (paramstr) {
+            header.put("paramstr", "123");
+        } else {
+            header.put("Content-Type", "application/json;charset=UTF-8");
+        }
         return header;
     }
 
@@ -81,21 +85,30 @@ public class DeviceHandler extends BaseDevice {
         String url = host + deviceMonitorTree;
         long currentTimeMillis = System.currentTimeMillis();
         String sign = getOrDeleteSign(url, currentTimeMillis);
-        Map<String, String> header = buildHeader(currentTimeMillis, sign);
-        log.info("接口:{},请求头:{}", url, header);
-        //String result = HttpRequest.post(url).addHeaders(header).timeout(2000).execute().body();
+        Map<String, String> header = buildHeader(currentTimeMillis, sign, true);
+        log.info("采集接口:{},请求头:{}", url, header);
         String result = HttpRequest.get(url).addHeaders(header).timeout(2000).execute().body();
-        log.info("接口:{},返回值:{}", url, result);
+        log.info("采集接口:{},返回值:{}", url, result);
         DeviceMonitorTreeDTO deviceMonitorTreeDTO = JSONObject.parseObject(result, DeviceMonitorTreeDTO.class);
-        log.info("返回值2:{}", JSONObject.toJSONString(deviceMonitorTreeDTO));
         if (deviceMonitorTreeDTO.getSuccess()) {
+            List<DeviceMonitorTreeChildListDTO> list = new ArrayList<>();
             List<DeviceMonitorTreeChildListDTO> DeviceMonitorTreeChildListDTOS = deviceMonitorTreeDTO.getResult();
             if (CollectionUtils.isEmpty(DeviceMonitorTreeChildListDTOS)) {
                 return false;
             }
             for (DeviceMonitorTreeChildListDTO deviceMonitorTreeChildListDTO : DeviceMonitorTreeChildListDTOS) {
-                String openStatus = deviceMonitorTreeChildListDTO.getDeviceId() + OPEN_STATUS;
-                String onlineStatus = deviceMonitorTreeChildListDTO.getDeviceId() + ONLINE_STATUS;
+                List<DeviceMonitorTreeChildListDTO> childList = deviceMonitorTreeChildListDTO.getChildList();
+                if (CollectionUtils.isEmpty(childList)) {
+                    continue;
+                }
+                list.addAll(childList);
+            }
+            if (CollectionUtils.isEmpty(list)) {
+                return false;
+            }
+            for (DeviceMonitorTreeChildListDTO deviceMonitorTreeChildListDTO : list) {
+                String openStatus = deviceMonitorTreeChildListDTO.getId() + OPEN_STATUS;
+                String onlineStatus = deviceMonitorTreeChildListDTO.getId() + ONLINE_STATUS;
                 String doorStaus = "0";
                 if (deviceMonitorTreeChildListDTO.getDoorStatus() == 1 || deviceMonitorTreeChildListDTO.getDoorStatus() == 2) {
                     doorStaus = "1";
@@ -119,28 +132,34 @@ public class DeviceHandler extends BaseDevice {
             }
             redisUtil.set(outParamId, "0", 5);
             final String[] strings = deviceMessage.getOutParamId().split("_");
-            ControlDoorDTO controlDoorDTO = new ControlDoorDTO();
-            ControlDTO controlDTO = new ControlDTO();
-            controlDTO.setDeviceId(strings[0]);
-            controlDTO.setDoorId(strings[0]);
-            Integer type = 0;
-            String result;
-            if ("1.0".equals(value)) {
-                type = 1;
-            }
-            controlDoorDTO.setType(type);
-            String url = host + deviceControl;
-            long currentTimeMillis = System.currentTimeMillis();
-            String sign = postSign(url + "type=" + type, currentTimeMillis);
-            Map<String, String> header = buildHeader(currentTimeMillis, sign);
-            log.info("接口:{},参数:{},请求头:{}", url, JSONObject.toJSONString(controlDoorDTO), JSONObject.toJSONString(header));
-            result = HttpRequest.post(url).body(Base64.encode(JSONObject.toJSONString(controlDoorDTO))).addHeaders(header).timeout(2000).execute().body();
-            //result = HttpRequest.post(url).body(JSONObject.toJSONString(controlDoorDTO)).addHeaders(header).timeout(2000).execute().body();
-            log.info("接口:{},返回值:{}", url, result);
-            Object read = JSONPath.read(result, "$.success");
-            if (ObjectUtils.isNotEmpty(read) && !"false".equals(String.valueOf(read))) {
-                sendMsg(strings[0] + OPEN_STATUS, value);
-            }
+            control(strings[0], value);
+        }
+    }
+
+    public void control(String doorId, String value) {
+        ControlDoorDTO controlDoorDTO = new ControlDoorDTO();
+        List<ControlDTO> controlDTOs = new ArrayList<>();
+        ControlDTO controlDTO = new ControlDTO();
+        controlDTO.setDoorId(doorId);
+        controlDTOs.add(controlDTO);
+        controlDoorDTO.setControlList(controlDTOs);
+        Integer type = 0;
+        String result;
+        if ("1.0".equals(value)) {
+            type = 1;
+        }
+        controlDoorDTO.setType(type);
+        String url = host + deviceControl;
+        long currentTimeMillis = System.currentTimeMillis();
+        String sign = postSign(url + "type=" + type, currentTimeMillis);
+        Map<String, String> header = buildHeader(currentTimeMillis, sign, false);
+        String body = Base64.encode(JSONObject.toJSONString(controlDoorDTO));
+        log.info("控制接口:{},参数:{},请求头:{}", url, body, JSONObject.toJSONString(header));
+        result = HttpRequest.post(url).body(body).addHeaders(header).timeout(2000).execute().body();
+        log.info("控制接口:{},返回值:{}", url, result);
+        Object read = JSONPath.read(result, "$.success");
+        if (ObjectUtils.isNotEmpty(read) && !"false".equals(String.valueOf(read))) {
+            sendMsg(doorId + OPEN_STATUS, value);
         }
     }
 
