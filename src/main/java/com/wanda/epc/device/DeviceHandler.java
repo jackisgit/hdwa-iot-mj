@@ -26,8 +26,17 @@ import java.util.*;
 @Slf4j
 public class DeviceHandler extends BaseDevice {
 
+    /**
+     * 控制点后缀
+     */
     public static final String EQUIP_SWITCH_SET = "_equipSwitchSet";
+    /**
+     * 开关状态后缀
+     */
     public static final String OPEN_STATUS = "_openStatus";
+    /**
+     * 在线状态后缀
+     */
     public static final String ONLINE_STATUS = "_onlineStatus";
     /**
      * 门通道查询URI（获取门开关状态）
@@ -37,7 +46,6 @@ public class DeviceHandler extends BaseDevice {
      * 门禁控制URI（开门）
      */
     private final String deviceControl = "/api/E8Door/man-device-info/device-control";
-    List<Integer> list = new ArrayList<>();
     @Value("${epc.host}")
     private String host;
     @Value("${epc.key}")
@@ -45,21 +53,11 @@ public class DeviceHandler extends BaseDevice {
     @Value("${epc.password}")
     private String password;
 
-    public static void main(String[] args) {
-        long currentTimeMillis = System.currentTimeMillis();
-        System.out.println(currentTimeMillis);
-        String str = "HTTP://192.168.12.51:50014/API/E8/PARK-FIX-TEMP-INFO/319578430836805?ID=123456781696908563000ABCDabcd1234";
-        str = SecureUtil.md5(str);
-        //5.字符串转换为大写
-        str = str.toUpperCase(Locale.ROOT);
-        System.out.println(str);
-    }
-
     /**
      * 构建请求头
-     *
      * @param timestamp
      * @param sign
+     * @param paramstr
      * @return
      */
     private Map<String, String> buildHeader(Long timestamp, String sign, boolean paramstr) {
@@ -68,16 +66,10 @@ public class DeviceHandler extends BaseDevice {
         header.put("timestamp", String.valueOf(timestamp));
         header.put("sign", sign);
         if (paramstr) {
+            //如果为ge请求则按照接口说明增加随机数，这里写死123
             header.put("paramstr", "123");
-        } else {
-            header.put("Content-Type", "application/json;charset=UTF-8");
         }
         return header;
-    }
-
-    @Override
-    public void sendMessage(DeviceMessage dm) {
-        commonDevice.sendMessage(dm);
     }
 
     @Override
@@ -136,6 +128,16 @@ public class DeviceHandler extends BaseDevice {
         }
     }
 
+    @Override
+    public boolean processData(String... obj) throws Exception {
+        return false;
+    }
+
+    /**
+     * 控制
+     * @param doorId
+     * @param value
+     */
     public void control(String doorId, String value) {
         ControlDoorDTO controlDoorDTO = new ControlDoorDTO();
         List<ControlDTO> controlDTOs = new ArrayList<>();
@@ -155,17 +157,12 @@ public class DeviceHandler extends BaseDevice {
         Map<String, String> header = buildHeader(currentTimeMillis, sign, false);
         String body = Base64.encode(JSONObject.toJSONString(controlDoorDTO));
         log.info("控制接口:{},参数:{},请求头:{}", url, body, JSONObject.toJSONString(header));
-        result = HttpRequest.post(url).body(body).addHeaders(header).timeout(2000).execute().body();
+        result = HttpRequest.post(url).body(body).contentType("application/json;charset=UTF-8").addHeaders(header).timeout(2000).execute().body();
         log.info("控制接口:{},返回值:{}", url, result);
         Object read = JSONPath.read(result, "$.success");
         if (ObjectUtils.isNotEmpty(read) && !"false".equals(String.valueOf(read))) {
             sendMsg(doorId + OPEN_STATUS, value);
         }
-    }
-
-    @Override
-    public boolean processData(String... obj) throws Exception {
-        return false;
     }
 
     /**
