@@ -103,7 +103,7 @@ public class DeviceHandler extends BaseDevice {
                 String order = MessageFormat.format(openDoor, door);
                 channel.writeAndFlush(order);
             } catch (Exception e) {
-                log.error("防盗报警控制命令下发失败", e);
+                log.error("控制命令下发失败", e);
             }
         }
     }
