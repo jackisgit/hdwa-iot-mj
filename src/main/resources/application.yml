@@ -22,6 +22,7 @@ epc:
   subsystem: mj/
   threadNum: 1
   cron: 0 0/1 * * * ?
+  channelId: 2
 
 m_nPort: 37777
 m_strUser: admin
