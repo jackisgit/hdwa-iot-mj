@@ -249,19 +249,6 @@ public class OperateInfo extends JDialog {
         }
     }
 
-    /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        try {
-            OperateInfo dialog = new OperateInfo();
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setVisible(true);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-        }
-    }
-
     public void setCardNoTextFieldEditEnable(boolean enable) {
         this.cardNoTextField.setEditable(enable);
     }

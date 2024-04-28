@@ -199,23 +199,6 @@ public class OperateManager extends JDialog {
     }
 
     /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    OperateManager dialogManager = new OperateManager();
-                    dialogManager.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                    dialogManager.setVisible(true);
-                } catch (Exception e) {
-                    log.error(e.getMessage(), e);
-                }
-            }
-        });
-    }
-
-    /**
      * 表格初始化
      *
      * @param data       表格数据

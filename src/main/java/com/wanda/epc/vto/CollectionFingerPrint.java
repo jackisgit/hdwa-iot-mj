@@ -233,19 +233,6 @@ public class CollectionFingerPrint extends JDialog {
         }
     }
 
-    /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        try {
-            CollectionFingerPrint dialog = new CollectionFingerPrint();
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setVisible(true);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-        }
-    }
-
     public byte[] getPackageData() {
         return packageData;
     }
