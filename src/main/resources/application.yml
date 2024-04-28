@@ -22,6 +22,7 @@ epc:
   subsystem: mj/
   threadNum: 1
   cron: 0 0/1 * * * ?
+#  一个控制器有几个门
   channelId: 2
 
 m_nPort: 37777
