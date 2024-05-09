@@ -224,14 +224,14 @@ public class DeviceHandler extends BaseDevice {
     public void dispatchCommand(String meter, Integer funcid, String value, String message) throws Exception {
         commonDevice.feedback(message);
         DeviceMessage deviceMessage = controlParamMap.get(meter + "-" + funcid);
-        if (ObjectUtils.isNotEmpty(deviceMessage) && StringUtils.isNotBlank(deviceMessage.getOutParamId())
-                && deviceMessage.getOutParamId().endsWith(EQUIP_SWITCH_SET)) {
-            String outParamId = deviceMessage.getOutParamId();
+        String outParamId = deviceMessage.getOutParamId();
+        if (ObjectUtils.isNotEmpty(deviceMessage) && StringUtils.isNotBlank(outParamId)
+                && outParamId.endsWith(EQUIP_SWITCH_SET)) {
             if (redisUtil.hasKey(outParamId)) {
                 return;
             }
             redisUtil.set(outParamId, "0", 5);
-            final String[] strings = deviceMessage.getOutParamId().split("_");
+            final String[] strings = outParamId.split("_");
             ChannelCodeListDTO channelCodeListDTO = new ChannelCodeListDTO();
             List<String> list = new ArrayList<>();
             list.add(strings[0]);
