@@ -38,6 +38,34 @@ public class DeviceHandler extends BaseDevice {
     public static final String OPEN_STATUS = "_openStatus";
     public static final String ONLINE_STATUS = "_onlineStatus";
     public static final String ALARM_STATUS = "_alarmStatus";
+    /**
+     * 获取公钥URI
+     */
+    private final String publicKeyURI = "/evo-apigw/evo-oauth/{0}/oauth/public-key";
+    /**
+     * 认证（获取token）URI
+     */
+    private final String tokenURI = "/evo-apigw/evo-oauth/{0}/oauth/extend/token";
+    /**
+     * 设备树搜索URI（获取在线状态）
+     */
+    private final String treeSearchURI = "/evo-apigw/evo-accesscontrol/{0}/resource/tree/search";
+    /**
+     * 门通道查询URI（获取门开关状态）
+     */
+    private final String channelsURI = "/evo-apigw/evo-accesscontrol/{0}/card/accessControl/channelControl/channels";
+    /**
+     * 门禁控制URI（开门）
+     */
+    private final String openDoorURI = "/evo-apigw/evo-accesscontrol/{0}/card/accessControl/channelControl/openDoor";
+    /**
+     * 门禁控制URI（关门）
+     */
+    private final String closeDoorURI = "/evo-apigw/evo-accesscontrol/{0}/card/accessControl/channelControl/closeDoor";
+    /**
+     * 报警订阅事件URI（设置报警回调采集器的URL地址）
+     */
+    private final String mqinfoURI = "/evo-apigw/evo-event/{0}/subscribe/mqinfo";
     @Resource
     private CommonDevice commonDevice;
     private Map<String, String> header = new HashMap<>();
@@ -63,49 +91,17 @@ public class DeviceHandler extends BaseDevice {
     private String serverPort;
     private String publicKey;
     private String encryptedText;
-    private String Authorization;
-
-    /**
-     * 获取公钥URI
-     */
-    private final String publicKeyURI = "/evo-apigw/evo-oauth/{0}/oauth/public-key";
-
-    /**
-     * 认证（获取token）URI
-     */
-    private final String tokenURI = "/evo-apigw/evo-oauth/{0}/oauth/extend/token";
-
-    /**
-     * 设备树搜索URI（获取在线状态）
-     */
-    private final String treeSearchURI = "/evo-apigw/evo-accesscontrol/{0}/resource/tree/search";
-
-    /**
-     * 门通道查询URI（获取门开关状态）
-     */
-    private final String channelsURI = "/evo-apigw/evo-accesscontrol/{0}/card/accessControl/channelControl/channels";
-
-    /**
-     * 门禁控制URI（开门）
-     */
-    private final String openDoorURI = "/evo-apigw/evo-accesscontrol/{0}/card/accessControl/channelControl/openDoor";
-    /**
-     * 门禁控制URI（关门）
-     */
-    private final String closeDoorURI = "/evo-apigw/evo-accesscontrol/{0}/card/accessControl/channelControl/closeDoor";
-
+    @Value("${epc.getOnlineStatusPath}")
+    private String getOnlineStatusPath;
     // ========================================门禁========================================
-    /**
-     * 报警订阅事件URI（设置报警回调采集器的URL地址）
-     */
-    private final String mqinfoURI = "/evo-apigw/evo-event/{0}/subscribe/mqinfo";
+    private String Authorization;
 
     public void getOnlineStatus() {
         String url = host + MessageFormat.format(treeSearchURI, version);
         log.info("接口:{}", url);
         String result = HttpRequest.post(url).body("{\"typeCode\":\"01;0;8;7\"}").addHeaders(header).timeout(2000).execute().body();
         log.info("接口:{},返回值:{}", url, result);
-        Object read = JSONPath.read(result, "$.data.children");
+        Object read = JSONPath.read(result, getOnlineStatusPath);
         List<SearchDTO> searchDTOS = JSONArray.parseArray(String.valueOf(read), SearchDTO.class);
         if (CollectionUtils.isEmpty(searchDTOS)) {
             return;
@@ -113,9 +109,9 @@ public class DeviceHandler extends BaseDevice {
         List<String> idList = new ArrayList<>();
         searchDTOS.forEach(searchDTO -> {
             String id = searchDTO.getId().replace("ACC_", "");
-            String value = "1";
-            if (!"1".equals(searchDTO.getOnline())) {
-                value = "0";
+            String value = "0";
+            if ("1".equals(searchDTO.getOnline())) {
+                value = "1";
             }
             sendMsg(id + ONLINE_STATUS, value);
             idList.add(id);
@@ -139,14 +135,13 @@ public class DeviceHandler extends BaseDevice {
         }
         channelDTOS.forEach(channelDTO -> {
             String id = channelDTO.getChannelCode();
-            String value = "1";
-            if (!"1".equals(channelDTO.getStatus())) {
-                value = "0";
+            String value = "0";
+            if (1 == channelDTO.getStatus()) {
+                value = "1";
             }
             sendMsg(id + OPEN_STATUS, value);
         });
     }
-
 
     /**
      * 初始化获取公钥、token、注册回调地址
