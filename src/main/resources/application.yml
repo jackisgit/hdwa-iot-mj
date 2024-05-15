@@ -11,7 +11,7 @@ mqtt:
   isOpen: true
   qos: 1
 
-beanName: mJEpcDevice
+beanName: mjDevice
 spring:
   #redis配置
   redis:

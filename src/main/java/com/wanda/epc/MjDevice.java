@@ -46,14 +46,9 @@ public class MjDevice extends BaseDevice {
 
     @Override
     public void sendMessage(DeviceMessage dm) {
-        //如果数据变化则，发送emqx
-        if (dm != null) {
-            commonDevice.sendMessage(dm);
-        }
     }
 
     @Override
-    @PostConstruct
     public boolean processData() throws Exception {
         //查询车位的状态信息
         String sql = "select * from dbo.Acss_DoorStatus";
