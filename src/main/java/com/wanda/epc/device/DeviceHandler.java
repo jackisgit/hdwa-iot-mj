@@ -44,6 +44,7 @@ public class DeviceHandler extends BaseDevice {
      * 开门指令
      */
     private static final String openDoor = "N3000 -USER \"abc\" -PASSWORD \"123\" -OPEN \"{0}\"";
+    public static final String EQUIP_SWITCH_SET = "_equipSwitchSet";
     @Resource
     CommonDevice commonDevice;
     @Value("${tcp.serverIP}")
@@ -87,7 +88,7 @@ public class DeviceHandler extends BaseDevice {
         commonDevice.feedback(message);
         DeviceMessage deviceMessage = controlParamMap.get(meter + "-" + funcid);
         if (ObjectUtils.isNotEmpty(deviceMessage) && StringUtils.isNotBlank(deviceMessage.getOutParamId()) &&
-                deviceMessage.getOutParamId().endsWith("_equipSwitchSet")) {
+                deviceMessage.getOutParamId().endsWith(EQUIP_SWITCH_SET)) {
             String outParamId = deviceMessage.getOutParamId();
             if (redisUtil.hasKey(outParamId)) {
                 return;
