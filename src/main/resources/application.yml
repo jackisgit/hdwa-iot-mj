@@ -26,7 +26,6 @@ epc:
   subsystem: mjgl/
   threadNum: 10
   cron: 0/30 * * * * ?
-#变配电请求子系统接口
 access:
   # 获取用户uuid
   userInfoUrl: http://10.1.219.14/openapi/service/base/user/getDefaultUserUuid
