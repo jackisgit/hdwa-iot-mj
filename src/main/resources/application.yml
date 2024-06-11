@@ -24,6 +24,12 @@ epc:
   subsystem: mjgl/
   threadNum: 1
   host: http://192.168.11.2:50014
-  key: 0d24633f36fc4f939ad8281f111f332d
-  password: zg7CkEWf
+  appKey: 26194113
+  appSecret: gxw4VWg0jF8UmBjalX1U
   cron: 0/30 * * * * ?
+#  查询
+  search: /api/resource/v2/door/search
+#  控制
+  control: /api/acs/v1/door/doControl
+#  读卡器在线状态
+  states: /api/acs/v1/door/states

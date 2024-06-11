@@ -1,14 +1,10 @@
 package com.wanda.epc.device;
 
-import cn.hutool.core.codec.Base64;
-import cn.hutool.crypto.SecureUtil;
-import cn.hutool.http.HttpRequest;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
-import com.wanda.epc.DTO.ControlDTO;
-import com.wanda.epc.DTO.ControlDoorDTO;
-import com.wanda.epc.DTO.DeviceMonitorTreeChildListDTO;
-import com.wanda.epc.DTO.DeviceMonitorTreeDTO;
+import com.hikvision.artemis.sdk.ArtemisHttpUtil;
+import com.hikvision.artemis.sdk.config.ArtemisConfig;
 import com.wanda.epc.param.DeviceMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -17,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 /**
@@ -38,76 +35,92 @@ public class DeviceHandler extends BaseDevice {
      * 在线状态后缀
      */
     public static final String ONLINE_STATUS = "_onlineStatus";
-    /**
-     * 门通道查询URI（获取门开关状态）
-     */
-    private final String deviceMonitorTree = "/api/E8Door/man-device-info/device-monitor-tree";
-    /**
-     * 门禁控制URI（开门）
-     */
-    private final String deviceControl = "/api/E8Door/man-device-info/device-control";
-    @Value("${epc.host}")
-    private String host;
-    @Value("${epc.key}")
-    private String key;
-    @Value("${epc.password}")
-    private String password;
+
+    private static final String ARTEMIS_PATH = "/artemis";
 
     /**
-     * 构建请求头
-     * @param timestamp
-     * @param sign
-     * @param paramstr
-     * @return
+     * 门禁集合
      */
-    private Map<String, String> buildHeader(Long timestamp, String sign, boolean paramstr) {
-        Map<String, String> header = new HashMap<>();
-        header.put("key", key);
-        header.put("timestamp", String.valueOf(timestamp));
-        header.put("sign", sign);
-        if (paramstr) {
-            //如果为ge请求则按照接口说明增加随机数，这里写死123
-            header.put("paramstr", "123");
+    Set<String> doorIndexSet = new HashSet<>();
+
+    @Value("${epc.host}")
+    private String host;
+    @Value("${epc.appKey}")
+    private String appKey;
+    @Value("${epc.appSecret}")
+    private String appSecret;
+    @Value("${epc.search}")
+    private String search;
+    @Value("${epc.control}")
+    private String control;
+    @Value("${epc.states}")
+    private String states;
+
+    /**
+     * https://ip:port/artemis/api/resource/v1/org/orgList
+     * 通过查阅AI Cloud开放平台文档或网关门户的文档可以看到获取组织列表的接口定义,该接口为POST请求的Rest接口, 入参为JSON字符串，接口协议为https。
+     * ArtemisHttpUtil工具类提供了doPostStringArtemis调用POST请求的方法，入参可传JSON字符串, 请阅读开发指南了解方法入参，没有的参数可传null
+     */
+    public String sendHttps(String url, Map<String, Object> paramMap) {
+        try {
+            ArtemisConfig config = new ArtemisConfig();
+            // 代理API网关nginx服务器ip端口
+            config.setHost(host);
+            // 秘钥appkey
+            config.setAppKey(appKey);
+            // 秘钥appSecret
+            config.setAppSecret(appSecret);
+            final String getCamsApi = ARTEMIS_PATH + url;
+            String body = JSON.toJSON(paramMap).toString();
+            Map<String, String> path = new HashMap<String, String>(2) {
+                {
+                    put("https://", getCamsApi);
+                }
+            };
+            return ArtemisHttpUtil.doPostStringArtemis(config, path, body, null, null, "application/json");
+        } catch (Exception e) {
+            log.error("调用接口:{}，参数:{}异常", url, JSONObject.toJSONString(paramMap), e);
+            return null;
         }
-        return header;
+    }
+
+    @PostConstruct
+    public void init() {
+        // post请求Form表单参数
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("pageNo", "1");
+        paramMap.put("pageSize", "20000");
+        String result = sendHttps(search, paramMap);
+        log.info("接口:{},参数:{},返回:{}", search, JSONObject.toJSONString(paramMap), result);
+        deviceParamListMap.forEach((key, value) -> {
+            doorIndexSet.add(key.split("_")[0]);
+        });
     }
 
     @Override
     public boolean processData() {
-        String url = host + deviceMonitorTree;
-        long currentTimeMillis = System.currentTimeMillis();
-        String sign = getOrDeleteSign(url, currentTimeMillis);
-        Map<String, String> header = buildHeader(currentTimeMillis, sign, true);
-        log.info("采集接口:{},请求头:{}", url, header);
-        String result = HttpRequest.get(url).addHeaders(header).timeout(2000).execute().body();
-        log.info("采集接口:{},返回值:{}", url, result);
-        DeviceMonitorTreeDTO deviceMonitorTreeDTO = JSONObject.parseObject(result, DeviceMonitorTreeDTO.class);
-        if (deviceMonitorTreeDTO.getSuccess()) {
-            List<DeviceMonitorTreeChildListDTO> list = new ArrayList<>();
-            List<DeviceMonitorTreeChildListDTO> DeviceMonitorTreeChildListDTOS = deviceMonitorTreeDTO.getResult();
-            if (CollectionUtils.isEmpty(DeviceMonitorTreeChildListDTOS)) {
-                return false;
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("doorIndexCodes", doorIndexSet);
+        String result = sendHttps(states, paramMap);
+        log.info("接口:{},参数:{},返回:{}", states, JSONObject.toJSONString(paramMap), result);
+        List<Map<String, Object>> list = (List<Map<String, Object>>) JSONPath.read(result, "$.data.authDoorList");
+        if (CollectionUtils.isEmpty(list)) {
+            return false;
+        }
+        for (Map<String, Object> map : list) {
+            String doorIndexCode = String.valueOf(map.get("doorIndexCode"));
+            //门状态 1: 开门状态 2: 关门状态 3: 离线状态 4: 常闭 5: 反锁 6: 常开 7: 常开 8: 常闭
+            String doorState = String.valueOf(map.get("doorState"));
+            String onlineStatus = "1";
+            String openStatus = "0";
+            if ("3".equals(doorState)) {
+                onlineStatus = "0";
             }
-            for (DeviceMonitorTreeChildListDTO deviceMonitorTreeChildListDTO : DeviceMonitorTreeChildListDTOS) {
-                List<DeviceMonitorTreeChildListDTO> childList = deviceMonitorTreeChildListDTO.getChildList();
-                if (CollectionUtils.isEmpty(childList)) {
-                    continue;
-                }
-                list.addAll(childList);
+            if ("1,6,7".contains(doorState)) {
+                openStatus = "1";
             }
-            if (CollectionUtils.isEmpty(list)) {
-                return false;
-            }
-            for (DeviceMonitorTreeChildListDTO deviceMonitorTreeChildListDTO : list) {
-                String openStatus = deviceMonitorTreeChildListDTO.getId() + OPEN_STATUS;
-                String onlineStatus = deviceMonitorTreeChildListDTO.getId() + ONLINE_STATUS;
-                String doorStaus = "0";
-                if (deviceMonitorTreeChildListDTO.getDoorStatus() == 1 || deviceMonitorTreeChildListDTO.getDoorStatus() == 2) {
-                    doorStaus = "1";
-                }
-                sendMsg(openStatus, doorStaus);
-                sendMsg(onlineStatus, String.valueOf(deviceMonitorTreeChildListDTO.getOnlineStatus()));
-            }
+            sendMsg(doorIndexCode + ONLINE_STATUS, onlineStatus);
+            sendMsg(doorIndexCode + OPEN_STATUS, openStatus);
         }
         return true;
     }
@@ -124,7 +137,16 @@ public class DeviceHandler extends BaseDevice {
             }
             redisUtil.set(outParamId, "0", 5);
             final String[] strings = deviceMessage.getOutParamId().split("_");
-            control(strings[0], value);
+            //todo 控制
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("doorIndexCodes", strings[0]);
+            int controlType = 1;
+            if ("1.0".equals(value)) {
+                controlType = 2;
+            }
+            paramMap.put("controlType", controlType);
+            String result = sendHttps(control, paramMap);
+            log.info("接口:{},参数:{},返回:{}", control, JSONObject.toJSONString(paramMap), result);
         }
     }
 
@@ -133,90 +155,4 @@ public class DeviceHandler extends BaseDevice {
         return false;
     }
 
-    /**
-     * 控制
-     * @param doorId
-     * @param value
-     */
-    public void control(String doorId, String value) {
-        ControlDoorDTO controlDoorDTO = new ControlDoorDTO();
-        List<ControlDTO> controlDTOs = new ArrayList<>();
-        ControlDTO controlDTO = new ControlDTO();
-        controlDTO.setDoorId(doorId);
-        controlDTOs.add(controlDTO);
-        controlDoorDTO.setControlList(controlDTOs);
-        Integer type = 0;
-        String result;
-        if ("1.0".equals(value)) {
-            type = 1;
-        }
-        controlDoorDTO.setType(type);
-        String url = host + deviceControl;
-        long currentTimeMillis = System.currentTimeMillis();
-        String sign = postSign(url + "type=" + type, currentTimeMillis);
-        Map<String, String> header = buildHeader(currentTimeMillis, sign, false);
-        String body = Base64.encode(JSONObject.toJSONString(controlDoorDTO));
-        log.info("控制接口:{},参数:{},请求头:{}", url, body, JSONObject.toJSONString(header));
-        result = HttpRequest.post(url).body(body).contentType("application/json;charset=UTF-8").addHeaders(header).timeout(2000).execute().body();
-        log.info("控制接口:{},返回值:{}", url, result);
-        Object read = JSONPath.read(result, "$.success");
-        if (ObjectUtils.isNotEmpty(read) && !"false".equals(String.valueOf(read))) {
-            sendMsg(doorId + OPEN_STATUS, value);
-        }
-    }
-
-    /**
-     * get/delete请求鉴权
-     * 第1步:  使用请求的完整url拼接时间戳后转换为大写
-     * 第2步:  将第一步的大写字符串拼接secret
-     * 第3步:  将第二部的字符串进行MD5加密
-     * 第4步:  对第三步的字符串转换大写得到sign值
-     *
-     * @param url
-     * @param timestamp
-     * @return
-     * @throws Exception
-     */
-    private String getOrDeleteSign(String url, Long timestamp) {
-        //1.拼接上毫秒时间戳
-        url = url + timestamp;
-        //2.字符串转换为大写
-        url = url.toUpperCase(Locale.ROOT);
-        //3.大写字符串拼接secret
-        url = url + password;
-        //4.MD5加密
-        url = SecureUtil.md5(url);
-        //5.字符串转换为大写
-        url = url.toUpperCase(Locale.ROOT);
-        return url;
-    }
-
-    /**
-     * post请求鉴权
-     * <p>
-     * 第1步：对请求的json数据按照key升序排序，并把排序后的key和它对应的value拼接成一个字符串: key1=value1&key2=value2最后拼接上毫秒时间戳key1=value1&key2=value2&timestamp=1696901995996
-     * 第2步: 使用请求url拼接第1步数据
-     * 第3步: 将第2步拼接字符串转换为大写
-     * 第4步: 将第3步的大写字符串拼接secret
-     * 第5步: 对第4步的字符串进行MD5加密
-     * 第6步：将第5步字符串转换大写得到sign值
-     *
-     * @param url
-     * @param timestamp
-     * @return
-     * @throws Exception
-     */
-    private String postSign(String url, Long timestamp) {
-        //1.拼接上毫秒时间戳
-        url = url + "&timestamp=" + timestamp;
-        //2.字符串转换为大写
-        url = url.toUpperCase(Locale.ROOT);
-        //3.大写字符串拼接secret
-        url = url + password;
-        //4.MD5加密
-        url = SecureUtil.md5(url);
-        //5.字符串转换为大写
-        url = url.toUpperCase(Locale.ROOT);
-        return url;
-    }
 }
