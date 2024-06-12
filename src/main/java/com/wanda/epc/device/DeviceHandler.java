@@ -142,7 +142,6 @@ public class DeviceHandler extends BaseDevice {
     }
 
     public void control(String doorIndexCodes, String value) {
-        //todo 控制
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("doorIndexCodes", doorIndexCodes);
         int controlType = 1;
