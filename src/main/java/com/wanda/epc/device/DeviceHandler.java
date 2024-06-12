@@ -137,17 +137,21 @@ public class DeviceHandler extends BaseDevice {
             }
             redisUtil.set(outParamId, "0", 5);
             final String[] strings = deviceMessage.getOutParamId().split("_");
-            //todo 控制
-            Map<String, Object> paramMap = new HashMap<>();
-            paramMap.put("doorIndexCodes", strings[0]);
-            int controlType = 1;
-            if ("1.0".equals(value)) {
-                controlType = 2;
-            }
-            paramMap.put("controlType", controlType);
-            String result = sendHttps(control, paramMap);
-            log.info("接口:{},参数:{},返回:{}", control, JSONObject.toJSONString(paramMap), result);
+            control(strings[0], value);
         }
+    }
+
+    public void control(String doorIndexCodes, String value) {
+        //todo 控制
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("doorIndexCodes", doorIndexCodes);
+        int controlType = 1;
+        if ("1.0".equals(value)) {
+            controlType = 2;
+        }
+        paramMap.put("controlType", controlType);
+        String result = sendHttps(control, paramMap);
+        log.info("接口:{},参数:{},返回:{}", control, JSONObject.toJSONString(paramMap), result);
     }
 
     @Override

@@ -8,7 +8,7 @@
         <version>1.0.0</version>
     </parent>
     <artifactId>iot_epc_mj</artifactId>
-    <version>1.0.0-R20240125</version>
+    <version>1.0.0-R20240612</version>
     <dependencies>
         <dependency>
             <groupId>com.wanda.epc</groupId>
@@ -31,7 +31,7 @@
 
 
     <build>
-        <finalName>IOT_EPC_MJ_E8_API_${version}</finalName>
+        <finalName>IOT_EPC_MJ_hikvision_INMS-9000N_API_${version}</finalName>
     </build>
 
 </project>
