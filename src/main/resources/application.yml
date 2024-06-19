@@ -27,9 +27,11 @@ epc:
   appKey: 26194113
   appSecret: gxw4VWg0jF8UmBjalX1U
   cron: 0/30 * * * * ?
-#  查询
-  search: /api/resource/v2/door/search
-#  控制
+  #查询门禁设备列表
+  acsDeviceSearch: /api/resource/v2/acsDevice/search
+  #查询门禁点表
+  doorSearch: /api/resource/v2/door/search
+  #控制
   control: /api/acs/v1/door/doControl
-#  读卡器在线状态
+  #读卡器在线状态
   states: /api/acs/v1/door/states

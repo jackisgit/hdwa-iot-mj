@@ -41,16 +41,25 @@ public class DeviceHandler extends BaseDevice {
     /**
      * 门禁集合
      */
-    Set<String> doorIndexSet = new HashSet<>();
-
+    Set<Object> doorIndexSet = new HashSet<>();
+    /**
+     * 门禁点indexCode与控制器ip门编号的对应
+     */
+    Map<Object, Object> indexCode2IpDoorNoMap = new HashMap<>();
+    /**
+     * 控制器ip门编号与门禁点indexCode的对应
+     */
+    Map<Object, Object> ipDoorNo2IndexCodeMap = new HashMap<>();
     @Value("${epc.host}")
     private String host;
     @Value("${epc.appKey}")
     private String appKey;
     @Value("${epc.appSecret}")
     private String appSecret;
-    @Value("${epc.search}")
-    private String search;
+    @Value("${epc.acsDeviceSearch}")
+    private String acsDeviceSearch;
+    @Value("${epc.doorSearch}")
+    private String doorSearch;
     @Value("${epc.control}")
     private String control;
     @Value("${epc.states}")
@@ -89,12 +98,39 @@ public class DeviceHandler extends BaseDevice {
         // post请求Form表单参数
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("pageNo", "1");
-        paramMap.put("pageSize", "200");
-        String result = sendHttps(search, paramMap);
-        log.info("接口:{},参数:{},返回:{}", search, JSONObject.toJSONString(paramMap), result);
-        deviceParamListMap.forEach((key, value) -> {
-            doorIndexSet.add(key.split("_")[0]);
-        });
+        paramMap.put("pageSize", "500");
+        String result = sendHttps(acsDeviceSearch, paramMap);
+        log.info("接口:{},参数:{},返回:{}", acsDeviceSearch, JSONObject.toJSONString(paramMap), result);
+        List<Map<String, Object>> list1 = (List<Map<String, Object>>) JSONPath.read(result, "$.data.list");
+        if (CollectionUtils.isEmpty(list1)) {
+            log.error("接口返回值为空");
+            return;
+        }
+        Map<Object, Object> acsDeviceMap = new HashMap<>();
+        for (Map<String, Object> map : list1) {
+            Object indexCode = map.get("indexCode");
+            Object ip = map.get("ip");
+            acsDeviceMap.put(indexCode, ip);
+        }
+        Map<String, Object> paramMap2 = new HashMap<>();
+        paramMap2.put("pageNo", "1");
+        paramMap2.put("pageSize", "1000");
+        String result2 = sendHttps(doorSearch, paramMap2);
+        log.info("接口:{},参数:{},返回:{}", doorSearch, JSONObject.toJSONString(paramMap2), result2);
+        List<Map<String, Object>> list2 = (List<Map<String, Object>>) JSONPath.read(result, "$.data.list");
+        if (CollectionUtils.isEmpty(list2)) {
+            log.error("接口返回值为空");
+            return;
+        }
+        for (Map<String, Object> map : list2) {
+            Object indexCode = map.get("indexCode");
+            doorIndexSet.add(indexCode);
+            Object doorNo = map.get("doorNo");
+            Object parentIndexCode = map.get("parentIndexCode");
+            Object ip = acsDeviceMap.get(parentIndexCode);
+            indexCode2IpDoorNoMap.put(indexCode, ip + "_" + doorNo);
+            ipDoorNo2IndexCodeMap.put(ip + "_" + doorNo, indexCode);
+        }
     }
 
     @Override
@@ -105,10 +141,11 @@ public class DeviceHandler extends BaseDevice {
         log.info("接口:{},参数:{},返回:{}", states, JSONObject.toJSONString(paramMap), result);
         List<Map<String, Object>> list = (List<Map<String, Object>>) JSONPath.read(result, "$.data.authDoorList");
         if (CollectionUtils.isEmpty(list)) {
+            log.error("接口返回值为空");
             return false;
         }
         for (Map<String, Object> map : list) {
-            String doorIndexCode = String.valueOf(map.get("doorIndexCode"));
+            Object ipDoorNo = indexCode2IpDoorNoMap.get(map.get("doorIndexCode"));
             //门状态 1: 开门状态 2: 关门状态 3: 离线状态 4: 常闭 5: 反锁 6: 常开 7: 常开 8: 常闭
             String doorState = String.valueOf(map.get("doorState"));
             String onlineStatus = "1";
@@ -119,8 +156,8 @@ public class DeviceHandler extends BaseDevice {
             if ("1,6,7".contains(doorState)) {
                 openStatus = "1";
             }
-            sendMsg(doorIndexCode + ONLINE_STATUS, onlineStatus);
-            sendMsg(doorIndexCode + OPEN_STATUS, openStatus);
+            sendMsg(ipDoorNo + ONLINE_STATUS, onlineStatus);
+            sendMsg(ipDoorNo + OPEN_STATUS, openStatus);
         }
         return true;
     }
@@ -137,13 +174,13 @@ public class DeviceHandler extends BaseDevice {
             }
             redisUtil.set(outParamId, "0", 5);
             final String[] strings = deviceMessage.getOutParamId().split("_");
-            control(strings[0], value);
+            control(ipDoorNo2IndexCodeMap.get(strings[0] + "_" + strings[1]), value);
         }
     }
 
-    public void control(String doorIndexCodes, String value) {
+    public void control(Object doorIndexCodes, String value) {
         Map<String, Object> paramMap = new HashMap<>();
-        Set<String> set =new HashSet<>();
+        Set<Object> set = new HashSet<>();
         set.add(doorIndexCodes);
         paramMap.put("doorIndexCodes", set);
         int controlType = 1;
