@@ -117,7 +117,7 @@ public class DeviceHandler extends BaseDevice {
         paramMap2.put("pageSize", "1000");
         String result2 = sendHttps(doorSearch, paramMap2);
         log.info("接口:{},参数:{},返回:{}", doorSearch, JSONObject.toJSONString(paramMap2), result2);
-        List<Map<String, Object>> list2 = (List<Map<String, Object>>) JSONPath.read(result, "$.data.list");
+        List<Map<String, Object>> list2 = (List<Map<String, Object>>) JSONPath.read(result2, "$.data.list");
         if (CollectionUtils.isEmpty(list2)) {
             log.error("接口返回值为空");
             return;
