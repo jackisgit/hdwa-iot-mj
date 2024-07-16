@@ -34,5 +34,6 @@ epc:
   localhost: 10.107.192.21
   cron: 0/30 * * * * ?
   getOnlineStatusPath: $.data.children.children.children
+  clearAlarmCron: 0 */2 * * * ?
 netty:
   port: 60000
