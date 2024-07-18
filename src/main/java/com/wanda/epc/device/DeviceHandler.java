@@ -22,10 +22,7 @@ import java.security.KeyFactory;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.X509EncodedKeySpec;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author 孙率众
@@ -50,6 +47,10 @@ public class DeviceHandler extends BaseDevice {
      * 设备树搜索URI（获取在线状态）
      */
     private final String treeSearchURI = "/evo-apigw/evo-accesscontrol/{0}/resource/tree/search";
+    /**
+     * 子系统分页查询（获取在线状态）
+     */
+    private final String subsystemPage = "/evo-apigw/evo-brm/{0}/device/channel/subsystem/page";
     /**
      * 门通道查询URI（获取门开关状态）
      */
@@ -115,6 +116,30 @@ public class DeviceHandler extends BaseDevice {
             }
             sendMsg(id + ONLINE_STATUS, value);
             idList.add(id);
+        });
+        getOpenStatus(idList);
+    }
+
+    public void getOnlineStatus2() {
+        String url = host + MessageFormat.format(subsystemPage, "1.2.0");
+        log.info("接口:{}", url);
+        String result = HttpRequest.post(url).body("{\"deviceCategory\":\"8\",\"deviceType\":\"\",\"pageSize\":200,\"pageNum\":1}").addHeaders(header).timeout(2000).execute().body();
+        Object read = JSONPath.read(result, getOnlineStatusPath);
+        List<SearchPageDTO> searchPageDTOS = JSONArray.parseArray(String.valueOf(read), SearchPageDTO.class);
+        log.info("接口:{},返回值:{}解析后长度为:{}", url,JSONObject.toJSONString(searchPageDTOS), searchPageDTOS.size());
+        if (CollectionUtils.isEmpty(searchPageDTOS)) {
+            return;
+        }
+        List<String> idList = new ArrayList<>();
+        searchPageDTOS.forEach(searchPageDTO -> {
+            String value = "0";
+            if (1 == searchPageDTO.getIsOnline()) {
+                value = "1";
+            }
+            final String channelCode = searchPageDTO.getChannelCode();
+            log.info("待发送,点位:{}，值:{}", channelCode + ONLINE_STATUS, value);
+            sendMsg(channelCode + ONLINE_STATUS, value);
+            idList.add(channelCode);
         });
         getOpenStatus(idList);
     }
@@ -256,6 +281,20 @@ public class DeviceHandler extends BaseDevice {
         return false;
     }
 
+    public void clearAlarm() {
+        log.info("子系统不返回报警恢复指令，自动处理");
+        Iterator<Map.Entry<String, List<DeviceMessage>>> iterator = BaseDevice.deviceParamListMap.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, List<DeviceMessage>> next = iterator.next();
+            if (next.getKey().endsWith(DeviceHandler.ALARM_STATUS) && !CollectionUtils.isEmpty(next.getValue())) {
+                for (DeviceMessage deviceMessage : next.getValue()) {
+                    deviceMessage.setValue("0");
+                    commonDevice.sendMessage(deviceMessage);
+                }
+            }
+        }
+    }
+
     private String baseEncrypt(String publicKey, String password) throws Exception {
         byte[] decoded = Base64.decode(publicKey);
         RSAPublicKey pubKey = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(decoded));
@@ -265,6 +304,5 @@ public class DeviceHandler extends BaseDevice {
         //**此处Base64编码，开发者可以使用自己的库**
         return Base64.encode(cipher.doFinal(password.getBytes("UTF-8")));
     }
-
 
 }
