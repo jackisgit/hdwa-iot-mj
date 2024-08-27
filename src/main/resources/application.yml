@@ -20,10 +20,10 @@ spring:
 #广场ID及GatewayId
 epc:
   gatewayId: MJ
-  gcId: 5001130030
+  gcId: 4409021082
   subsystem: mjgl/
   threadNum: 1
   host: http://192.168.11.2:50014
   key: 0d24633f36fc4f939ad8281f111f332d
   password: zg7CkEWf
-  cron: 0/30 * * * * ?
+  cron: 0/15 * * * * ?
