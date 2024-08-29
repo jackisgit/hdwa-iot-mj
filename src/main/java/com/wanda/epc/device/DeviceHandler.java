@@ -133,37 +133,33 @@ public class DeviceHandler extends BaseDevice {
             log.error("采集门通道数据失败", e);
         }
 
+        String url = host + accessOvertimeAndIllegalCardSwiping;
+        long currentTimeMillis = System.currentTimeMillis();
+        int pageIndex = 1;
+        int maxResultCount = 1;
+        Map<String, Object> params = new HashMap<>();
+        params.put("pageIndex", pageIndex);
+        params.put("maxResultCount", maxResultCount);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.MINUTE, -1);
+        Map<String, Object> query = new HashMap<>();
+        //当前时间减去1分钟，查最近1分钟有没有报警记录
+        query.put("startTime", DateUtil.format(calendar.getTime(), "yyyy-MM-dd HH:mm:ss"));
+        query.put("endTime", DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+        query.put("isViewFullData", false);
+        String sign = postSign(url + "maxResultCount=" + maxResultCount + "&pageIndex=" + pageIndex, currentTimeMillis);
+        Map<String, String> header = buildHeader(currentTimeMillis, sign, false);
+
         //非法开门数据
         try {
-            String url = host + accessOvertimeAndIllegalCardSwiping;
-            long currentTimeMillis = System.currentTimeMillis();
-            int pageIndex = 1;
-            int maxResultCount = 1;
-            Map<String, Object> params = new HashMap<>();
-            params.put("pageIndex", pageIndex);
-            params.put("maxResultCount", maxResultCount);
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(new Date());
-            calendar.add(Calendar.MINUTE, -1);
-            Map<String, Object> query = new HashMap<>();
-            //当前时间减去1分钟，查最近1分钟有没有报警记录
-            query.put("startTime", DateUtil.format(calendar.getTime(), "yyyy-MM-dd HH:mm:ss"));
-            query.put("endTime", DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
             //查询异常类型：1非法开门 2超时开门
             query.put("abnormalType", 1);
-            query.put("isViewFullData", false);
-            String sign = postSign(url + "maxResultCount=" + maxResultCount + "&pageIndex=" + pageIndex, currentTimeMillis);
-            Map<String, String> header = buildHeader(currentTimeMillis, sign, false);
             deviceParamListMap.forEach((s, deviceMessages) -> {
                 if (!s.contains(WD_ILLEGALOPENALARM)) {
                     return;
                 }
-               /* query.put("doorId", 0);
-                query.put("doorName", "");
-                query.put("deviceName", "");
-                query.put("areaId", 0);
-                query.put("areaName", "");*/
                 String deviceId = s.split("_")[0];
                 query.put("deviceId", deviceId);
                 params.put("queryDto", query);
@@ -171,22 +167,47 @@ public class DeviceHandler extends BaseDevice {
                 String body = Base64.encode(JSONObject.toJSONString(params));
                 String result = HttpRequest.post(url).body(body).contentType("application/json;charset=UTF-8").addHeaders(header).timeout(2000).execute().body();
                 log.info("非法开门数据采集接口:{},返回值:{}", url, result);
-                JSONObject jsonObject = JSON.parseObject(result);
-                if (jsonObject.getBoolean("success")) {
-                    JSONObject resultJson = jsonObject.getJSONObject("result");
-                    JSONArray item = resultJson.getJSONArray("item");
-                    String value = "0";
-                    if (item.size() > 0) {
-                        value = "1";
-                    }
-                    sendMsg(deviceId + WD_ILLEGALOPENALARM, value);
-                }
+                sendData(deviceId, result, WD_ILLEGALOPENALARM);
             });
         } catch (Exception e) {
             log.error("采集非法开门数据失败", e);
         }
 
+        //超时开门数据
+        try {
+            //查询异常类型：1非法开门 2超时开门
+            query.put("abnormalType", 2);
+            deviceParamListMap.forEach((s, deviceMessages) -> {
+                if (!s.contains(WD_OPENDOOROVERTIMEALARM)) {
+                    return;
+                }
+                String deviceId = s.split("_")[0];
+                query.put("deviceId", deviceId);
+                params.put("queryDto", query);
+                log.info("超时开门数据采集接口:{},请求头:{},参数:{}", url, header, params);
+                String body = Base64.encode(JSONObject.toJSONString(params));
+                String result = HttpRequest.post(url).body(body).contentType("application/json;charset=UTF-8").addHeaders(header).timeout(2000).execute().body();
+                log.info("超时开门数据采集接口:{},返回值:{}", url, result);
+                sendData(deviceId, result, WD_OPENDOOROVERTIMEALARM);
+            });
+        } catch (Exception e) {
+            log.error("采集超时开门数据失败", e);
+        }
+
         return true;
+    }
+
+    private void sendData(String deviceId, String result, String suffix) {
+        JSONObject jsonObject = JSON.parseObject(result);
+        if (jsonObject.getBoolean("success")) {
+            JSONObject resultJson = jsonObject.getJSONObject("result");
+            JSONArray item = resultJson.getJSONArray("item");
+            String value = "0";
+            if (item.size() > 0) {
+                value = "1";
+            }
+            sendMsg(deviceId + suffix, value);
+        }
     }
 
     @Override
