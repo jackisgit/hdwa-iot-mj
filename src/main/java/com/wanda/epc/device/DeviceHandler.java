@@ -140,9 +140,9 @@ public class DeviceHandler extends BaseDevice {
         }
         channelDTOS.forEach(channelDTO -> {
             String id = channelDTO.getChannelCode();
-            String value = "1";
-            if (!"1".equals(channelDTO.getStatus())) {
-                value = "0";
+            String value = "0";
+            if (1 == channelDTO.getStatus()) {
+                value = "1";
             }
             sendMsg(id + "_openStatus", value);
         });
@@ -206,21 +206,6 @@ public class DeviceHandler extends BaseDevice {
         return true;
     }
 
-    /**
-     * 发送点位信息
-     *
-     * @param key
-     * @param value
-     */
-    private void sendMsg(String key, String value) {
-        final List<DeviceMessage> deviceMessages = deviceParamListMap.get(key);
-        if (!CollectionUtils.isEmpty(deviceMessages)) {
-            deviceMessages.forEach(deviceMessage -> {
-                deviceMessage.setValue(value);
-                sendMessage(deviceMessage);
-            });
-        }
-    }
 
     /**
      * 收到报警
