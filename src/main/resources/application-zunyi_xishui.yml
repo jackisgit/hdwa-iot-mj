@@ -18,5 +18,5 @@ netty:
 jobs:
   cron: 0/30 * * * * ?
 
-
+alarmType: 1430
 

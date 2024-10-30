@@ -22,6 +22,8 @@ import java.security.KeyFactory;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.X509EncodedKeySpec;
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -90,6 +92,15 @@ public class DeviceHandler extends BaseDevice {
      */
     private String closeDoorURI = "/evo-apigw/evo-accesscontrol/{0}/card/accessControl/channelControl/closeDoor";
 
+    /**
+     * 防拆报警
+     */
+    private String alarmURL = "/evo-apigw/evo-event/{0}/alarm-record/page";
+
+
+    private static final String ILLEGAL_OPEN_ALARM = "_wD_IllegalOpenAlarm";
+    private static final String TAMPER_ALARM = "_tamperAlarm";
+
     // ========================================门禁========================================
     /**
      * 报警订阅事件URI（设置报警回调采集器的URL地址）
@@ -103,7 +114,6 @@ public class DeviceHandler extends BaseDevice {
 
     public void getOnlineStatus() {
         String url = host + MessageFormat.format(treeSearchURI, version);
-        log.info("接口:{}", url);
         String result = HttpRequest.post(url).body("{\"typeCode\":\"01;0;8;7\"}").addHeaders(header).timeout(2000).execute().body();
         log.info("接口:{},返回值:{}", url, result);
         Object read = JSONPath.read(result, "$.data.children");
@@ -122,6 +132,9 @@ public class DeviceHandler extends BaseDevice {
             idList.add(id);
         });
         getOpenStatus(idList);
+
+        getIllegalDoorOpeningAlarm();
+        getTamperProofAlarm();
     }
 
     public void getOpenStatus(List<String> idList) {
@@ -130,7 +143,6 @@ public class DeviceHandler extends BaseDevice {
         channelCodesDTO.setAllowSmartLock(false);
         String orderStr = JSONObject.toJSONString(channelCodesDTO);
         String url = host + MessageFormat.format(channelsURI, version);
-        log.info("接口:{}", url);
         String result = HttpRequest.post(url).addHeaders(header).body(orderStr).timeout(2000).execute().body();
         log.info("接口:{},返回值:{}", url, result);
         Object read = JSONPath.read(result, "$.data");
@@ -148,6 +160,93 @@ public class DeviceHandler extends BaseDevice {
         });
     }
 
+    /**
+     * 非法开门报警
+     */
+    public void getIllegalDoorOpeningAlarm() {
+        String url = host + MessageFormat.format(alarmURL, version);
+        JSONObject jsonObject = getObject();
+        jsonObject.put("alarmType", 1430);
+        deviceParamListMap.forEach((key, value) -> {
+            for (DeviceMessage deviceMessage : value) {
+                if (!deviceMessage.getOutParamId().contains(ILLEGAL_OPEN_ALARM)) {
+                    return;
+                }
+                String id = deviceMessage.getOutParamId().split("_")[0];
+                JSONArray ids = new JSONArray();
+                ids.add(id);
+                jsonObject.put("nodeCodeList", ids);
+                log.info("接口:{}", jsonObject);
+                String result = HttpRequest.post(url).body(jsonObject.toJSONString()).addHeaders(header).timeout(2000).execute().body();
+                Object read = JSONPath.read(result, "$.data.pageData");
+                JSONArray jsonArray = JSONArray.parseArray(String.valueOf(read));
+                String flag = "0";
+                if (jsonArray.size() > 0) {
+                    log.info("返回值:{}", result);
+                    JSONObject jsonObject1 = (JSONObject) jsonArray.get(0);
+                    if (jsonObject1.getInteger("alarmStat") == 1) {
+                        flag = "1";
+                    }
+                }
+                sendMsg(id + ILLEGAL_OPEN_ALARM, flag);
+            }
+        });
+    }
+
+    private JSONObject getObject() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("pageNum", 1);
+        jsonObject.put("pageSize", 1);
+        jsonObject.put("sort", "alarmDate");
+        jsonObject.put("sortType", "DESC");
+        jsonObject.put("alarmStat", 1);
+        jsonObject.put("deviceCategory", 8);
+        //当前时间往前推5分钟
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime startTime = now.minusMinutes(5);
+        //格式话yyyy-MM-dd HH:mm:ss
+        String startTimeStr = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(startTime);
+        String endTimeStr = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(now);
+        jsonObject.put("alarmStartDateString", startTimeStr);
+        jsonObject.put("alarmEndDateString", endTimeStr);
+        return jsonObject;
+    }
+
+
+    /**
+     * 防拆报警
+     */
+    public void getTamperProofAlarm() {
+        String url = host + MessageFormat.format(alarmURL, version);
+        JSONObject jsonObject = getObject();
+        jsonObject.put("alarmType", 701026);
+
+        deviceParamListMap.forEach((key, value) -> {
+            for (DeviceMessage deviceMessage : value) {
+                if (!deviceMessage.getOutParamId().contains(TAMPER_ALARM)) {
+                    return;
+                }
+                String id = deviceMessage.getOutParamId().split("_")[0];
+                JSONArray ids = new JSONArray();
+                ids.add(id);
+                jsonObject.put("nodeCodeList", ids);
+                log.info("接口:{}", jsonObject);
+                String result = HttpRequest.post(url).body(jsonObject.toJSONString()).addHeaders(header).timeout(2000).execute().body();
+                Object read = JSONPath.read(result, "$.data.pageData");
+                JSONArray jsonArray = JSONArray.parseArray(String.valueOf(read));
+                String flag = "0";
+                if (jsonArray.size() > 0) {
+                    log.info("返回值:{}", result);
+                    JSONObject jsonObject1 = (JSONObject) jsonArray.get(0);
+                    if (jsonObject1.getInteger("alarmStat") == 1) {
+                        flag = "1";
+                    }
+                }
+                sendMsg(id + TAMPER_ALARM, flag);
+            }
+        });
+    }
+
 
     /**
      * 初始化获取公钥、token、注册回调地址
@@ -157,7 +256,6 @@ public class DeviceHandler extends BaseDevice {
     @PostConstruct
     public void init() throws Exception {
         String url = host + MessageFormat.format(publicKeyURI, version);
-        log.info("接口:{}", url);
         String publicKeyResult = HttpRequest.get(url).timeout(2000).execute().body();
         log.info("接口:{},返回值:{}", url, publicKeyResult);
         publicKey = String.valueOf(JSONPath.read(publicKeyResult, "$.data.publicKey"));
