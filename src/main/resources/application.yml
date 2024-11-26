@@ -22,9 +22,9 @@ beanName: deviceHandler
 
 epc:
   gatewayId: MJ
-  gcId: 4205810012
+  gcId: 1711564200
   subsystem: mjgl/
   threadNum: 5
 tcp:
-  serverIP: 127.0.0.1
-  port: 60000
+  serverIP: 172.16.4.9
+  port: 60006

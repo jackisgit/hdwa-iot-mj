@@ -38,12 +38,12 @@ public class DeviceHandler extends BaseDevice {
     /**
      * 查询全部设备指令
      */
-    private static final String queryAll = "N3000 -user abc -password 123  -GetAllDoorStatus";
+    private static final String queryAll = "N3000 -user admin -password Hxwd1122  -GetAllDoorStatus";
 
     /**
      * 开门指令
      */
-    private static final String openDoor = "N3000 -USER \"abc\" -PASSWORD \"123\" -OPEN \"{0}\"";
+    private static final String openDoor = "N3000 -USER \"admin\" -PASSWORD \"Hxwd1122\" -OPEN \"{0}\"";
     public static final String EQUIP_SWITCH_SET = "_equipSwitchSet";
     @Resource
     CommonDevice commonDevice;
