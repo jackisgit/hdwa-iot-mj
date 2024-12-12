@@ -161,7 +161,7 @@ public class DeviceHandler extends BaseDevice {
                     return;
                 }
                 String deviceId = s.split("_")[0];
-                query.put("deviceId", deviceId);
+                query.put("doorId", deviceId);
                 params.put("queryDto", query);
                 log.info("非法开门数据采集接口:{},请求头:{},参数:{}", url, header, params);
                 String body = Base64.encode(JSONObject.toJSONString(params));
@@ -182,7 +182,7 @@ public class DeviceHandler extends BaseDevice {
                     return;
                 }
                 String deviceId = s.split("_")[0];
-                query.put("deviceId", deviceId);
+                query.put("doorId", deviceId);
                 params.put("queryDto", query);
                 log.info("超时开门数据采集接口:{},请求头:{},参数:{}", url, header, params);
                 String body = Base64.encode(JSONObject.toJSONString(params));
