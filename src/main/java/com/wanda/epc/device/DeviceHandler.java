@@ -143,9 +143,9 @@ public class DeviceHandler extends BaseDevice {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        calendar.add(Calendar.MINUTE, -1);
+        //当前时间减去4分钟，查最近4分钟有没有报警记录
+        calendar.add(Calendar.MINUTE, -3);
         Map<String, Object> query = new HashMap<>();
-        //当前时间减去1分钟，查最近1分钟有没有报警记录
         query.put("startTime", DateUtil.format(calendar.getTime(), "yyyy-MM-dd HH:mm:ss"));
         query.put("endTime", DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
         query.put("isViewFullData", false);
