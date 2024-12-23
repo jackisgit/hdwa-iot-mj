@@ -36,6 +36,9 @@ public class CarsafeControlDevice extends BaseDevice {
     public static final String TAMPER_ALARM = "_tamperAlarm";
     public static final String OPEN_DOOR_OVER_TIME_ALARM = "_openDoorOverTimeAlarm";
     public static final String EQUIP_SWITCH_SET = "equipSwitchSet";
+    @Value("${access.userNo}")
+    private String userNo;
+
     @Value("${access.secret}")
     private String privateKey;
 
@@ -81,7 +84,7 @@ public class CarsafeControlDevice extends BaseDevice {
      */
     public void openStatus(DoorStateDto doorStateDto) {
         String value;
-        if (doorStateDto.getOpened().equals("1") || doorStateDto.getOpened().equals("2")) {
+        if ("1".equals(doorStateDto.getOpened()) || "2".equals(doorStateDto.getOpened())) {
             value = "1";
         } else {
             value = "0";
@@ -96,7 +99,7 @@ public class CarsafeControlDevice extends BaseDevice {
      */
     public void faultStatus(DoorStateDto doorStateDto) {
         String value;
-        if (doorStateDto.getConnected().equals("0")) {
+        if ("0".equals(doorStateDto.getConnected())) {
             value = "1";
         } else {
             value = "0";
@@ -111,7 +114,7 @@ public class CarsafeControlDevice extends BaseDevice {
      */
     public void tamperAlarm(DoorStateDto doorStateDto) {
         String value;
-        if (doorStateDto.getBroken().equals("1")) {
+        if ("1".equals(doorStateDto.getBroken())) {
             value = "1";
         } else {
             value = "0";
@@ -126,7 +129,7 @@ public class CarsafeControlDevice extends BaseDevice {
      */
     public void openDoorOverTimeAlarm(DoorStateDto doorStateDto) {
         String value;
-        if (doorStateDto.getOpenedtimeout().equals("1")) {
+        if ("1".equals(doorStateDto.getOpenedtimeout())) {
             value = "1";
         } else {
             value = "0";
@@ -140,7 +143,7 @@ public class CarsafeControlDevice extends BaseDevice {
         DeviceMessage deviceMessage = controlParamMap.get(meter + "-" + funcid);
         if (deviceMessage != null && deviceMessage.getOutParamId() != null && deviceMessage.getOutParamId().endsWith(EQUIP_SWITCH_SET)) {
             //如果为开
-            if (value.equals("1.0")) {
+            if ("1.0".equals(value)) {
                 String outParamId = deviceMessage.getOutParamId();
                 String[] split = outParamId.split("_");
                 String controllerNo = split[0];
@@ -168,7 +171,8 @@ public class CarsafeControlDevice extends BaseDevice {
      */
     public Boolean openDoor(String controllerNo, String doorNo) {
         try {
-            Map<String, String> dataMap = new HashMap<>();
+            Map<String, String> dataMap = new HashMap<>(16);
+            dataMap.put("userno", userNo);
             dataMap.put("controllerno", controllerNo);
             dataMap.put("doorno", doorNo);
             String dataStr = JSONObject.toJSONString(dataMap);
@@ -179,7 +183,7 @@ public class CarsafeControlDevice extends BaseDevice {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             // 格式化当前日期时间为指定格式的字符串
             String nowDateTime = currentDateTime.format(formatter);
-            Map<String, Object> validateMap = new HashMap<String, Object>();
+            Map<String, Object> validateMap = new HashMap<>();
             validateMap.put("from", "UT");// caller
             validateMap.put("timestamp", nowDateTime);// timestemp
             validateMap.put("nonce", String.valueOf(randomMath()));// nonce
@@ -236,8 +240,7 @@ public class CarsafeControlDevice extends BaseDevice {
             log.info("门禁门状态列表结果集：{}", result);
             if (StringUtils.isNotBlank(result)) {
                 DoorStateResultDto doorStateResultDto = JSON.parseObject(result, DoorStateResultDto.class);
-                List<DoorStateDto> doorStateDtoList = doorStateResultDto.getData();
-                return doorStateDtoList;
+                return doorStateResultDto.getData();
             }
         } catch (Exception e) {
             log.error("门禁门状态列表结果集异常", e);

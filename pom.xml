@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>iot_epc_mj</artifactId>
-    <version>1.0.0-R20240125</version>
+    <version>1.0.0-R20241223</version>
 
     <dependencies>
         <dependency>
@@ -30,7 +30,7 @@
 
 
     <build>
-        <finalName>IOT_EPC_MJ_CARSAFE_API_${version}</finalName>
+        <finalName>iot_epc_mj_carsafe_api_${version}</finalName>
     </build>
 
 </project>
