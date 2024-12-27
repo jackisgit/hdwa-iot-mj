@@ -18,7 +18,7 @@ spring:
     password:
 epc:
   gatewayId: MJ
-  gcId: 4501091000
+  gcId: 2024000480
   subsystem: mj/
   threadNum: 1
   cron: 0 0/1 * * * ?
@@ -27,4 +27,4 @@ epc:
 
 m_nPort: 37777
 m_strUser: admin
-m_strPassword: 123456
+m_strPassword: LHWD1234

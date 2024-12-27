@@ -197,8 +197,10 @@ public class DaHuaDoorDevice extends BaseDevice {
         for (int i = 0; i < channelId; i++) {
             doorStatus.nChannel = i;
             doorStatus.write();
+            int finalI = i;
             //查询对应门状态
             LoginHandleList.forEach(handle -> {
+                doorStatus.nChannel = finalI;
                 boolean result = LoginModule.netsdk.CLIENT_QueryDevState(
                         handle, cmd, doorStatus.getPointer(), doorStatus.size(), reference, 3000);
                 if (!result) {
@@ -206,6 +208,7 @@ public class DaHuaDoorDevice extends BaseDevice {
                 }
                 doorStatus.read();
                 NetSDKLib.LLong myKey = new NetSDKLib.LLong(handle.longValue());
+                doorStatus.nChannel = finalI;
                 String str = loginMap.get(myKey) + "_" + doorStatus.nChannel + OPEN_STATUS;
                 log.info("查询门禁状态用户ID：{},门禁状态：{}，outParamId:{}", handle, doorStatus.emStateType, str);
                 String value = null;
@@ -214,8 +217,11 @@ public class DaHuaDoorDevice extends BaseDevice {
                 } else if (NetSDKLib.EM_NET_DOOR_STATUS_TYPE.EM_NET_DOOR_STATUS_CLOSE == doorStatus.emStateType) {
                     value = "0";
                 }
-                sendMsg(str, value);
+                if (value != null) {
+                    sendMsg(str, value);
+                }
             });
+            log.info("查询门禁状态完成");
         }
     }
 
