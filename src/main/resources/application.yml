@@ -12,7 +12,7 @@ mqtt:
 spring:
   redis:
     host: 127.0.0.1
-    port: 6379
+    port: 16379
     password:
 
 server:
@@ -22,9 +22,9 @@ beanName: deviceHandler
 
 epc:
   gatewayId: MJ
-  gcId: 1711564200
+  gcId: 2023000891
   subsystem: mjgl/
   threadNum: 5
 tcp:
-  serverIP: 172.16.4.9
+  serverIP: 172.16.10.30
   port: 60006
