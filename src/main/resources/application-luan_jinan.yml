@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://192.168.0.100:1433;DatabaseName=newcarsafe
+    username: sa
+    password: carsafe
+    validationQuery: SELECT 1
+    max-active: 100
+    min-idle: 10
+    max-wait: 10000
+
+epc:
+  gatewayId: MJ
+  gcId: 3415024000
+  subsystem: mjgl/
+  threadNum: 1
+  cron: 0/60 * * * * ?
+  AcssDoorOpenUrl: http://192.168.1.100:8011/AcssDoorOpen?s_key=D41D8CD98F00B204E9800998ECF8427E&userno=0001000343
+

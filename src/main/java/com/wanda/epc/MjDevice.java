@@ -70,22 +70,22 @@ public class MjDevice extends BaseDevice {
                 //点位编号
                 String pointNumber = controllerNo.concat("_").concat(doorNo);
                 String onlineStatusValue = "0";
-                if (connected.equals("1")) {
+                if ("1".equals(connected)) {
                     onlineStatusValue = "1";
                 }
                 sendMsg(pointNumber.concat(ONLINE_STATUS), onlineStatusValue);
                 String wdOpenDoorOverTimeAlarmvalue = "0";
-                if (openedTimeout.equals("1")) {
+                if ("1".equals(openedTimeout)) {
                     wdOpenDoorOverTimeAlarmvalue = "1";
                 }
                 sendMsg(pointNumber.concat(W_D_OPEN_DOOR_OVER_TIME_ALARM), wdOpenDoorOverTimeAlarmvalue);
                 String wdIllegalOpenAlarmValue = "0";
-                if (broken.equals("1")) {
+                if ("1".equals(broken)) {
                     wdIllegalOpenAlarmValue = "1";
                 }
                 sendMsg(pointNumber.concat(W_D_ILLEGAL_OPEN_ALARM), wdIllegalOpenAlarmValue);
                 String openStatusValue = "0";
-                if (opened.equals("11") || opened.equals("12")) {
+                if ("11".equals(opened) || "12".equals(opened)) {
                     openStatusValue = "1";
                 }
                 sendMsg(pointNumber.concat(OPEN_STATUS), openStatusValue);
