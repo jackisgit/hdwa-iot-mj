@@ -18,6 +18,7 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.crypto.Cipher;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.X509EncodedKeySpec;
@@ -122,11 +123,11 @@ public class DeviceHandler extends BaseDevice {
 
     public void getOnlineStatus2() {
         String url = host + MessageFormat.format(subsystemPage, "1.2.0");
-        log.info("接口:{}", url);
         String result = HttpRequest.post(url).body("{\"deviceCategory\":\"8\",\"deviceType\":\"\",\"pageSize\":200,\"pageNum\":1}").addHeaders(header).timeout(2000).execute().body();
+        log.info("接口:{},返回值:{}", url,result);
         Object read = JSONPath.read(result, getOnlineStatusPath);
         List<SearchPageDTO> searchPageDTOS = JSONArray.parseArray(String.valueOf(read), SearchPageDTO.class);
-        log.info("接口:{},返回值:{}解析后长度为:{}", url,JSONObject.toJSONString(searchPageDTOS), searchPageDTOS.size());
+        log.info("接口:{},解析返回值:{}解析后长度为:{}", url,JSONObject.toJSONString(searchPageDTOS), searchPageDTOS.size());
         if (CollectionUtils.isEmpty(searchPageDTOS)) {
             return;
         }
@@ -283,9 +284,7 @@ public class DeviceHandler extends BaseDevice {
 
     public void clearAlarm() {
         log.info("子系统不返回报警恢复指令，自动处理");
-        Iterator<Map.Entry<String, List<DeviceMessage>>> iterator = BaseDevice.deviceParamListMap.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<String, List<DeviceMessage>> next = iterator.next();
+        for (Map.Entry<String, List<DeviceMessage>> next : BaseDevice.deviceParamListMap.entrySet()) {
             if (next.getKey().endsWith(DeviceHandler.ALARM_STATUS) && !CollectionUtils.isEmpty(next.getValue())) {
                 for (DeviceMessage deviceMessage : next.getValue()) {
                     deviceMessage.setValue("0");
@@ -302,7 +301,7 @@ public class DeviceHandler extends BaseDevice {
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.ENCRYPT_MODE, pubKey);
         //**此处Base64编码，开发者可以使用自己的库**
-        return Base64.encode(cipher.doFinal(password.getBytes("UTF-8")));
+        return Base64.encode(cipher.doFinal(password.getBytes(StandardCharsets.UTF_8)));
     }
 
 }

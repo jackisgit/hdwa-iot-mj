@@ -33,7 +33,8 @@ epc:
   service: ThirdParty
   localhost: 10.107.192.21
   cron: 0/30 * * * * ?
-  getOnlineStatusPath: $.data.children.children.children
+  #有的广场可能不一样
+  getOnlineStatusPath: $.data.pageData
   clearAlarmCron: 0 */2 * * * ?
 netty:
   port: 60000
