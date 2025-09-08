@@ -192,7 +192,7 @@ public class DeviceHandler extends BaseDevice {
                 ",\"subsystem\":{\"subsystemType\":0,\"name\":\"" + subsystemName + "\",\"magic\":\"" + subsystemMagic + "\"}}}";
         String url2 = host + MessageFormat.format(mqinfoURI, version);
         log.info("接口:{},参数:{}", url2, mqinfo);
-        String result = HttpRequest.post(url2).body(mqinfo).addHeaders(header).timeout(2000).execute().body();
+        String result = HttpRequest.post(url2).body(mqinfo).addHeaders(header).timeout(10000).execute().body();
         log.info("接口:{},返回值:{}", url2, result);
     }
 
