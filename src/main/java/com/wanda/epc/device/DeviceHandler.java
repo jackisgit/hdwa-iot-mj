@@ -23,7 +23,11 @@ import java.security.KeyFactory;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.X509EncodedKeySpec;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author 孙率众
@@ -124,10 +128,10 @@ public class DeviceHandler extends BaseDevice {
     public void getOnlineStatus2() {
         String url = host + MessageFormat.format(subsystemPage, "1.2.0");
         String result = HttpRequest.post(url).body("{\"deviceCategory\":\"8\",\"deviceType\":\"\",\"pageSize\":200,\"pageNum\":1}").addHeaders(header).timeout(2000).execute().body();
-        log.info("接口:{},返回值:{}", url,result);
+        log.info("接口:{},返回值:{}", url, result);
         Object read = JSONPath.read(result, getOnlineStatusPath);
         List<SearchPageDTO> searchPageDTOS = JSONArray.parseArray(String.valueOf(read), SearchPageDTO.class);
-        log.info("接口:{},解析返回值:{}解析后长度为:{}", url,JSONObject.toJSONString(searchPageDTOS), searchPageDTOS.size());
+        log.info("接口:{},解析返回值:{}解析后长度为:{}", url, JSONObject.toJSONString(searchPageDTOS), searchPageDTOS.size());
         if (CollectionUtils.isEmpty(searchPageDTOS)) {
             return;
         }
@@ -177,12 +181,53 @@ public class DeviceHandler extends BaseDevice {
     @PostConstruct
     public void init() throws Exception {
         String url = host + MessageFormat.format(publicKeyURI, version);
-        log.info("接口:{}", url);
+        log.warn("接口:{}", url);
         String publicKeyResult = HttpRequest.get(url).timeout(2000).execute().body();
-        log.info("接口:{},返回值:{}", url, publicKeyResult);
+        log.warn("接口:{},返回值:{}", url, publicKeyResult);
         publicKey = String.valueOf(JSONPath.read(publicKeyResult, "$.data.publicKey"));
         encryptedText = baseEncrypt(publicKey, password);
         getToken();
+        //发送回调接口参数
+        asyncSendCallbackParams();
+    }
+
+    private void asyncSendCallbackParams() {
+        CompletableFuture.runAsync(() -> {
+            int maxRetries = 3;
+            int retryCount = 0;
+            boolean success = false;
+
+            while (retryCount < maxRetries && !success) {
+                try {
+                    sendCallbackParamsWithRetry();
+                    success = true;
+                    log.warn("回调接口参数发送成功");
+                } catch (Exception e) {
+                    retryCount++;
+                    log.warn("回调接口参数发送超时，第{}次重试", retryCount);
+                    if (retryCount >= maxRetries) {
+                        log.error("回调接口参数发送失败，已达最大重试次数: {}", maxRetries, e);
+                    }
+                }
+
+                // 添加重试间隔，避免频繁重试
+                if (!success && retryCount < maxRetries) {
+                    try {
+                        Thread.sleep(2000); // 2秒后重试
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        log.warn("重试间隔被中断", ie);
+                        break;
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * 发送回调接口参数（带超时检测）
+     */
+    private void sendCallbackParamsWithRetry() {
         String monitor = "http://" + localhost + ":" + serverPort + "/receive";
         String subsystemName = localhost + "_" + serverPort;
         String subsystemMagic = localhost + "_" + serverPort;
@@ -190,10 +235,16 @@ public class DeviceHandler extends BaseDevice {
                 "[{\"category\":\"alarm\",\"subscribeAll\":1,\"domainSubscribe\":2},{\"category\":\"business\",\"subscribeAll\":1,\"domainSubscribe\":2}" +
                 ",{\"category\":\"state\",\"subscribeAll\":1,\"domainSubscribe\":2},{\"category\":\"perception\",\"subscribeAll\":1,\"domainSubscribe\":2}]}]" +
                 ",\"subsystem\":{\"subsystemType\":0,\"name\":\"" + subsystemName + "\",\"magic\":\"" + subsystemMagic + "\"}}}";
+
         String url2 = host + MessageFormat.format(mqinfoURI, version);
-        log.info("接口:{},参数:{}", url2, mqinfo);
-        String result = HttpRequest.post(url2).body(mqinfo).addHeaders(header).timeout(10000).execute().body();
-        log.info("接口:{},返回值:{}", url2, result);
+        log.warn("接口:{},参数:{}", url2, mqinfo);
+
+        HttpRequest.post(url2)
+                .body(mqinfo)
+                .addHeaders(header)
+                .timeout(30000)
+                .execute()
+                .body();
     }
 
     /**
@@ -209,9 +260,9 @@ public class DeviceHandler extends BaseDevice {
         tokenMap.put("public_key", publicKey);
         String tokenMapStr = JSONObject.toJSONString(tokenMap);
         String url = host + MessageFormat.format(tokenURI, version);
-        log.info("接口:{},参数:{}", url, tokenMapStr);
-        String tokenResult = HttpUtil.post(url, tokenMapStr, 2000);
-        log.info("接口:{},返回值:{}", url, tokenResult);
+        log.warn("接口:{},参数:{}", url, tokenMapStr);
+        String tokenResult = HttpUtil.post(url, tokenMapStr, 10000);
+        log.warn("接口:{},返回值:{}", url, tokenResult);
         Authorization = "bearer " + JSONPath.read(tokenResult, "$.data.access_token");
         header.put("Authorization", Authorization);
     }
