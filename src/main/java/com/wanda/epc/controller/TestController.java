@@ -19,7 +19,7 @@ public class TestController {
 
     @PostMapping("/receive")
     public void receive(@RequestBody AlarmDTO alarmDTO) throws Exception {
-        log.info("收到数据:{}", JSONObject.toJSONString(alarmDTO));
+        log.warn("收到数据:{}", JSONObject.toJSONString(alarmDTO));
         deviceHandler.receive(alarmDTO);
     }
 

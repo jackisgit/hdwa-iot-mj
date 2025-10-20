@@ -31,7 +31,7 @@ public class CommonTask {
     }
 
 
-    @Scheduled(cron = "${epc.clearAlarmCron:0/60 * * * * ?}")
+    //@Scheduled(cron = "${epc.clearAlarmCron:0/60 * * * * ?}")
     public boolean clearAlarm() {
         deviceHandler.clearAlarm();
         return true;

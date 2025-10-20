@@ -40,6 +40,8 @@ public class DeviceHandler extends BaseDevice {
     public static final String OPEN_STATUS = "_openStatus";
     public static final String ONLINE_STATUS = "_onlineStatus";
     public static final String ALARM_STATUS = "_alarmStatus";
+    public static final String wD_openDoorOverTimeAlarm = "wD_openDoorOverTimeAlarm";
+    public static final String wD_IllegalOpenAlarm = "wD_IllegalOpenAlarm";
     /**
      * 获取公钥URI
      */
@@ -142,7 +144,7 @@ public class DeviceHandler extends BaseDevice {
                 value = "1";
             }
             final String channelCode = searchPageDTO.getChannelCode();
-            log.info("待发送,点位:{}，值:{}", channelCode + ONLINE_STATUS, value);
+            log.info("点位:{}，值:{}", channelCode + ONLINE_STATUS, value);
             sendMsg(channelCode + ONLINE_STATUS, value);
             idList.add(channelCode);
         });
@@ -187,8 +189,26 @@ public class DeviceHandler extends BaseDevice {
         publicKey = String.valueOf(JSONPath.read(publicKeyResult, "$.data.publicKey"));
         encryptedText = baseEncrypt(publicKey, password);
         getToken();
-        //发送回调接口参数
-        asyncSendCallbackParams();
+
+        //初始化报警
+        new Thread(() -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            deviceParamListMap.forEach((key, value) -> {
+                if (key.contains(wD_openDoorOverTimeAlarm) || key.contains(wD_IllegalOpenAlarm) || key.contains(ALARM_STATUS)) {
+                    for (DeviceMessage deviceMessage : value) {
+                        deviceMessage.setValue("0");
+                        commonDevice.sendMessage(deviceMessage);
+                    }
+                }
+            });
+
+            //发送回调接口参数
+            asyncSendCallbackParams();
+        }).start();
     }
 
     private void asyncSendCallbackParams() {
@@ -239,12 +259,14 @@ public class DeviceHandler extends BaseDevice {
         String url2 = host + MessageFormat.format(mqinfoURI, version);
         log.warn("接口:{},参数:{}", url2, mqinfo);
 
-        HttpRequest.post(url2)
+        String requestResult = HttpRequest.post(url2)
                 .body(mqinfo)
                 .addHeaders(header)
                 .timeout(30000)
                 .execute()
                 .body();
+
+        log.warn("接口:{},返回值:{}", url2, requestResult);
     }
 
     /**
@@ -285,10 +307,31 @@ public class DeviceHandler extends BaseDevice {
     public void receive(AlarmDTO alarmDTO) {
         String nodeCode = alarmDTO.getInfo().getNodeCode();
         String alarmStat = alarmDTO.getInfo().getAlarmStat();
-        if (!"1".equals(alarmStat)) {
-            alarmStat = "0";
+        String alarmType = alarmDTO.getInfo().getAlarmType();
+
+        if (alarmType.equals("1420") && alarmStat.equals("1")) {  //门超时报警
+            sendMsg(nodeCode + wD_openDoorOverTimeAlarm, "1");
+            sendMsg(nodeCode + ALARM_STATUS, "1");
+            log.warn("发送门超时报警-产生：{}", nodeCode);
+        } else if (alarmType.equals("1420") && alarmStat.equals("2")) {//恢复
+            sendMsg(nodeCode + wD_openDoorOverTimeAlarm, "0");
+            sendMsg(nodeCode + ALARM_STATUS, "0");
+            log.warn("发送门超时报警-恢复：{}", nodeCode);
+        } else if ((alarmType.equals("701026") || alarmType.equals("4328")) && alarmStat.equals("1")) {//非法开门
+            sendMsg(nodeCode + wD_IllegalOpenAlarm, "1");
+            sendMsg(nodeCode + ALARM_STATUS, "1");
+            log.warn("发送非法开门报警-产生：{}", nodeCode);
+        } else if ((alarmType.equals("701026") || alarmType.equals("4328")) && alarmStat.equals("2")) {//恢复
+            sendMsg(nodeCode + wD_IllegalOpenAlarm, "0");
+            sendMsg(nodeCode + ALARM_STATUS, "0");
+            log.warn("发送非法开门报警-恢复：{}", nodeCode);
+        } else if (alarmType.equals("56") || alarmType.equals("51")) {  //恢复
+            sendMsg(nodeCode + wD_openDoorOverTimeAlarm, "0");
+            sendMsg(nodeCode + wD_IllegalOpenAlarm, "0");
+            sendMsg(nodeCode + ALARM_STATUS, "0");
+            log.warn("发送门正常：{}", nodeCode);
         }
-        sendMsg(nodeCode + ALARM_STATUS, alarmStat);
+
     }
 
 
