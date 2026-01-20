@@ -305,6 +305,9 @@ public class DeviceHandler extends BaseDevice {
      * @param alarmDTO
      */
     public void receive(AlarmDTO alarmDTO) {
+        if (!alarmDTO.getCategory().equals("alarm")) {
+            return;
+        }
         String nodeCode = alarmDTO.getInfo().getNodeCode();
         String alarmStat = alarmDTO.getInfo().getAlarmStat();
         String alarmType = alarmDTO.getInfo().getAlarmType();
