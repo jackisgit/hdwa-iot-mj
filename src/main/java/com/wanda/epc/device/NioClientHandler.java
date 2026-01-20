@@ -46,7 +46,7 @@ public class NioClientHandler extends SimpleChannelInboundHandler<String> {
                 } else if ("1".equals(data2)) {
                     kgzt = "1";
                 }
-                log.info("在线状态:{},故障状态:{},开关状态:{},判断值:{}", zxzt, gzzt, kgzt, data2);
+                log.info("设备:{},在线状态:{},故障状态:{},开关状态:{},判断值:{}", data0,zxzt, gzzt, kgzt, data2);
                 deviceHandler.sendMsg(data0 + ONLINE_STATUS, zxzt);
                 deviceHandler.sendMsg(data0 + FAULT_STATUS, gzzt);
                 deviceHandler.sendMsg(data0 + OPEN_STATUS, kgzt);
