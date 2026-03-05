@@ -1,0 +1,28 @@
+# IDE
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+
+# Build
+target/
+build/
+*.class
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+*-logs/
+
+# Dependencies
+lib/
+!release/lib/
+
+# Other
+rebel.xml
+*.sql
